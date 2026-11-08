@@ -574,7 +574,7 @@ body.lsp #lsbtn{right:min(420px,48vw)}
 .shp-w div.on{border-color:#c79a48;box-shadow:0 0 8px #e5bf6455}
 .shp-w b{display:block;font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .shp-w small{display:block;font-size:11px;color:var(--mut);white-space:nowrap}
-.shp-t{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:5px}
+.shp-t{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-top:5px}
 .shp-t button{min-height:44px;border-radius:9px;border:1px solid #4a3a22;background:#18120b;color:#cdb98a;font:inherit;font-size:12px;font-weight:700;line-height:1.15;padding:3px 2px;word-break:keep-all}
 .shp-t button i{display:block;font-style:normal;font-size:16px}
 .shp-t button.on{background:#3a2c14;color:#ffe9b0;border-color:#c79a48;box-shadow:inset 0 -3px 0 #e5bf64}
@@ -735,12 +735,11 @@ body.lyP .view #rtw #rtwp{line-height:1}
 </main>
 <button id="lsbtn" aria-label="메뉴 열기" onclick="document.body.classList.toggle('lsp');this.firstChild.textContent=document.body.classList.contains('lsp')?'▶':'◀'"><b>◀</b><small>메뉴</small></button>
 <nav class="menu bnav">
-    <button class="mbtn" data-m="shop"><span class="fr"><i class="ic " style="background-position:0% 0.0%"></i></span>상점</button>
   <button class="mbtn" data-m="rb"><span class="fr" style="font-size:20px">🌟</span>환생<b class="apb" id="apb" hidden></b></button>
-  <button class="mbtn" data-m="ps"><span class="fr" style="font-size:20px">📜</span>스킬<b class="apb" id="psb" hidden></b></button>
   <button class="mbtn" data-m="gu"><span class="fr" style="font-size:20px">💪</span>단련</button>
+  <button class="mbtn" data-m="ps"><span class="fr" style="font-size:20px">📜</span>스킬<b class="apb" id="psb" hidden></b></button>
   <button class="mbtn" data-m="title"><span class="fr" style="font-size:20px">🏅</span>칭호</button>
-  <button class="mbtn" data-m="skin"><span class="fr" style="font-size:20px">🎰</span>뽑기</button>
+  <button class="mbtn" data-m="shop"><span class="fr"><i class="ic " style="background-position:0% 0.0%"></i></span>상점</button>
   <button class="mbtn" data-m="set"><span class="fr"><i class="ic " style="background-position:60% 0.0%"></i></span>설정</button>
 </nav>
 <div id="tutblk" hidden></div><div id="tutsp" hidden></div><div id="tut" hidden><b id="tutt"></b><p id="tutb"></p><button id="tutok"></button></div>
@@ -2156,7 +2155,7 @@ function renderSkb(){const w=$("skw");if(!w||!S||!S.skin)return;w.classList.togg
   let h="<div class='skh'><span>"+(C.ic||"")+" "+C.n+" 스킨</span><span>적용 효과 <b>"+(a?"⚡ 공격 속도 +"+Math.round(a*100)+"%":"없음")+"</b></span></div><div class='skg'><div class='skc"+(cur?"":" on")+"' style='--gc:#8a8f96'><span class='gg'>기본</span><div class='skim'>"+(C.ic||"🙂")+"</div><b>기본 외형</b><small></small><button class='btn' data-sk=''"+(cur?"":" disabled")+">"+(cur?"장착":"장착중")+"</button></div>";
   L.forEach(([id,d])=>{const own=!!S.skins[id],G=GR[d.g],on=cur==id;h+="<div class='skc"+(on?" on":"")+(own?"":" lock")+"' style='--gc:"+G.c+"'><span class='gg'>"+G.n+"</span><img src='"+artU(d.pimg)+"'><b>"+d.n+"</b><small>"+skStat(d)+"</small><button class='btn' data-sk='"+id+"'"+(own&&!on?"":" disabled")+">"+(on?"장착중":own?"장착":"미보유")+"</button></div>"});
   h+="</div>"+(L.length?"":"<div class='skh'><small>아직 "+C.n+" 스킨이 없어요</small></div>")+"<button class='btn skgo'>🎰 스킨 뽑기</button>";
-  const p=$("skp");p.innerHTML=h;p.querySelectorAll("[data-sk]").forEach(b=>b.onclick=()=>setSkin(c,b.dataset.sk||null));p.querySelector(".skgo").onclick=()=>openSheet("skin")}
+  const p=$("skp");p.innerHTML=h;p.querySelectorAll("[data-sk]").forEach(b=>b.onclick=()=>setSkin(c,b.dataset.sk||null));p.querySelector(".skgo").onclick=gcOpen}
 function itemFix(){const all=[...Object.values(S.eq||{}),...(S.inv||[])].filter(Boolean);
   if(!S.v3gm){const OLD=[1,1.5,2.2,3.2,4.5,20];all.forEach(it=>{const g=it.g||0,r=GM[g]/OLD[g];if(r!=1)for(const k of["atk","def","hp"])if(it[k])it[k]=Math.floor(it[k]*r)});S.v3gm=1}
   if(!S.v3so){let n=0;all.forEach(it=>{if((it.g||0)<3&&it.so&&it.so.length){it.so.forEach(x=>{if(x&&x.gk){addGem(x.gk,x.gg);n++}});it.so=[]}});S.v3so=1;if(n)setTimeout(()=>{try{log("💎 영웅 등급 미만 장비의 소켓이 제거되어 보석 "+n+"개를 돌려받았어요","o");gemDirty();render()}catch(e){}},500)}}
@@ -5776,10 +5775,18 @@ function soFill(r){const T=soT(),R=soR(),pv=window._soPv&&performance.now()-wind
     const dl=w.querySelector(".sodl"),df=pv?Math.round(p*100)-Math.round(pv[j]*100):0;dl.className="sodl"+(df>0?" up":df<0?" dn":"");dl.textContent=df>0?"▲"+df:df<0?"▼"+(-df):""});
   r.querySelector(".sozero").classList.toggle("on",z);r.querySelector(".sodef").disabled=R.a==3&&R.d==3&&R.h==3&&R.m==0}
 /* 🏪 상점 화면 (2026-11-04 A안): 지갑 줄(창 제목 아래 고정, 높이는 한 번만 재서 기억 — 다시 그릴 때 재면 스크롤이 맨 위로 튐) + 탭 (window._shT: pot·gem·eq·skin, 저장 안 함) · 모자라면 버튼 어둡게 + "N개 모자라요" */
-function shopView(sb){const T=window._shT||"pot",cur={pot:"g",gem:"sh",eq:"es",skin:"r"}[T]||"g",cl=S.cls||"knight",hd=document.createElement("div");hd.className="shp-hd";
+/* 🎰 뽑기 내용 (2026-11-08 상점 안 '뽑기' 탭으로 옮김, 예전 skin 창과 같은 내용) · 다른 곳에서 뽑기 열기 = gcOpen() */
+function gcOpen(){window._shT="gc";openSheet("shop")}
+function gachaRows(){rbRow("<span>보유 루비<br><b style='color:#ff8494;font-size:20px'>"+RUBY+(S.ruby||0).toLocaleString()+"</b></span><span style='text-align:right;font-size:12px;color:var(--mut)'>유료 재화 (결제 준비 중)<br>지금은 테스트용으로 지급</span>");
+  rbRow("<span style='font-size:12px;line-height:1.8'>"+GR.map(x=>"<b style='color:"+x.c+"'>"+x.n+"</b> "+x.p+"%").join(" · ")+"<br><small>10회 뽑기는 희귀 이상 1개 보장 · 중복 스킨은 루비 일부 환급</small></span>");
+  srow("🎰 뽑기 1회","스킨 또는 등급별 보상","100 루비",(S.ruby||0)<GCOST[0],()=>doGacha(1));
+  srow("🎰 뽑기 10회","10% 할인 · 희귀 이상 1개 보장","900 루비",(S.ruby||0)<GCOST[1],()=>doGacha(10));
+  srow("🧪 테스트 루비","개발용 · 루비 1,000개 받기","+1000",false,()=>{S.ruby=(S.ruby||0)+1000;save();render()});
+  srow("👘 스킨 창","보유한 스킨 장착 · 관리","열기",false,()=>openSheet("wd"))}
+function shopView(sb){const T=window._shT||"pot",cur={pot:"g",gem:"sh",eq:"es",skin:"r",gc:"r"}[T]||"g",cl=S.cls||"knight",hd=document.createElement("div");hd.className="shp-hd";
   {const k=innerWidth>innerHeight?"l":"p",C=window._shhH||(window._shhH={});if(C[k]==null){const q=document.querySelector("#sheet .shh");if(q&&q.offsetHeight)C[k]=q.offsetHeight}if(C[k]!=null)hd.style.top=C[k]+"px"}
   hd.innerHTML="<div class='shp-w'>"+[["g","💰",hudN(S.gold),"골드","#ffe08a"],["r","💎",hudN(S.ruby),"루비","#ff8aa6"],["sh","💠",hudN(S.shard),"보석 파편","#7fd8ff"],["es","⚙️",hudN(S.esh),"장비 파편","#ffb86b"]].map(([k,ic,v,n,c])=>"<div class='"+(k==cur?"on":"")+"'><b style='color:"+c+"'>"+ic+" "+v+"</b><small>"+n+"</small></div>").join("")+"</div>"+
-    "<div class='shp-t'>"+[["pot","🧪","물약"],["gem","💠","보석 교환"],["eq","⚙️","장비 제작"],["skin","👘","스킨"]].map(([k,ic,n])=>"<button type='button' data-sht='"+k+"' class='"+(k==T?"on":"")+"'><i>"+ic+"</i>"+n+"</button>").join("")+"</div>";
+    "<div class='shp-t'>"+[["pot","🧪","물약"],["gem","💠","보석 교환"],["eq","⚙️","장비 제작"],["skin","👘","스킨"],["gc","🎰","뽑기"]].map(([k,ic,n])=>"<button type='button' data-sht='"+k+"' class='"+(k==T?"on":"")+"'><i>"+ic+"</i>"+n+"</button>").join("")+"</div>";
   sb.append(hd);hd.querySelectorAll("[data-sht]").forEach(b=>b.onclick=()=>{window._shT=b.dataset.sht;renderSheet();const s=$("sheet").querySelector(".sh");if(s)s.scrollTop=0});
   const el=(h,c)=>{const d=document.createElement("div");if(c)d.className=c;d.innerHTML=h;sb.append(d);return d},bt=(t,dis,fn,c)=>{const b=document.createElement("button");b.type="button";b.className="btn"+(c?" "+c:"");b.innerHTML=t;b.disabled=!!dis;b.onclick=fn;return b},lack=(n,u,k)=>"<div class='shp-lk'>"+u+" "+n.toLocaleString()+(k||"")+" 모자라요</div>";
   if(T=="pot"){const c1=10*POTC,c2=100*POTC,al=potAtL(),d=el("<div class='shp-pr'><span class='shp-ic'>🧪</span><span class='shp-tx'><b>체력 물약</b><small>1개당 HP "+potHeal().toLocaleString()+" 회복 · "+(al=="끄기"?"자동 사용 끔":"HP "+al+"이면 자동 사용")+"</small></span><span class='shp-nb'><b>"+S.pot.toLocaleString()+"</b><small>보유</small></span></div><div class='shp-bb'></div>","shp-card");
@@ -5796,9 +5803,9 @@ function shopView(sb){const T=window._shT||"pot",cur={pot:"g",gem:"sh",eq:"es",s
     if(h<c)el(lack(c-h,"⚙️ 장비 파편이","개"));
     el("만들 부위 고르기 <small><span style='color:"+GC[eg]+"'>"+GN[eg]+"</span> · ⚙️ "+c.toLocaleString()+"씩</small>","shp-h");
     const gd=el("","shp-eg");SLK.forEach(sl=>{const b=document.createElement("button");b.type="button";b.className="shp-ec";b.disabled=h<c;b.innerHTML="<i>"+SL[sl][1]+"</i><b style='color:"+GC[eg]+"'>"+SL[sl][0]+"</b>"+(sl=="weapon"||sl=="shield"?"<small>"+CLS[cl].n+" 전용</small>":"");b.setAttribute("aria-label",GN[eg]+" "+SL[sl][0]+" 만들기");b.onclick=()=>craftAsk(sl,eg);gd.append(b)})}
+  else if(T=="gc")gachaRows();
   else{const cu=S.skin&&S.skin[cl],own=Object.entries(SKINS).filter(([id,d])=>d.cls==cl&&S.skins&&S.skins[id]).length,a=aspd();
-    const r1=el("<span class='shp-ic'>👘</span><span class='shp-tx'><b>내 스킨</b><small>장착 중: "+(cu&&SKINS[cu]?SKINS[cu].n:"기본 외형")+" · 보유 "+own+"개"+(a?" · ⚡ 공속 +"+Math.round(a*100)+"%":"")+"</small></span>","shp-card shp-pr");r1.append(bt("열기",false,()=>openSheet("wd")));
-    const r2=el("<span class='shp-ic'>🎰</span><span class='shp-tx'><b>스킨 뽑기</b><small>💎 루비로 새로운 스킨을 뽑아요</small></span>","shp-card shp-pr");r2.append(bt("열기",false,()=>openSheet("skin")))}}
+    const r1=el("<span class='shp-ic'>👘</span><span class='shp-tx'><b>내 스킨</b><small>장착 중: "+(cu&&SKINS[cu]?SKINS[cu].n:"기본 외형")+" · 보유 "+own+"개"+(a?" · ⚡ 공속 +"+Math.round(a*100)+"%":"")+"</small></span>","shp-card shp-pr");r1.append(bt("열기",false,()=>openSheet("wd")))}}
 function renderSheet(){if(!sheetName)return;if(sheetName=="rb"&&(window._soDrag||rbSame()))return;if(sheetName=="ps"&&(skDrag||window._skGest)&&!window._skForce)return;if(sheetName=="ps"&&!window._skForce&&skSame())return;if(sheetName=="set"&&$("potr"))return;if(sheetName=="bd"&&bdSame())return;$("sbody").innerHTML="";_srI=0;$("stitle").textContent={bd:"🧩 내 빌드",shop:"상점",rb:"🌟 환생",title:"🏅 칭호",sk:"📜 스킬",ps:"📜 스킬",gu:"💪 능력치 단련",zone:"층 이동",set:"설정",skin:"🎰 스킨 뽑기",wd:"👘 스킨"}[sheetName];
   /* 🏪 상점 (2026-11-04 A안, 시안 docs/UI/시안/2026-11-04_상점_개선.html): 맨 위 지갑 줄(4가지 재료) + 탭 4개(물약·보석 교환·장비 제작·스킨), 동작은 예전과 같음 (buyPot·exch·craftAsk·openSheet) */
   if(sheetName=="shop")shopView($("sbody"));
@@ -5812,19 +5819,14 @@ function renderSheet(){if(!sheetName)return;if(sheetName=="rb"&&(window._soDrag|
     {const on=!!S.guAuto;srow("💪 자동 단련 <b style='color:"+(on?"#7fe07f":"var(--mut)")+"'>"+(on?"켜짐":"꺼짐")+"</b>","층을 깰 때마다 공·방·HP·MP 중 가장 싼 것부터, 보유 골드의 절반까지만 써요",on?"끄기":"켜기",false,()=>{S.guAuto=!on;log("💪 자동 단련 "+(on?"OFF":"ON"),"o");save();renderSheet()}).classList.add("gua")}
     const fm=v=>Math.round(v).toLocaleString();Object.entries(GU).forEach(([k,T])=>{const l=gu(k),mx=T.max&&l>=T.max,cst=guCost(k,l),fv=guFin(k,l),f0=guFin(k,0),d=fv-f0,nx=mx?0:guFin(k,l+1)-fv,m=guMs(k,l),st=T.max?"★".repeat(m)+"☆".repeat(Math.max(0,Math.floor(T.max/T.ms)-m)):m<5?"★".repeat(m)+"☆":"★×"+m+" ☆",rest=T.ms-l%T.ms;
       const r=srow(T.n+" <b style='color:var(--gold)'>Lv."+l+"</b>"+(T.max?"<small> / "+T.max+"</small>":""),"최종 +"+fm(d)+(fv>0?" (전체의 "+Math.round(d/fv*100)+"%)":"")+(mx?"":" · 다음 +"+fm(nx))+"<br><span style='color:#ffd34a'>"+st+"</span> "+(mx?"완성":"다음 ★까지 "+rest+"단계")+(m?" · 지금 +"+Math.round(T.mb*m*100)+"%":"")+"<br>"+(mx?"최대 레벨":"다음 비용 <b style='color:"+(S.gold>=cst?"var(--gold)":"#ff6a5a")+"'>"+cst.toLocaleString()+"G</b>"),mx?"MAX":"+1",mx||S.gold<cst,()=>buyGu(k,1),mx?null:["+10",()=>buyGu(k,10),S.gold<cst],mx?null:["최대",()=>buyGu(k,Infinity),S.gold<cst]);{const sp=r.querySelector("span"),sm=sp.querySelector(":scope>small:last-of-type"),br=sp.querySelector(":scope>br");if(br)br.remove();r.classList.add("gur");r.append(sm)}})}
-  if(sheetName=="skin"){rbRow("<span>보유 루비<br><b style='color:#ff8494;font-size:20px'>"+RUBY+(S.ruby||0).toLocaleString()+"</b></span><span style='text-align:right;font-size:12px;color:var(--mut)'>유료 재화 (결제 준비 중)<br>지금은 테스트용으로 지급</span>");
-    rbRow("<span style='font-size:12px;line-height:1.8'>"+GR.map(x=>"<b style='color:"+x.c+"'>"+x.n+"</b> "+x.p+"%").join(" · ")+"<br><small>10회 뽑기는 희귀 이상 1개 보장 · 중복 스킨은 루비 일부 환급</small></span>");
-    srow("🎰 뽑기 1회","스킨 또는 등급별 보상","100 루비",(S.ruby||0)<GCOST[0],()=>doGacha(1));
-    srow("🎰 뽑기 10회","10% 할인 · 희귀 이상 1개 보장","900 루비",(S.ruby||0)<GCOST[1],()=>doGacha(10));
-    srow("🧪 테스트 루비","개발용 · 루비 1,000개 받기","+1000",false,()=>{S.ruby=(S.ruby||0)+1000;save();render()});
-    srow("👘 스킨 창","보유한 스킨 장착 · 관리","열기",false,()=>openSheet("wd"))}
+  if(sheetName=="skin")gachaRows();/* 예전 뽑기 창 (이제 아무 데서도 안 엶, 상점 뽑기 탭과 같은 내용) */
   if(sheetName=="wd"){const c=S.cls||"knight",C=CLS[c],cur=S.skin[c]||null,a=aspd(),L=Object.entries(SKINS).filter(([,d])=>d.cls==c);
     rbRow("<span>"+(C.ic||"")+" "+C.n+" 스킨<br><small>장착한 스킨의 외형과 능력치가 적용돼요</small></span><b style='color:#ffd36a;text-align:right'>"+(a?"⚡ 공격 속도 +"+Math.round(a*100)+"%":"효과 없음")+"</b>");
     let h="<div class='skg'><div class='skc"+(cur?"":" on")+"' style='--gc:#8a8f96'><span class='gg'>기본</span><div class='skim'>"+(C.ic||"🙂")+"</div><b>기본 외형</b><small></small><button class='btn' data-sk=''"+(cur?"":" disabled")+">"+(cur?"장착":"장착중")+"</button></div>";
     L.forEach(([id,d])=>{const own=!!S.skins[id],G=GR[d.g],on=cur==id;h+="<div class='skc"+(on?" on":"")+(own?"":" lock")+"' style='--gc:"+G.c+"'><span class='gg'>"+G.n+"</span><img src='"+artU(d.pimg)+"'><b>"+d.n+"</b><small>"+skStat(d)+"</small><button class='btn' data-sk='"+id+"'"+(own&&!on?"":" disabled")+">"+(on?"장착중":own?"장착":"미보유")+"</button></div>"});
     const w=document.createElement("div");w.innerHTML=h+"</div>";$("sbody").append(w);w.querySelectorAll("[data-sk]").forEach(b=>b.onclick=()=>setSkin(c,b.dataset.sk||null));
     if(!L.length)rbRow("<small>아직 "+C.n+" 스킨이 없어요. 곧 추가될 예정이에요.</small>");
-    srow("🎰 스킨 뽑기","루비로 새 스킨을 뽑아요","뽑기",false,()=>openSheet("skin"))}
+    srow("🎰 스킨 뽑기","루비로 새 스킨을 뽑아요","뽑기",false,gcOpen)}
   if(sheetName=="title"){const t0=curT();rbRow("<span>현재 칭호<br><b style='color:"+(t0?t0.c:"#fff")+";font-size:16px'>《"+(t0?t0.n:"-")+"》</b></span><span style='text-align:right;font-size:12px;color:var(--mut)'>장착한 칭호 1개의<br>효과만 적용돼요</span>");
     TT.forEach(t=>{const on=S.title==t.id,got=(S.titles||[]).includes(t.id),[v,n]=t.p();srow("<b style='color:"+(got?t.c:"#777")+"'>《"+t.n+"》</b>"+(on?" <small>장착 중</small>":""),t.d+(got?"":" ("+Math.min(v,n)+"/"+n+")")+" · "+tbTxt(t.b),on?"장착 중":got?"장착":"🔒",on||!got,()=>{S.title=t.id;log("🏅 칭호 장착: 《"+t.n+"》","o");save();render()})})}
   if(sheetName=="ps"){const o=psOpen();S.psl=S.psl||[];const sb=$("sbody");if(window._skView=="tree")skTreeView(sb,o);else skRowView(sb,o)}
