@@ -685,6 +685,20 @@ html.app{padding-top:0;touch-action:pan-x pan-y}
 body.cam main>.view.bh::before{aspect-ratio:auto;height:var(--bh)}/* 전투 칸 높이 = 15n camBox (폰 = 오늘과 같은 폭×440/520, 큰 화면 = 판 전체·화면 높이 절반까지) */
 body.lyS main,body.lyS .bnav{max-width:1100px}body.lyS main>.view{background:#0b0806}/* 큰 화면: 아래 창을 넓게, 판 양옆 남는 곳은 어두운 띠 */
 /* 카메라 구멍(노치)과 겹치는 칸만 비킴 = 15n appCut (translate, 앱만) · 화면 전체를 여백으로 비우지 않음 */
+/* 📏 세로 폰(body.lyP) 전투 화면 UI 작게 (사용자 2026-11-08 "안 그래도 화면이 좁은데 UI가 커서 더 좁아 보여" → "더 많이 줄여 (약 30%)") · 값 하나 --bs로 조절 (08 hudBS·hudFit도 읽음)
+   오른쪽 위(등반·배속·층·🔍)·아래(로그·등반 칸·DPS·EXP) = zoom --bs · 상태바 = hudFit 배율 × --bs · 글자는 화면에서 9px 밑으로 안 줄임(체력·MP 숫자는 오늘과 같은 8px) · 누르는 칸은 보이는 것보다 넓게(::after) · 가로(L)·큰 화면(S)은 그대로 */
+:root{--bs:.7}
+body.lyP .view :is(.trc,#rtw,.olog,.expbar){zoom:var(--bs)}
+body.lyP .view :where(.trc,#rtw,.olog,.expbar),body.lyP .view :where(.trc,#rtw,.olog,.expbar) *{font-size:calc(9px / var(--bs))!important}
+body.lyP .view .trc .spd{font-size:calc(10px / var(--bs))!important;position:relative}body.lyP .view .trc .spd::after{content:"";position:absolute;inset:-6px -4px}
+body.lyP .view .loc b{font-size:calc(10px / var(--bs))!important}
+body.lyP .view .prog,body.lyP .view #rtw .rtp{height:calc(11px / var(--bs))}body.lyP .view .prog span{line-height:calc(11px / var(--bs))}
+body.lyP .view .expbar{height:calc(10px / var(--bs))}body.lyP .view .expbar span{line-height:calc(10px / var(--bs))}
+body.lyP .view .hud .bars{width:auto;min-width:calc(92px / var(--hs,1));height:auto;gap:1px}
+body.lyP .view .hud .bar{height:calc(9px / var(--hs,1))}body.lyP .view .hud .bar span{font-size:calc(8px / var(--hs,1));line-height:calc(9px / var(--hs,1))}
+body.lyP .view .hud .stats{font-size:calc(9px / var(--hs,1))}
+body.lyP #potslot::before{content:"";position:absolute;inset:calc(-5px / var(--hs,1))}
+body.lyP .view .hud .hsk{top:calc(100% - 6px)}body.lyP .view #rtw{padding-top:11px}/* 스킬 칸 줄은 숫자 줄 아래로 · 등반 칸 글이 DPS·세팅 배지에 덜 가리게 */
 
 </style>
 </head>
@@ -1854,7 +1868,7 @@ function lsOn(){try{return matchMedia("(orientation:landscape) and (max-height:6
 /* 📐 화면 모양 (docs/UI/UI규칙.md "화면 모양별 규칙", 2026-11-08 기종 호환): 기종별이 아니라 구간 3개 · body 클래스 lyP/lyS/lyL
    P 세로 폰(폭 600 미만, 세로) = 오늘 그대로 · S 큰 화면(폭 600↑, 높이 600↑ = 폴드 안쪽·태블릿·PC, 세로·가로 둘 다) = 위 전투(판 전체, 화면 높이 절반까지) + 아래 창 넓게 · L 가로 폰(가로, 높이 600 이하 = lsOn) = 오늘 그대로 */
 let _scr="";function scrCls(){return lsOn()?"L":innerWidth>=600&&innerHeight>600?"S":"P"}
-function setWorld(){if(!lsOn())document.body.classList.remove("lsp");const c=scrCls();if(c!==_scr){const b=document.body.classList;if(_scr)b.remove("ly"+_scr);b.add("ly"+c);_scr=c}lsFit()}
+function setWorld(){if(!lsOn())document.body.classList.remove("lsp");const c=scrCls();if(c!==_scr){const b=document.body.classList;if(_scr)b.remove("ly"+_scr);b.add("ly"+c);_scr=c;try{hudFit()}catch(e){}}lsFit()}
 /* 📐 가로 폰(L) 꽉 채우기 (사용자 2026-11-08 "1": 폴드 바깥 가로 양옆 띠 → 끝까지): 판을 화면 폭에 맞추고 위아래를 조금 자름 · 단 보이는 높이는 LSVM(360) 아래로 안 자름 = 싸움 띠(y 215~345) + 머리·체력바·이름·떠오르는 숫자 여유 · 자르는 자리 가운데 = LSYC(240)
    더 긴 화면(약 2.67:1↑)만 양옆 띠 · 판이 화면보다 납작하면(2.18:1↓) 오늘처럼 위아래 띠 (844×390·780×390 = 오늘과 같음) · 보는 것만 (판·몬스터 위치 그대로) */
 const LSVM=360,LSYC=240;function lsFit(){const v=cv.parentNode;if(!v)return;const st=v.style;if(!lsOn()){if(st.getPropertyValue("--lw"))["--lw","--lh","--lx","--ly"].forEach(k=>st.removeProperty(k));return}
@@ -2037,8 +2051,10 @@ function hudSk(){const h=$("hsk");if(!h||!S)return;const o=psOpen();S.psl=S.psl|
   for(let i=0;i<PSLOTS;i++){const b=document.createElement("button"),s=psGet(S.psl[i]);b.className="hs";if(i>=o){b.classList.add("lk");b.textContent="🔒"}else if(s&&psFit(s)){b.classList.add("on");b.innerHTML=skI(s);if(s.id=="gd")b.dataset.gd=1;if(psOff(s))b.style.filter="grayscale(1) brightness(.55)"}else{b.classList.add("em");b.textContent="+"}
     b.onclick=e=>{e.stopPropagation();if(i>=o)popup("📜 스킬 칸","<div style='text-align:center'><div style='font-size:32px'>🔒</div><b style='color:var(--gold)'>"+(i+1)+"번 칸</b><div style='margin-top:6px'><b style='color:#ffe08a'>"+(i?(i+1)+"번째":"첫")+" 환생</b> 시 열려요</div><div style='font-size:11px;color:var(--mut);margin-top:4px'>현재 환생 "+(S.rb||0)+"회</div></div>",[["닫기",closePop]]);
       else if(s&&psFit(s))skPop(s.id);else popup("📜 스킬 칸","<div style='text-align:center'><div style='font-size:28px'>＋</div><b style='color:var(--gold)'>"+(i+1)+"번 칸 · 비어 있음</b><div style='margin-top:6px;font-size:12px'>스킬 창에서 스킬을 끌어서 장착해 보세요</div></div>",[["닫기",closePop],["스킬 창",()=>{closePop();openSheet("ps")}]])};h.append(b)}}
-function hudFit(){const h=document.querySelector(".view .hud"),tc=document.querySelector(".view .trc");if(!h||!tc)return;const pt=$("potslot"),nat=pt?pt.offsetLeft+pt.offsetWidth+2:h.offsetWidth,av=tc.getBoundingClientRect().left-h.getBoundingClientRect().left-6;if(nat<=0)return;const want=Math.max(.9,Math.min(1.12,av/nat)),cur=parseFloat(h.style.getPropertyValue("--hs"))||1.12;if(want<cur-.005||want>cur+.03)h.style.setProperty("--hs",want.toFixed(3))}
+function hudFit(){const h=document.querySelector(".view .hud"),tc=document.querySelector(".view .trc");if(!h||!tc)return;const pt=$("potslot"),nat=pt?pt.offsetLeft+pt.offsetWidth+2:h.offsetWidth,av=tc.getBoundingClientRect().left-h.getBoundingClientRect().left-6;if(nat<=0)return;const bs=_scr=="P"?hudBS():1,want=Math.max(.9*bs,Math.min(1.12*(bs<1?1/1.12*bs:1),av/nat)),cur=parseFloat(h.style.getPropertyValue("--hs"))||1.12;if(want<cur-.005||want>cur+.03)h.style.setProperty("--hs",want.toFixed(3))}
 window.addEventListener("resize",hudFit);setInterval(hudFit,1500);
+/* 📏 세로 폰(P) 전투 화면 UI 크기 = css --bs (사용자 2026-11-08 "UI 크기 좀 줄여 줘" → 약 30%): 상태바는 hudFit 배율에, 오른쪽 위·아래 칸은 css zoom에 같은 값 */
+let _hbs=0;function hudBS(){if(!_hbs){_hbs=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--bs"))||1}return _hbs}
 function rtRetry(){return S.retry||(S.rt?{k:S.rt.f%10==0?"b":"e",fl:S.rt.f}:null)}
 function doRetry(){const r=rtRetry();if(!r||dead||paused())return;S.retry=null;if(S.rt){S.rt=null;S.climb=true;S.dc=0;log("🛡️ 재정비를 멈추고 "+r.fl+"층에 바로 도전해요","o")}if(r.k=="b"){setFloor(r.fl);log("👑 보스 재도전!","b")}else{if(S.fl!=r.fl){S.fl=r.fl;applyFloor()}S.fk=FLK();spawn();log("⚔️ 문지기 재도전!","b");save();render()}}
 function floorClear(){S.retry=null;if(!S.dcF||S.fl>=S.dcF)S.dc=0;const f=S.fl,cb0=canRb();S.bev=Math.max(S.bev||0,f);S.rbM=Math.max(S.rbM||0,f);S.best=Math.max(S.best||0,f);if(!cb0&&canRb()&&S.rb){log("🌟 "+(S.rb+1)+"번째 환생이 가능해졌어요! 지금 환생하면 포인트 +"+rbGain(),"o");gToast("🌟 "+(S.rb+1)+"번째 환생 가능!","지금 환생하면 포인트 +"+rbGain()+" · 하단 🌟환생을 눌러 보세요")}S.fk=0;log("🚪 "+f+"층 클리어!","o");try{guAutoRun()}catch(e){}if(f==30&&!S.rb)log("🔒 31층부터 탑의 봉인 · 몬스터가 급격히 강해져요. 환생하면 봉인이 풀려요","b");addText(PX+50,PY-60,f+"층 클리어!","#ffd34a",300,1);if(S.climb!==false&&rbLock()){S.climb=false;S.rt=null;S.fl=f%10==0?f-1:f;applyFloor();log("🌟 첫 환생을 해야 더 높이 올라갈 수 있어요!","b");tutShow(1)}else if(S.climb!==false){const sk=window._skipN||0;window._skipN=0;const cap=Math.max(f+1,Math.min(bestAll(),Math.ceil((f+1)/10)*10));S.fl=Math.min(cap,f+1+sk);applyFloor();if(S.fl>f+1){addText(PX,PY-95,"⏩ +"+(S.fl-f)+"층!","#7fe0ff",350,1);log("⏩ 문지기를 압살해 "+(S.fl-f)+"층을 한 번에 올라갔어요","o")}if(owNow())addText(PX,PY-75,owTx(),"#ffd27a",500,0);log("🧗 "+S.fl+"층 진입"+(S.fl%10==0?" · 👑 보스층!":""),"o")}}
