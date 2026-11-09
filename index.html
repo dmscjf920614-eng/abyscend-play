@@ -1632,7 +1632,7 @@ function rtDraw(c,t){const e0=t-rtT;if(e0<0||e0>2600)return;const e=e0/2600,a=e<
 
 /* ===== DPS 표시기: 몬스터 HP 감소량을 그대로 집계 (모든 피해원 포함, 초과 피해 제외) ===== */
 const DPW=new WeakMap(),DPB=250;let dpsQ=[];
-function dpsAdd(d){if(!(d>0))return;const n=gnow(),b=Math.floor(n/DPB)*DPB,L=dpsQ[dpsQ.length-1];if(L&&L[0]===b)L[1]+=d;else dpsQ.push([b,d]);while(dpsQ.length&&dpsQ[0][0]<n-61000)dpsQ.shift();const ss=sessGet();if(ss.dm0==null){ss.dm0=n;ss.dm=0;ss.dmx=0}ss.dm+=d;if(r1On(n))r1.dm+=d}
+/* 세팅이 바뀐 뒤 첫 피해는 묶음 시각을 그 순간(n=dm0)으로 따로 둠 — 예전엔 0.25초 묶음 시작(<dm0)에 들어가 dpsWin이 빼서, 한 방에 잡는 층에선 바꾼 뒤 첫 처치 피해가 DPS에 안 잡혀 몇 초 0으로 보였음 (2026-11-09) */function dpsAdd(d){if(!(d>0))return;const n=gnow(),ss=sessGet(),f0=ss.dm0==null,b=f0?n:Math.floor(n/DPB)*DPB,L=dpsQ[dpsQ.length-1];if(!f0&&L&&L[0]>=b)L[1]+=d;else dpsQ.push([b,d]);while(dpsQ.length&&dpsQ[0][0]<n-61000)dpsQ.shift();if(f0){ss.dm0=n;ss.dm=0;ss.dmx=0}ss.dm+=d;if(r1On(n))r1.dm+=d}
 function dpsAcc(m,first){if(!m)return;const h=Math.max(0,m.hp||0);if(first&&!DPW.has(m)){DPW.set(m,h);return}const p=DPW.has(m)?DPW.get(m):(m.max||h);if(p>h)dpsAdd(p-h);DPW.set(m,h)}
 function dpsTick(){tgdF++;if(!S)return;dpsAcc(mon,1);for(const f of fld)dpsAcc(f,1)}
 function dpsWin(w){const n=gnow(),ss=sessGet(),st=Math.max(n-w,ss.dm0!=null?ss.dm0:n);let s=0;for(const [t,d] of dpsQ)if(t>=st)s+=d;const el=Math.max(1000,n-st);return s/(el/1000)}
