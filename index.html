@@ -829,7 +829,7 @@ body.ls6.l6sk #ls6sk{display:flex;flex-direction:column;position:fixed;top:6px;b
 .l6s-f .btn.un,.l6-pop .btn.un{color:#ffb0a0}
 .l6s-r .pnrw{position:absolute;left:0;right:0;top:0;z-index:8;margin:0;padding:4px;border-radius:8px;background:#140e08f5;border:1px solid #c9a24a;box-shadow:0 6px 16px #000c}
 /* 🌳 넓은 지도 = 화면 전체 (왼쪽: 프리셋·10칸 한 줄·작은 전투 화면 · 오른쪽: 지도 + 누른 스킬 옆 설명 창) */
-body.ls6.l6fm #ls6fm{display:flex;flex-direction:column;position:fixed;inset:0;z-index:10;box-sizing:border-box;border:12px solid transparent;border-image:var(--u-panel) 28 fill/12px stretch;padding:0 calc(var(--l6cr,0px) + 2px) env(safe-area-inset-bottom,0px) calc(var(--l6cl,0px) + 2px);background:#0b0806;animation:ls6in .2s ease-out}
+body.ls6.l6fm #ls6fm{display:flex;flex-direction:column;position:fixed;inset:0;z-index:10;box-sizing:border-box;border:12px solid transparent;border-image:var(--u-panel) 28 fill/12px stretch;padding:0 2px env(safe-area-inset-bottom,0px) 2px;background:#0b0806;animation:ls6in .2s ease-out}/* 구멍 여백은 15n appCut이 이 판 안쪽 여백으로만 (--l6cl과 겹쳐 더하지 않음) */
 #ls6fm .l6f-b{flex:1;min-height:0;display:flex;gap:6px}
 #ls6fm .l6f-l{width:clamp(300px,40vw,380px);flex:none;display:flex;flex-direction:column;gap:4px;min-height:0}
 #ls6fm .l6f-lt{flex:none;display:flex;flex-direction:column;gap:3px;min-height:0}
@@ -6167,9 +6167,12 @@ function appCut(){let a;try{a=window.ArcadiaApp&&ArcadiaApp.cut?JSON.parse(Arcad
   for(const q of CUTQ){const e=document.querySelector(q);if(!e)continue;const o=e.style.translate;e.style.translate="";const r=e.getBoundingClientRect();let dx=0,dy=0;
     if(r.width)for(const c of a){if(!c||!hit(c,r))continue;if(c[1]<=2)continue;if(c[0]<=2)dx=Math.max(dx,c[2]+G-r.left);else if(c[2]>=iw-2)dx=Math.min(dx,c[0]-G-r.right)}/* 위 끝 구멍(세로)은 비키지 않음 = 상태바는 늘 브라우저와 같은 맨 위 (사용자 2026-11-08 "체력바 위치가 상단에 있어야") · 옆 구멍(가로)만 */
     const n=dx||dy?Math.round(dx)+"px "+Math.round(dy)+"px":"";e.style.translate=o===n?o:n}
-  for(const q of CUTP){const e=document.querySelector(q);if(!e)continue;const st=e.style,o=st.getPropertyValue("padding-left")+"|"+st.getPropertyValue("padding-right");const r=e.getBoundingClientRect();let pl=0,pr=0;
-    if(r.width&&lsOn())for(const c of a){if(!c||!hit(c,r))continue;if(c[0]<=r.left+2)pl=Math.max(pl,c[2]-r.left+G+6);else if(c[2]>=r.right-2)pr=Math.max(pr,r.right-c[0]+G+6)}
-    const L=pl?Math.round(pl)+"px":"",R=pr?Math.round(pr)+"px":"";if(o===L+"|"+R)continue;L?st.setProperty("padding-left",L,"important"):st.removeProperty("padding-left");R?st.setProperty("padding-right",R,"important"):st.removeProperty("padding-right")}}
+  /* 판 안쪽 여백 = 글이 구멍 오른쪽(왼쪽) 끝 +4px에서 시작하게만 (사용자 2026-11-09 "열 때 왼쪽이 비고, 잠시 뒤 오른쪽으로 밀림"): ① 들어오는 움직임(translate) 중에 재도 자리는 움직임 빼고 ② 판 테두리·원래 여백과 겹쳐 더하지 않음 (둘 중 큰 것) */
+  for(const q of CUTP){const e=document.querySelector(q);if(!e)continue;const st=e.style,o=st.getPropertyValue("padding-left")+"|"+st.getPropertyValue("padding-right"),r0=e.getBoundingClientRect();let pl=0,pr=0;
+    if(r0.width&&lsOn()){if(o!=="|"){st.removeProperty("padding-left");st.removeProperty("padding-right")}const cs=getComputedStyle(e);let tx=0;try{const m=new DOMMatrixReadOnly(cs.transform=="none"?undefined:cs.transform);if(m.a==1&&m.d==1&&!m.b&&!m.c)tx=m.e}catch(_){}
+      const r={left:r0.left-tx,right:r0.right-tx,top:r0.top,bottom:r0.bottom},bl=parseFloat(cs.borderLeftWidth)||0,br=parseFloat(cs.borderRightWidth)||0,p0=parseFloat(cs.paddingLeft)||0,p1=parseFloat(cs.paddingRight)||0;
+      for(const c of a){if(!c||!hit(c,r))continue;if(c[0]<=r.left+2)pl=Math.max(pl,c[2]+4-(r.left+bl));else if(c[2]>=r.right-2)pr=Math.max(pr,(r.right-br)-(c[0]-4))}pl=pl>p0+.5?pl:0;pr=pr>p1+.5?pr:0}
+    const L=pl?Math.round(pl)+"px":"",R=pr?Math.round(pr)+"px":"";if(o===L+"|"+R){if(o!=="|"){L&&st.setProperty("padding-left",L,"important");R&&st.setProperty("padding-right",R,"important")}continue}L?st.setProperty("padding-left",L,"important"):st.removeProperty("padding-left");R?st.setProperty("padding-right",R,"important"):st.removeProperty("padding-right")}}
 if(window.ArcadiaApp&&window.ArcadiaApp.cut){addEventListener("resize",()=>setTimeout(appCut,150));setInterval(appCut,3000);setTimeout(appCut,300);{const b=$("lsbtn");if(b)b.addEventListener("click",()=>setTimeout(appCut,260))}}
 
 const POTCD=2000;function potReady(){return gnow()-(window._pt??-1e9)>=POTCD}
@@ -6360,7 +6363,7 @@ function ls6Build(){if($("ls6m"))return;const B=document.body,mk=(t,id,h)=>{cons
   const r=mk("div","ls6r",'<button class="ls6-dps">💥 DPS <b>0</b></button><span class="ls6-set">⏱ <i>0:00</i><span class="ls6-spm"> · 분당 <b>0</b></span></span>');r.querySelector(".ls6-dps").onclick=()=>ls6Pan("dp");/* 또 누르면 닫힘 */
   document.querySelectorAll(".bnav [data-l6]").forEach(b=>b.onclick=()=>{if(b.dataset.l6=="eq")ls6Pan("eq");else{if(sheetName)closeSheet();chooseClass(true)}})}/* 🧩 = 🔄 카드 (17 chooseClass 감싸기, 또 누르면 닫힘) */
 /* ☰ 판 열고 닫기 (뒤 전투는 50% 어둡게, 어두운 곳을 누르면 닫힘 = 시안 그대로) */
-function ls6Mn(on){const b=document.body.classList;if(on&&!ls6On())on=false;if(b.contains("l6mn")==on)return;b.toggle("l6mn",on);if(on){ls6Pan(null);ls6Sk(0);ls6Pc(0)}}
+function ls6Mn(on){const b=document.body.classList;if(on&&!ls6On())on=false;if(b.contains("l6mn")==on)return;b.toggle("l6mn",on);if(on){ls6Pan(null);ls6Sk(0);ls6Pc(0);try{appCut()}catch(e){}}}/* 구멍 여백은 열자마자 (15n appCut이 들어오는 움직임을 빼고 잼 → 나중에 밀리지 않음) */
 /* 🎒 장비 카드 3장 / 💥 딜량 카드 (P2, 아래 맨 끝): k = eq / dp / null(둘 다 닫기) · 같은 것을 또 누르면 닫힘 (keep = 열기만) · 예전 가로 메뉴 판(#mid, body.lsp)은 가로 6차에선 안 씀 */
 function ls6Pan(k,keep){if(k=="eq"){if(L6E.on&&!keep)ls6Eq(0);else ls6Eq(1);return}if(k=="dp"){if(L6E.dp&&!keep)ls6Dp(0);else ls6Dp(1);return}ls6Eq(0);ls6Dp(0)}
 /* 아래 메뉴 칸 켜짐 표시 (🎒 = 장비 카드가 열려 있을 때) */
@@ -6515,7 +6518,7 @@ function ls6Pc(on,op){const B=document.body.classList;if(on&&(!ls6On()||!S||!S.c
   if(!on){if(!L6P.on)return;L6P.on=0;L6P.sig="";B.remove("l6pc");const p=$("ls6pc");if(p)p.querySelector(".l6p-b").innerHTML="";ls6On1();try{appCut()}catch(e){}return}
   ls6PcBuild();const was=L6P.on;L6P.op=CLS[op]?op:was&&CLS[L6P.op]?L6P.op:S.cls;
   if(!was){ls6Mn(false);ls6Pan(null);ls6Sk(0);if(sheetName)closeSheet();L6P.on=1;L6P.cls=S.cls;B.add("l6pc");ls6On1()}
-  ls6PcR(1);ls6Lv();ls6CamM();if(!was)setTimeout(()=>{if(L6P.on){ls6CamM();try{appCut()}catch(e){}}},260)}/* 들어오는 움직임(0.2초)이 끝난 뒤 재기 (움직이는 중엔 카드가 왼쪽으로 밀려 있어 구멍 여백을 못 잼) */
+  ls6PcR(1);ls6Lv();ls6CamM();if(!was)try{appCut()}catch(e){}if(!was)setTimeout(()=>{if(L6P.on){ls6CamM();try{appCut()}catch(e){}}},260)}/* 들어오는 움직임(0.2초)이 끝난 뒤 재기 (움직이는 중엔 카드가 왼쪽으로 밀려 있어 구멍 여백을 못 잼) */
 function ls6PcBuild(){if($("ls6pc"))return;const e=document.createElement("div");e.id="ls6pc";
   e.innerHTML='<div class="l6s-h"><b>🔄 직업 · 프리셋</b><span class="sp"></span><button type="button" class="l6s-x" data-a="x" aria-label="닫기">✕</button></div>'+ls6LvH()+'<div class="l6p-b"></div><div class="l6p-f"><button type="button" class="btn" data-a="eq">🎒 장비</button><button type="button" class="btn" data-a="sk">📜 스킬</button><button type="button" class="btn go" data-a="sv">💾 저장</button></div>';document.body.append(e);
   e.addEventListener("click",ev=>{const b=ev.target.closest("[data-a]");if(b){const k=b.dataset.a;if(k=="x")ls6Pc(0);else if(k=="eq")ls6Pan("eq");else if(k=="sk")openSheet("ps");else if(k=="sv")cpSaveAsk();return}setTimeout(()=>{if(L6P.on)ls6PcR()},0)})}
@@ -6559,12 +6562,12 @@ function ls6Eq(on,keep){const B=document.body.classList;if(on&&(!ls6On()||!S||!S
   ls6EqBuild();if(L6E.on){if(keep)render();return}
   ls6Mn(false);ls6Sk(0);ls6Pc(0);ls6Dp(0);if(sheetName)closeSheet();if(!keep)tip=null;L6E.cv="it";
   const q=$("ls6eq"),c2=q.querySelector(".l6e-c2");l6Mv($("eqp"),q,c2);l6Mv($("tip"),c2);L6E.on=1;B.add("l6eq");L6E.sig="";L6E.cus=0;tipSig="";L6E.hk="";eqSig="";
-  try{render()}catch(e){console.error(e)}ls6On1();ls6Lv();setTimeout(()=>{if(L6E.on){try{appCut();fitDs()}catch(e){}}},260)}/* 들어오는 움직임(0.2초) 뒤에 구멍 여백·상세 능력치 칸 수 다시 */
+  try{render()}catch(e){console.error(e)}ls6On1();ls6Lv();try{appCut()}catch(e){}setTimeout(()=>{if(L6E.on){try{appCut();fitDs()}catch(e){}}},260)}/* 들어오는 움직임(0.2초) 뒤에 구멍 여백·상세 능력치 칸 수 다시 */
 /* 💥 딜량 카드 (오른쪽, 어둡게 안 함) · 접혀 있으면 펴서 (예전 가로 판과 같음) */
 function ls6Dp(on){const B=document.body.classList;if(on&&(!ls6On()||!S||!S.cls))on=0;
   if(!on){if(!L6E.dp)return;L6E.dp=0;B.remove("l6dp");l6Bk($("dpw"));try{midRows()}catch(e){}return}
   ls6EqBuild();if(L6E.dp)return;ls6Mn(false);ls6Sk(0);ls6Pc(0);ls6Eq(0);if(sheetName)closeSheet();
-  l6Mv($("dpw"),$("ls6dp"));L6E.dp=1;B.add("l6dp");if(S.dpf){S.dpf=0;save()}try{dpsFold()}catch(e){}setTimeout(()=>{if(L6E.dp)try{appCut()}catch(e){}},260)}
+  l6Mv($("dpw"),$("ls6dp"));L6E.dp=1;B.add("l6dp");if(S.dpf){S.dpf=0;save()}try{dpsFold()}catch(e){}try{appCut()}catch(e){}setTimeout(()=>{if(L6E.dp)try{appCut()}catch(e){}},260)}
 /* ② 비교 카드 글 (가방 장비를 눌렀을 때만) — 값은 게임 함수 그대로 읽기만 (istats·opNm·opV·uqOffV·isUq·eqGain·ipow·bsTipH·uqBad·inPreset) */
 function ls6CmpH(it,cur){const req=ireq(it),ok=clsOk(it),wx=wtX(it),ub=ok?uqBad(it):"",ip=inPreset(it),me=L6E.cv=="me",fN=v=>Math.round(v).toLocaleString();
   let SW=null;if(me&&typeof statsWith=="function")try{SW=statsWith(it)}catch(e){console.error(e)}/* 개발 담당 06 statsWith (3~4ms) = 탭·고르기 때만 (ls6Cmp가 바뀐 게 있을 때만 그림) */
