@@ -1247,6 +1247,74 @@ body.lyP #mid .pnl,body.lyP #mid #eqp .dst.c2:not(.xs),body.lyP #mid .dph>div>sp
 .skq-s.lk{opacity:.8;cursor:pointer;background:repeating-linear-gradient(135deg,#120d08 0 5px,#17110a 5px 10px);border-style:solid}.skq-s.lk b{color:#9a8660}.skq-s.lk .sqi{display:grid;place-items:center}
 .skq-lk .l6lk{margin:0 3px 0 0}
 #gubub .l6lk{margin:0 4px 0 0}
+/* 설정 켜고 끄는 줄 (16 togRow): 이름 옆 상태 글자 · 켜짐 = 초록 / 꺼짐 = 흐림, 버튼은 .sel(금빛) */
+.tgr .tgs{font-weight:700;color:#8a8f9a;font-size:.9em}.tgr .tgs.on{color:#7fe07f}
+
+/* ===== 🎒 가로 장비 카드 폭 다시 (사용자 2026-11-09 956 앱 "인벤토리를 좀 많이 줄이더라도 가운데 창이 넓은 게 좋을 듯 · 좌측도 효율적으로")
+   ② 비교 = 남는 폭 전부(최대 560) · ③ 가방 = 4칸 한 줄(182px) · ① 착용 = 🧩 줄과 🎒·📜·? 줄을 한 줄로 + 작은 인형(44px) 옆 4칸 장착 칸 → 남는 높이는 상세 능력치 */
+#ls6eq .l6e-c2{flex:1 1 auto;max-width:560px;min-width:250px}
+#ls6eq #eqp>.mw:nth-child(2){width:182px}
+#ls6eq .ig{grid-template-columns:repeat(4,minmax(34px,1fr))}
+#ls6eq #eqp>.mw:nth-child(2)>.itabs{flex-wrap:wrap;row-gap:2px}#ls6eq #eqp>.mw:nth-child(2)>.itabs button{flex:1 1 20%;min-height:32px;font-size:11.5px;padding:0}#ls6eq #eqp>.mw:nth-child(2)>.itabs .fgt{flex:1 1 100%}
+#ls6eq #eqp>.mw:nth-child(2)>.ift{gap:3px}#ls6eq #eqp>.mw:nth-child(2) .ifb{width:100%;display:flex;gap:3px}#ls6eq #eqp>.mw:nth-child(2) .ifb .btn{flex:1 1 0}
+#ls6eq #eqp>.mw:nth-child(1){width:252px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-content:start;column-gap:3px}
+#ls6eq #eqp>.mw:nth-child(1)>*{grid-column:1/-1;order:3;min-width:0}
+#ls6eq #eqp>.mw:nth-child(1)>.cph{grid-column:1;order:1;margin:0 0 4px}
+#ls6eq #eqp>.mw:nth-child(1)>.mwt.eqh{grid-column:2;order:2;margin:0 0 4px;padding:0;background:none;border:0;gap:3px}
+#ls6eq #eqp>.mw:nth-child(1)>.mwt.eqh::after{content:none}
+#ls6eq #eqp>.mw:nth-child(1)>.mwt.eqh .pnt{min-width:0;max-width:52px;padding:0 4px}
+#ls6eq .eqg{grid-template-columns:44px repeat(4,40px);grid-template-rows:repeat(3,40px)}
+#ls6eq .eqg .epv{grid-area:1/1/4/2!important}#ls6eq .eqg .epv canvas{width:100%;height:100%;max-width:none;aspect-ratio:auto;object-fit:cover}
+#ls6eq .es[data-es=weapon]{grid-area:1/2!important}#ls6eq .es[data-es=shield]{grid-area:1/3!important}#ls6eq .es[data-es=hat]{grid-area:1/4!important}#ls6eq .es[data-es=top]{grid-area:1/5!important}
+#ls6eq .es[data-es=bottom]{grid-area:2/2!important}#ls6eq .es[data-es=cape]{grid-area:2/3!important}#ls6eq .es[data-es=glove]{grid-area:2/4!important}#ls6eq .es[data-es=shoe]{grid-area:2/5!important}
+#ls6eq .es[data-es=ring]{grid-area:3/2!important}#ls6eq .es[data-es=neck]{grid-area:3/3!important}#ls6eq .es[data-es=ear]{grid-area:3/4!important}
+#ls6eq #eqp>.mw:nth-child(1) .dsh{margin:4px 0 2px;padding-top:3px}
+#ls6eq #tip>.tt{align-self:stretch}/* #tip의 place-items:center가 남아 글이 짧으면 좁아지던 것 */
+#ls6eq #eqp>.mw:nth-child(1)>.mwt.eqh .pnt{min-width:40px}#ls6eq #eqp>.mw:nth-child(2)>.itabs button{min-height:34px}
+#ls6eq #eqp>.mw:nth-child(2) .ifb .btn{font-size:10px;letter-spacing:-.4px;white-space:nowrap;overflow:hidden;text-overflow:clip}
+#gubub.out{opacity:0;transition:opacity .2s}
+#ls6eq .l6e-c2 .l6e-tab .chip{padding-left:6px;padding-right:6px;white-space:nowrap;min-width:0}#ls6eq .l6e-c2 .l6s-h>b{font-size:13px}
+#ls6eq #eqp>.mw:nth-child(1)>.mwt.eqh .pnt{min-width:40px;max-width:44px;padding:0 3px}#ls6eq #eqp>.mw:nth-child(1)>.mwt.eqh .pnl.cpq{min-width:30px!important;width:30px;padding:0}#ls6eq #eqp>.mw:nth-child(1)>.cph{gap:3px}
+#ls6eq #eqp>.mw:nth-child(1)>.mwt.eqh .pnl.cpq{position:relative}#ls6eq #eqp>.mw:nth-child(1)>.mwt.eqh .pnl.cpq::after{content:"";position:absolute;inset:-3px -5px -3px -3px}/* 보이는 30px · 누르는 칸 38×40 */
+#ls6eq:has(.fgw) .l6e-c2{min-width:150px}body.ls6 #ls6eq #eqp>.mw:nth-child(2):has(.fgw){width:clamp(300px,38vw,420px)}/* 대장간일 땐 ③을 넓게, ② 비교는 좁아져도 됨 (800에서 화면 밖으로 안 나가게) */
+
+/* ===== 📜 스킬 설명 잘림 없애기 (사용자 2026-11-09): 아래 설명 판 = 위로 자람(판 높이 55%까지, 넘치면 설명만 스크롤) · 넓은 지도 팝업 = 지도 폭 50%(최소 300), 글 높이만큼(지도 80%까지) · 버튼은 아래 줄 */
+.l6s-f.fx2,body.lyP #sheet .pv-r .l6s-f.fx2{flex-direction:column;align-items:stretch;gap:3px;padding:5px 6px 6px;max-height:60%;min-height:0}
+.l6s-f.fx2 .l6f-hd{display:flex;align-items:center;gap:6px;flex:none;min-width:0}
+.l6s-f.fx2 .l6f-nm{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:2px 6px}.l6s-f.fx2 .l6f-nm b{color:#fff;font-size:var(--fs-name,13px)}.l6s-f.fx2 .l6f-nm .skt-ch{margin:0}
+.l6s-f.fx2 .l6f-x{flex:none;width:40px;height:36px;margin:-4px -4px -4px 0;border:0;background:none;color:#cdb98a;font-size:15px;cursor:pointer}
+.l6s-f.fx2 .l6s-fx,body.lyP #sheet .pv-r .l6s-f.fx2 .l6s-fx{flex:1 1 auto;min-height:0;max-height:none;overflow-y:auto;font-size:var(--fs-desc,11.5px);line-height:1.4}
+.l6s-f.fx2 .l6f-bt{flex:none;display:flex;justify-content:flex-end}
+.l6-pop{width:clamp(300px,50%,440px);max-width:calc(100% - 8px);display:flex;flex-direction:column;max-height:80%}
+.l6-pop .l6p-h b{font-size:var(--fs-name,13px)}
+.l6-pop .l6p-d{flex:1 1 auto;min-height:0;max-height:none;font-size:var(--fs-desc,11.5px);line-height:1.4}
+.l6-pop .l6p-b{flex:none;border-top:1px solid #6e543066;padding-top:5px}
+.tl.tld{font-size:.92em;color:#cfd6ea;margin-top:-1px}.tl.tld small{color:#9aa4c0}.tl .tlb{font-size:.9em}
+/* 길게 눌러도 글자 고르기·복사 메뉴(번역·복사·모두 선택)가 안 뜨게 (사용자 2026-11-09 앱 "이거 안 떠야 해") · 이름 바꾸기 칸(input·textarea)만 고르기·입력 됨 */
+html,body,body *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+body input,body textarea,body [contenteditable="true"]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+
+/* ===== 🔤 팝업(#pop)도 창 글자 4단계 (사용자 2026-11-09 "글자가 좀 더 작으면 잘 보일 것 같음") · 세로 13/11.5/10.5/10 · 가로 15/13/11.5/11 · 큰 화면은 예전 그대로 */
+body.lyP #pop{--fs-title:13px;--fs-name:11.5px;--fs-desc:10.5px;--fs-small:10px}body.ls6 #pop{--fs-title:15px;--fs-name:13px;--fs-desc:11.5px;--fs-small:11px}
+:is(body.lyP,body.ls6) #pop #popt{font-size:var(--fs-title)}
+:is(body.lyP,body.ls6) #pop #popb{font-size:var(--fs-name);line-height:1.5}
+:is(body.lyP,body.ls6) #pop #popb small,:is(body.lyP,body.ls6) #pop #popb [style*="font-size:11px"],:is(body.lyP,body.ls6) #pop #popb [style*="font-size:10px"]{font-size:var(--fs-small)!important}
+:is(body.lyP,body.ls6) #pop #popb [style*="font-size:12px"],:is(body.lyP,body.ls6) #pop #popb [style*="font-size:13px"]{font-size:var(--fs-desc)!important}
+:is(body.lyP,body.ls6) #pop #popb [style*="font-size:16px"],:is(body.lyP,body.ls6) #pop #popb [style*="font-size:18px"],:is(body.lyP,body.ls6) #pop #popb [style*="font-size:20px"]{font-size:var(--fs-title)!important}
+:is(body.lyP,body.ls6) #pop #popf .btn,:is(body.lyP,body.ls6) #pop #popb .btn,:is(body.lyP,body.ls6) #pop .stg .btn{font-size:var(--fs-name)}
+:is(body.lyP,body.ls6) #pop .bvcd b,:is(body.lyP,body.ls6) #pop .bvlh,:is(body.lyP,body.ls6) #pop .bvbb .nm,:is(body.lyP,body.ls6) #pop .bvgo{font-size:var(--fs-name)}
+:is(body.lyP,body.ls6) #pop .bvcd small,:is(body.lyP,body.ls6) #pop .bvlh small,:is(body.lyP,body.ls6) #pop .bvbb small,:is(body.lyP,body.ls6) #pop .bvh{font-size:var(--fs-small)}
+:is(body.lyP,body.ls6) #pop .bvem{font-size:var(--fs-desc)}
+/* 세로 🔄 직업 창: 직업 카드 작게(그림 옆 이름) · 🧩 줄은 한 줄 전체 = 이름 · 🎒/📜 번호 · 스킬 그림 8개 (가로 🔄 카드와 같은 17 ls6PcIc) */
+body.lyP #pop .bvcd{flex-direction:row;justify-content:center;gap:4px;padding:3px 2px;min-height:40px}body.lyP #pop .bvcd .ci{font-size:18px}body.lyP #pop .bvcd .ct{align-items:flex-start}
+body.lyP #pop .bvcd.op::after{bottom:-7px;border-width:6px}
+body.lyP #pop .bvlb{margin-top:8px;padding:5px}
+body.lyP #pop .bvlg{grid-template-columns:minmax(0,1fr);max-height:calc(100dvh - 300px)}
+body.lyP #pop .bvbb{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:6px;min-height:42px;padding:3px 7px}
+body.lyP #pop .bvbb .nm{grid-column:1}body.lyP #pop .bvbb small{grid-column:2;grid-row:1;text-align:right}
+body.lyP #pop .l6p-ic{grid-column:1/-1;display:flex;align-items:center;gap:2px;height:20px;overflow:hidden;font-size:15px;line-height:1}
+body.lyP #pop .l6p-ic .ski{width:18px!important;height:18px!important;flex:none}body.lyP #pop .l6p-ic>span{flex:none}
+body.lyP #pop .l6p-ic em{font-style:normal;display:flex;align-items:center;flex:none;font-size:10px;margin-right:2px;padding-right:3px;border-right:1px solid #4a3a22}
 
 </style>
 </head>
@@ -1429,8 +1497,8 @@ function ireq(it){return 0}
 function lvB(){return .003*((S&&S.lv||1)-1)}
 function lvF(v){return v*((S&&S.lv||1)-1)}
 function tierTxt(it){return 'T'+((it.z||0)+1)+(it.f?' · '+it.f+'층 드롭':'')}
-function mkItem(minG,sl,z,cl){const drop=z==null,pw=drop?GF(S.fl||1):z+1;z=drop?chOf(S.fl||1):z;const zp=ZP[Math.min(z,ZP.length-1)];const r=Math.random();let g=r<.001?5:r<.006?4:r<.03?3:r<.11?2:r<.36?1:0;g=Math.max(g,minG||0);sl=sl||SLK[Math.floor(Math.random()*SLK.length)];
-  const b=BASE[sl],it={sl,g,z,st:0,n:zp+" "+SL[sl][2]};it.so=Array(nSock(g)).fill(null);if(drop)it.f=S.fl||1;if(sl=="weapon"||sl=="shield"){it.c=cl||(drop?(g>=UQG?uqCls():Math.random()<.6&&S.cls?S.cls:["knight","archer","mage"][Math.floor(Math.random()*3)]):S.cls||"knight");it.n=zp+" "+CLS[it.c][sl=="weapon"?"w":"s"][0];if(sl=="weapon"&&it.c=="knight"&&Math.random()<.5){it.wt="2h";it.n=zp+" 두손검"}else if(sl=="weapon"&&it.c=="mage"&&Math.random()<.5){it.wt="bk";it.n=zp+" 마도서"}else if(sl=="weapon"&&it.c=="archer"&&Math.random()<.5){it.wt="cb";it.n=zp+" 석궁"}}for(const k of["atk","def","hp"])if(b[k])it[k]=Math.floor(b[k]*pw*GM[g]*.8)+(g||minG==null?Math.floor(Math.random()*(z+2)):0);if(it.wt=="2h"&&it.atk)it.atk=Math.max(2,Math.floor(it.atk*TH2AT));it.op=rollOps(it);return it}
+function mkItem(minG,sl,z,cl,wt){/* wt = 무기 종류 고정 (상점 제작: ""=기본 무기 · 2h·cb·bk) · 없으면 예전처럼 반반 (드랍과 같은 식) */const drop=z==null,pw=drop?GF(S.fl||1):z+1;z=drop?chOf(S.fl||1):z;const zp=ZP[Math.min(z,ZP.length-1)];const r=Math.random();let g=r<.001?5:r<.006?4:r<.03?3:r<.11?2:r<.36?1:0;g=Math.max(g,minG||0);sl=sl||SLK[Math.floor(Math.random()*SLK.length)];
+  const b=BASE[sl],it={sl,g,z,st:0,n:zp+" "+SL[sl][2]};it.so=Array(nSock(g)).fill(null);if(drop)it.f=S.fl||1;if(sl=="weapon"||sl=="shield"){it.c=cl||(drop?(g>=UQG?uqCls():Math.random()<.6&&S.cls?S.cls:["knight","archer","mage"][Math.floor(Math.random()*3)]):S.cls||"knight");it.n=zp+" "+CLS[it.c][sl=="weapon"?"w":"s"][0];if(sl=="weapon"&&it.c=="knight"&&(wt!=null?wt=="2h":Math.random()<.5)){it.wt="2h";it.n=zp+" 두손검"}else if(sl=="weapon"&&it.c=="mage"&&(wt!=null?wt=="bk":Math.random()<.5)){it.wt="bk";it.n=zp+" 마도서"}else if(sl=="weapon"&&it.c=="archer"&&(wt!=null?wt=="cb":Math.random()<.5)){it.wt="cb";it.n=zp+" 석궁"}}for(const k of["atk","def","hp"])if(b[k])it[k]=Math.floor(b[k]*pw*GM[g]*.8)+(g||minG==null?Math.floor(Math.random()*(z+2)):0);if(it.wt=="2h"&&it.atk)it.atk=Math.max(2,Math.floor(it.atk*TH2AT));it.op=rollOps(it);return it}
 function starter(sl){const it=mkItem(0,sl,0);if(it.wt){delete it.wt;it.n=it.n.replace(/ (두손검|마도서|석궁)$/," "+CLS[it.c||"knight"].w[0])}it.g=0;for(const k of["atk","def","hp"])if(BASE[sl][k])it[k]=BASE[sl][k];if(sl=="weapon")it.atk=2;it.so=[];it.op=[];delete it.ub;if(sl!="weapon"&&sl!="shield")delete it.c;return it}
 function migrate(){if(S.rbM==null){S.rbM=Math.floor(.7*Math.max(S.bev||0,S.best||0));S.rbQ=S.rbM}if(S.rbQ==null)S.rbQ=S.rbM;if(S.ruby==null)S.ruby=1000;if(!S.skins||typeof S.skins!="object")S.skins={};if(!S.skin||typeof S.skin!="object")S.skin={};if(!S.gems)S.gems={};if(!S.tr)S.tr={};if(S.rb==null){S.rb=0;S.rp=0}if(!S.fl){S.fl=1;S.fk=0;S.best=0;S.climb=true}if(S.str==null){S.str=4;S.dex=4;S.luk=4;S.vit=0;S.ap=(S.lv-1)*5}if(!S.eq||typeof S.eq!="object")S.eq={};if(!Array.isArray(S.inv))S.inv=[];if(!S.etc||typeof S.etc!="object")S.etc={};
   const conv=o=>{if(!o)return null;if(o.sl)return o;const sl=o.s=="w"?"weapon":"top",it={sl,g:[0,1,3][o.g]||0,z:o.z||0,st:0,n:o.n||"장비"};if(sl=="weapon")it.atk=o.v||1;else it.def=o.v||1;return it};
@@ -1509,7 +1577,11 @@ function itemCard(it,cmp,sl){const n=sl?slv(sl):0,req=ireq(it);
   let h=(sl?starRow(n):'')+'<div class="tn" style="color:'+GC[it.g]+'">'+it.n+(n?" (+"+n+")":"")+'</div><div class="tg">('+GN[it.g]+' 아이템)</div>'+(sl&&eqOff(sl)?'<div class="tg" style="color:#ff8a7a">⛔ '+(eqOff(sl)=="두손검"?"두손검 착용 중 — 꺼짐":eqOff(sl)+" — 꺼짐")+'</div>':'');
   h+='<div class="tb"><div class="tic g'+it.g+'">'+iic(it)+'</div><div class="treq">티어 : <b style="color:#ffd23a">'+tierTxt(it)+'</b><br>'+SL[it.sl][0]+(it.sl!="weapon"?"":" · "+wtNmI(it))+(it.c?' · <b'+(clsOk(it)?'':' style="color:#ff5a5a"')+'>'+CLS[it.c].n+'</b>':'')+(it.sl=="weapon"&&(it.c||"knight")=="knight"&&(!it.wt||it.wt=="2h")?'<br><span style="color:#cfe0ff">⚔️ 칼 길이 '+wblOf(it).L+' · 칼 폭 '+wblOf(it).w+'</span>':'')+(it.wt=="2h"?'<br><span style="color:#ff9a8a">🩸 흡혈 +5% · 흡혈석 상한 무시<br>넘친 회복은 혈막으로 (최대 HP 200%)<br>끼면 방패는 가방으로 해제돼요</span>':it.wt=="bk"?'<br><span style="color:#d2b4ff">'+BKTX+'</span>':it.wt=="cb"?'<br><span style="color:#ffd59a">'+CBTX+'</span>':'')+(ubOf(it)=="ac"?'<br><span style="color:#ffd59a">🗼 저격 석궁 고유옵션 · 저격 석궁일 때만 고유옵션 활성</span>':ubOf(it)=="mt"?'<br><span style="color:#d2b4ff">📖 마도서 마법사 고유옵션 (소환) · 마도서일 때만 고유옵션 활성</span>':ubOf(it)=="mo"?'<br><span style="color:#9fd0ff">🔮 오브 마법사 고유옵션 (주문) · 지팡이 + 오브일 때만 고유옵션 활성</span>':ubOf(it)=="k2"?'<br><span style="color:#ff9a8a">🗡️ 두손검 기사 고유옵션 · 두손검일 때만 고유옵션 활성</span>':ubOf(it)=="ks"?'<br><span style="color:#ffd77a">⚔️ 방패 기사 고유옵션 · 방패 착용 시만 고유옵션 활성</span>':'')+(it.sl=="shield"?({knight:'<br><span style="color:#ffd77a">🛡️ 맞을 때 10% 확률로 반격<br>공격력 50% + 방어력 70%로 되받아침<br>🔰 방벽(보석) 효과 ×1.5 (상한도 52.5%로)</span>',archer:'<br><span style="color:#c8ff7a">🎯 치명타 화살이 적을 관통<br>🚀 투사체 이동 속도 +50%</span>',mage:'<br><span style="color:#9fd0ff">'+OBTX+'</span>'})[it.c||"knight"]||"":"")+'<br>판매 '+iprice(it).toLocaleString()+'G</div></div><div class="tsep"></div>';
   if(!cmp)return h+statLines(it,sl)+opLines(it)+(sl?"":sockLine(it));if(!clsOk(it)||wtX(it)){const a=istats(it),b=cmp.n?istats(cmp):{},dp=ipow(it)-(cmp.n?ipow(cmp):0);return h+["atk","def","hp","mp"].filter(k=>a[k]||b[k]).map(k=>{const d=(a[k]||0)-(b[k]||0);return '<div class="tl">'+SN[k]+' : +'+(a[k]||0)+(d?' <span class="'+(d>0?"up":"dn")+'">'+(d>0?"▲":"▼")+Math.abs(d).toLocaleString()+'</span>':'')+'</div>'}).join("")+'<div class="tl">'+(cpd(dp)||'전투력 변화 없음')+' <small>('+(wtX(it)?'같은 종류 무기끼리':CLS[it.c||"knight"].n+' 장비끼리')+' 비교)</small></div>'+opLines(it)+sockLine(it)}const a=istats(it),b=istats(cmp),fa=withEq(it.sl,withMoved(it),FST),fb=FST();
-  return h+["atk","def","hp","mp"].filter(k=>a[k]||b[k]||fa[k]!=fb[k]).map(k=>{const d=fa[k]-fb[k];return '<div class="tl">'+SN[k]+' : +'+(a[k]||0)+(d?' <span class="'+(d>0?"up":"dn")+'">'+(d>0?"▲":"▼")+Math.abs(d).toLocaleString()+'</span>':'')+'</div>'}).join("")+opDiff(it,cmp)+sockLine(it)}
+  /* 비교 줄 둘로 (사용자 2026-11-09 "+54 ▼1 헷갈려"): ① 장비 기본 수치 + (기본 ▲▼) ② 전체 능력치 ▲▼ + 왜 (같은 능력치 % 옵션이 빠짐·생김·바뀜) */
+  const ov=(x,k)=>{let v=0,f=0;(x.op||[]).forEach(o=>{if(o.k==k){v+=o.v;f=1}});return f?v:null},PK={atk:"atkP",def:"defP",hp:"hpP",mp:"mpP"},sg=v=>'<span class="'+(v>0?"up":"dn")+'">'+(v>0?"▲":"▼")+Math.abs(v).toLocaleString()+'</span>',opc=JSON.stringify((it.op||[]).map(o=>[o.k,o.v]).sort())!=JSON.stringify((cmp.op||[]).map(o=>[o.k,o.v]).sort());
+  return h+["atk","def","hp","mp"].filter(k=>a[k]||b[k]||fa[k]!=fb[k]).map(k=>{const d=fa[k]-fb[k],bd=(a[k]||0)-(b[k]||0),pk=PK[k],na=ov(it,pk),nb=ov(cmp,pk);
+    let why="";if(d&&na!==nb){const nm=opNm(pk);why=na==null?"옵션 '"+nm+" "+opV(pk,nb)+"'가 빠져서":nb==null?"옵션 '"+nm+" "+opV(pk,na)+"'가 생겨서":"옵션 '"+nm+"' "+opV(pk,nb)+" → "+opV(pk,na)}else if(d&&d*bd<=0&&opc)why="옵션이 바뀌어서";
+    return '<div class="tl">'+SN[k]+' : +'+(a[k]||0)+(bd?' <small class="tlb">(기본 '+sg(bd)+')</small>':'')+'</div>'+(d?'<div class="tl tld">전체 '+SN[k]+' '+sg(d)+(why?' <small>('+why+')</small>':'')+'</div>':'')}).join("")+opDiff(it,cmp)+sockLine(it)}
 function statLines(it,sl){const s=istats(it),b=sl?slotB(sl):{atk:0,def:0,hp:0,mp:0};return ["atk","def","hp","mp"].filter(k=>s[k]+b[k]).map(k=>'<div class="tl">'+SN[k]+' : +'+(s[k]+b[k])+(b[k]?' <span class="tsb">('+s[k]+' +★'+b[k]+')</span>':'')+'</div>').join("")}
 function renderTip(){const t=$("tip");if(!tip){if(!t.hidden)t.hidden=true;tipSig="";return}
   let it=tip.k=="eq"?S.eq[tip.sl]:tip.k=="inv"?S.inv[tip.i]:null;
@@ -2597,8 +2669,8 @@ $("rtgok").onclick=()=>{$("rtg").hidden=true};
 function hideSD(){effOn=0;const e=$("sdesc");if(e)e.classList.remove("show")}
 
 document.addEventListener("pointerdown",e=>{const r=e.target.closest&&e.target.closest(".dst [data-sd]");if(r)showSD(r.dataset.sd,r)});["pointerup","pointercancel","touchend","touchcancel","lostpointercapture","dragstart"].forEach(ev=>document.addEventListener(ev,hideSD,true));document.addEventListener("contextmenu",e=>{if(e.target.closest&&e.target.closest(".dst"))e.preventDefault()});document.addEventListener("pointermove",e=>{if(!e.buttons)hideSD()},true);document.documentElement.addEventListener("pointerleave",hideSD);addEventListener("blur",hideSD);document.addEventListener("visibilitychange",hideSD);
-function craftAsk(sl,g){popup("⚙️ 장비 제작",'<div style="text-align:center;line-height:1.8"><b style="color:'+GC[g]+'">'+GN[g]+' '+SL[sl][0]+'</b>을(를) 구매하시겠습니까?<br><small style="color:var(--mut)">장비 파편 ⚙️ '+EPR[g].toLocaleString()+'개 사용 · 보유 '+(S.esh||0).toLocaleString()+'개</small></div>',[["취소",closePop],["구매",()=>{closePop();craft(sl,g)}]])}
-function craft(sl,g){const c=EPR[g];if((S.esh||0)<c)return;if(S.inv.length>=INVMAX){log("인벤토리가 가득 차서 제작할 수 없어요","b");return}S.esh-=c;const it=mkItem(g,sl,null,S.cls||"knight");if(it.g>=4)S.leg=(S.leg||0)+1;S.inv.push(it);setTimeout(()=>popup("⚙️ 제작 완료",'<div class="crft"><div class="crfh">🎉 장비 구매 완료!</div>'+itemCard(it)+'</div>',[["닫기",closePop],["바로 장착",()=>{closePop();const i=S.inv.indexOf(it);if(i>=0)equipIt(i);render()}]]),50);log("⚙️ 제작: "+iname(it)+(it.g>g?" ✨ 등급 상승!":"")+" (-"+c+" 장비 파편)","o");addText(PX,PY-90,GN[it.g]+" "+SL[sl][0]+" 제작!",GC[it.g],0,1);save();render()}
+function craftAsk(sl,g,wt){const wn=sl=="weapon"&&wt!=null?({"2h":"두손검",cb:"석궁",bk:"마도서"})[wt]||CLS[S.cls||"knight"].w[0]:SL[sl][0];popup("⚙️ 장비 제작",'<div style="text-align:center;line-height:1.8"><b style="color:'+GC[g]+'">'+GN[g]+' '+wn+'</b>을(를) 구매하시겠습니까?<br><small style="color:var(--mut)">장비 파편 ⚙️ '+EPR[g].toLocaleString()+'개 사용 · 보유 '+(S.esh||0).toLocaleString()+'개</small></div>',[["취소",closePop],["구매",()=>{closePop();craft(sl,g,wt)}]])}
+function craft(sl,g,wt){const c=EPR[g];if((S.esh||0)<c)return;if(S.inv.length>=INVMAX){log("인벤토리가 가득 차서 제작할 수 없어요","b");return}S.esh-=c;const it=mkItem(g,sl,null,S.cls||"knight",wt);/* wt = 고른 무기 종류 (없으면 예전처럼 반반) */if(it.g>=4)S.leg=(S.leg||0)+1;S.inv.push(it);setTimeout(()=>popup("⚙️ 제작 완료",'<div class="crft"><div class="crfh">🎉 장비 구매 완료!</div>'+itemCard(it)+'</div>',[["닫기",closePop],["바로 장착",()=>{closePop();const i=S.inv.indexOf(it);if(i>=0)equipIt(i);render()}]]),50);log("⚙️ 제작: "+iname(it)+(it.g>g?" ✨ 등급 상승!":"")+" (-"+c+" 장비 파편)","o");addText(PX,PY-90,GN[it.g]+" "+SL[sl][0]+" 제작!",GC[it.g],0,1);save();render()}
 function disIt(i){const it=S.inv[i];if(!it)return;retGems(it);const v=dsVal(it);addShard(v);S.inv.splice(i,1);tip=null;log("🔨 "+iname(it)+" 분해 (⚙️ +"+v+")","o");save()}
 function disGrade(g){let v=0,c=0;S.inv=S.inv.filter(it=>{if(it.g==g){retGems(it);v+=dsVal(it);c++;return false}return true});if(c){addShard(v);tip=null;log("🔨 "+GN[g]+" 장비 "+c+"개 분해 (⚙️ +"+Math.floor(v*10)/10+")","o");save();render()}}
 function disLow(){const kn=bsKeptN();let v=0,c=0;S.inv=S.inv.filter(it=>{if(isLow(it)){retGems(it);v+=dsVal(it);c++;return false}return true});if(c){addShard(v);tip=null;log("🔨 약한 장비 "+c+"개 분해 (⚙️ +"+Math.floor(v*10)/10+")"+(kn?" · 🔖 다른 🧩에 좋은 장비 "+kn+"개는 남겼어요":""),"o");save();render()}}
@@ -3378,7 +3450,7 @@ function skTop(sb,o,eqs,rep,bl,bv){sb._sks=psSig();
     if(ok){const w=skWhy(t);c.className="skq-s on"+(w?" bad":"")+(rep?" pick":"")+((fs===i||rs===i)?" sel":"");c.innerHTML="<span class='sqi'>"+skI(t)+"</span><b>"+t.n+"</b>"+(w?"<i class='sqw'>🚫</i>":"");c.setAttribute("aria-label",(i+1)+"번 칸 "+t.n+" (누르면 설명·바꾸기·빼기)")}
     else{c.className="skq-s em"+(rep||(selOk&&rs==null)?" pick":"")+(rs===i?" sel":"");c.innerHTML="<span class='sqi'>＋</span><b>빈 칸</b>";c.setAttribute("aria-label",(i+1)+"번 빈 칸")}
     c.onclick=()=>skSlotTap(i,o,eqs);sl.append(c)}
-  for(let i=o;i<PSLOTS;i++){const c=document.createElement("button");c.type="button";c.className="skq-s lk";c.innerHTML="<span class='sqi'><span class='l6lk'></span></span><b>"+(i+1)+"환생</b>";c.setAttribute("aria-label",(i+1)+"번 칸 잠김 · "+(i+1)+"번째 환생 때 열려요");c.onclick=()=>skLkTap(c,i);sl.append(c)}/* 잠긴 칸도 보이게 (사용자 2026-11-09 "잠겨 있는 게 구현 안 됐다") */
+  for(let i=o;i<PSLOTS;i++){const c=document.createElement("button");c.type="button";c.className="skq-s lk";c.innerHTML="<span class='sqi'><span class='l6lk'></span></span><b>"+(i+1)+"환생</b>";c.setAttribute("aria-label",(i+1)+"번 칸 잠김 · "+(i+1)+"번째 환생 때 열려요");c.onpointerdown=()=>skLkTap(c,i);sl.append(c)}/* 잠긴 칸도 보이게 (사용자 2026-11-09 "잠겨 있는 게 구현 안 됐다") */
   sb.append(sl);
   /* 🧹 지금 프리셋 스킬 전부 빼기 (사용자 2026-11-03 "하나씩 빼기 어렵다") · 확인 창 [아니요][예] */
   if(o&&eqs.size>=2){const cw=document.createElement("div");cw.className="skq-clr";const cb=document.createElement("button");cb.type="button";cb.textContent="🧹 전부 빼기 ("+eqs.size+")";cb.onclick=skClearAll;cw.append(cb);sb.append(cw)}
@@ -3499,7 +3571,7 @@ function skNdTap(s,o,eqs){if(window._skMoved)return;window._skGest=0;const nw=Da
     else if(!eqs.has(s.id)){window._skLT=null;skSelAct(s,o,eqs);return}}
   renderSheet()}
 /* 잠긴 칸 누르기 = 풍선 (16 guBub) */
-function skLkTap(el,i){try{guBub(el,"<span class='l6lk'></span> "+(i+1)+"번째 환생 때 열려요 (지금 환생 "+(S.rb||0)+"회)")}catch(e){}}
+function skLkTap(el,i){try{guBub(el,"<span class='l6lk'></span> "+(i+1)+"번째 환생 때 열려요 (지금 환생 "+(S.rb||0)+"회)",{hold:1,below:1})}catch(e){}}
 /* 장착 칸 누르기 (세로 위 10칸·가로 판 10칸 같이, 예전 skTop 그대로) */
 function skSlotTap(i,o,eqs){const t=psGet(S.psl[i]),ok=t&&psFit(t),rs=skRS(o),sel=window._skSel&&psGet(window._skSel),selOk=sel&&psFit(sel)&&!eqs.has(sel.id)&&(S.rb||0)>=(sel.rb||0);
   if(window._skRep){const id=window._skRep;window._skRep=null;psEquip(id,i);return}
@@ -6421,8 +6493,11 @@ const GUH={t:0,lp:0,eat:0};addEventListener("pointerup",()=>{clearTimeout(GUH.t)
 function guBtn(txt,dis,fn,info,key){const w=document.createElement("span"),b=document.createElement("button");w.className="gu-bw";w.dataset.gub=key;w._info=info;b.className="btn gu-bt";b.textContent=txt;b.disabled=!!dis;w.append(b);w.addEventListener("contextmenu",e=>e.preventDefault());
   w.addEventListener("pointerdown",()=>{clearTimeout(GUH.t);GUH.t=setTimeout(()=>{GUH.lp=performance.now();const c=document.querySelector('.gu-bw[data-gub="'+key+'"]')||w;guBub(c.firstChild||c,(c._info||info)())},400)});
   b.onclick=()=>{if(performance.now()-GUH.eat<400){GUH.eat=0;return}if(!b.disabled)fn()};return w}/* 흐린 버튼은 pointer-events:none → 꾹은 감싼 칸이 받음 */
-function guBub(el,h){let e=$("gubub");if(!e){e=document.createElement("div");e.id="gubub";document.body.append(e);addEventListener("pointerdown",ev=>{if(!ev.target.closest||!ev.target.closest("#gubub"))setTimeout(()=>{if(performance.now()-(e._t||0)>250)e.hidden=true},0)},true)}
-  e.innerHTML=h;e.hidden=false;e._t=performance.now();const r=el.getBoundingClientRect(),w=e.offsetWidth,hh=e.offsetHeight;e.style.left=Math.max(6,Math.min(innerWidth-w-6,r.left+r.width/2-w/2))+"px";e.style.top=(r.top-hh-6<4?r.bottom+6:r.top-hh-6)+"px"}
+function guBub(el,h,o){o=o||{};let e=$("gubub");if(!e){e=document.createElement("div");e.id="gubub";document.body.append(e);const hide=()=>{e.hidden=true;e.classList.remove("out")};addEventListener("pointerdown",ev=>{if(e._hold)return;if(!ev.target.closest||!ev.target.closest("#gubub"))setTimeout(()=>{if(!e._hold&&performance.now()-(e._t||0)>250)hide()},0)},true);
+    addEventListener("pointerup",()=>{if(!e._hold)return;e._hold=0;const w=Math.max(0,600-(performance.now()-e._t));clearTimeout(e._ht);e._ht=setTimeout(()=>{e.classList.add("out");e._ht=setTimeout(hide,220)},w)},true);addEventListener("pointercancel",()=>{if(e._hold){e._hold=0;e._ht=setTimeout(hide,600)}},true)}
+  clearTimeout(e._ht);e.classList.remove("out");e.innerHTML=h;e.hidden=false;e._t=performance.now();e._hold=o.hold?1:0;const r=el.getBoundingClientRect(),w=e.offsetWidth,hh=e.offsetHeight;e.style.left=Math.max(6,Math.min(innerWidth-w-6,r.left+r.width/2-w/2))+"px";e.style.top=(o.below?(r.bottom+6+hh>innerHeight-4?r.top-hh-6:r.bottom+6):(r.top-hh-6<4?r.bottom+6:r.top-hh-6))+"px"}/* o.hold = 누르는 동안만 (손을 떼면 0.6초 뒤 사라짐) · o.below = 아래에 */
+/* 켜고 끄는 줄 (설정, 사용자 2026-11-09 "켜졌는데 꺼진 것과 같아 보여"): 이름 옆 "켜짐/꺼짐" + 버튼 = 지금 상태 글자, 켜짐이면 금색(.sel) · 누르면 그 자리에서 바뀜 */
+function togRow(name,sub,get,fn){const r=srow(name+" <b class='tgs'></b>",sub,"",false,()=>{fn();u()}),u=()=>{const on=!!get(),b=r.querySelector(".bw .btn"),t=r.querySelector(".tgs");if(b){b.textContent=on?"켜짐":"꺼짐";b.classList.toggle("sel",on)}if(t){t.textContent=on?"켜짐":"꺼짐";t.classList.toggle("on",on)}};r.classList.add("tgr");u();return r}
 function srow(name,sub,btn,dis,fn,b2,b3){const r=document.createElement("div");r.className="srow";r.innerHTML="<span>"+name+"<br><small>"+sub+"</small></span>";const w=document.createElement("div");w.className="bw";const k=(sheetName||"")+":"+(_srI++);w.append(mkBtn(btn,dis,fn,k+"a"));
   if(b2)w.append(mkBtn(b2[0],b2[2],b2[1],k+"b"));if(b3)w.append(mkBtn(b3[0],b3[2],b3[1],k+"c"));r.append(w);$("sbody").append(r);return r}
 function openSheet(n){sheetName=n;if(n=="ps"&&S&&!S.tut3&&psOpen()>0){S.tut3=1;S.tutP=0}if(n=="rb"&&$("tut")&&$("tutok").hidden){$("tut").hidden=true;if(typeof tutSpot=="function")tutSpot(false)}encMsg=null;$("sbody").innerHTML="";$("sheet").hidden=false;renderSheet();{const s=$("sheet").querySelector(".sh");if(s)s.scrollTop=0}}
@@ -6485,7 +6560,9 @@ function shopView(sb){const T=window._shT||"pot",cur={pot:"g",gem:"sh",eq:"es",s
     el("🏔️ 지금 <b>"+(S.fl||1)+"층</b> 기준 능력치 · <span class='shp-nw'>소켓 "+(eg==3?"1~2":"2~3")+"개</span> · <span class='shp-nw'>옵션 "+OPN[eg]+"개"+(eg>=UQG?" + 고유 "+(eg>=5?2:1)+"줄":"")+"</span> · 소켓·옵션은 무작위<br><span style='color:#ffd77a'>💡 높은 층에서 만들수록 세요 · 능력치와 옵션 최저치가 올라가요</span>","shp-info");
     if(h<c)el(lack(c-h,"⚙️ 장비 파편이","개"));
     el("만들 부위 고르기 <small><span style='color:"+GC[eg]+"'>"+GN[eg]+"</span> · ⚙️ "+c.toLocaleString()+"씩</small>","shp-h");
-    const gd=el("","shp-eg");SLK.forEach(sl=>{const b=document.createElement("button");b.type="button";b.className="shp-ec";b.disabled=h<c;b.innerHTML="<i>"+SL[sl][1]+"</i><b style='color:"+GC[eg]+"'>"+SL[sl][0]+"</b>"+(sl=="weapon"||sl=="shield"?"<small>"+CLS[cl].n+" 전용</small>":"");b.setAttribute("aria-label",GN[eg]+" "+SL[sl][0]+" 만들기");b.onclick=()=>craftAsk(sl,eg);gd.append(b)})}
+    /* 무기는 종류를 골라 만들기 (사용자 2026-11-09 "ㅇㅋㅇㅋ"): 기사 한손검/두손검 · 궁수 활/석궁 · 마법사 지팡이/마도서 · 그림은 직업 것(02 iic와 같은 그림) */
+    const WTC={knight:[["","한손검",SWIC],["2h","두손검",CLS.knight.w[1]]],archer:[["","활",CLS.archer.w[1]],["cb","석궁",XBIC]],mage:[["","지팡이",CLS.mage.w[1]],["bk","마도서","📖"]]};
+    const gd=el("","shp-eg");SLK.forEach(sl=>{const L=sl=="weapon"?(WTC[cl]||WTC.knight):[[null,SL[sl][0],sl=="shield"?CLS[cl].s[1]:SL[sl][1]]];L.forEach(([wt,nm,ic])=>{const b=document.createElement("button");b.type="button";b.className="shp-ec";b.disabled=h<c;b.innerHTML="<i>"+ic+"</i><b style='color:"+GC[eg]+"'>"+nm+"</b>"+(sl=="weapon"||sl=="shield"?"<small>"+CLS[cl].n+" 전용</small>":"");b.setAttribute("aria-label",GN[eg]+" "+nm+" 만들기");b.onclick=()=>craftAsk(sl,eg,wt);gd.append(b)})})}
   else if(T=="gc")gachaRows();
   else{const cu=S.skin&&S.skin[cl],own=Object.entries(SKINS).filter(([id,d])=>d.cls==cl&&S.skins&&S.skins[id]).length,a=aspd();
     const r1=el("<span class='shp-ic'>👘</span><span class='shp-tx'><b>내 스킨</b><small>장착 중: "+(cu&&SKINS[cu]?SKINS[cu].n:"기본 외형")+" · 보유 "+own+"개"+(a?" · ⚡ 공속 +"+Math.round(a*100)+"%":"")+"</small></span>","shp-card shp-pr");r1.append(bt("열기",false,()=>openSheet("wd")))}}
@@ -6533,7 +6610,7 @@ function renderSheet(){if(!sheetName)return;if(sheetName=="rb"&&(window._soDrag|
     [["str",CL().ms,"공격력 +1"],["dex","DEF","방어력 +1"],["luk","LUK","치명타 확률 +0.5% (피해 1.5배)"],["vit","HP","최대 HP +"+CL().hpp]].forEach(([k,n,e])=>srow(n+" <b style='color:var(--gold)'>"+S[k]+"</b>",e,"+1",!(S.ap>0),()=>addAp(k,1),["+5",()=>addAp(k,5)]));const sp=apSpent();srow("🔁 스탯 초기화","찍은 AP "+sp+" 전부 돌려받기 (무료)","초기화",sp<1,()=>popup("🔁 스탯 초기화","찍은 AP <b>"+sp+"</b>를 모두 돌려받고<br>"+CL().ms+"·DEF·LUK 4, HP 0으로 되돌릴까요?",[["취소",closePop],["초기화",()=>{resetAp();closePop()}]]))}
   if(sheetName=="set"){const d=document.createElement("div");d.className="srow";d.innerHTML='<span>🧪 물약 자동 사용<br><small>HP가 이 값 미만이면 자동 사용 · 1개당 '+potHeal()+' 회복</small></span><span class="psl"><input type="range" id="potr" min="0" max="90" step="5" value="'+Math.round(potAt()*100)+'"><b id="potv">'+potAtL()+'</b></span>';$("sbody").append(d);
     const r=$("potr");r.oninput=()=>{S.potAt=+r.value/100;$("potv").textContent=potAtL()};r.onchange=()=>{save();log("🧪 물약 자동 사용: "+potAtL(),"o")}}
-  if(sheetName=="set"){const fr=srow("📊 프레임 표시","전투 화면 DPS 옆에 초당 프레임(fps)을 보여 줘요",S.fpsOn?"끄기":"켜기",false,()=>{S.fpsOn=!S.fpsOn;save();fpsShow(0);const b=fr&&fr.querySelector("button");if(b)b.textContent=S.fpsOn?"끄기":"켜기"})};
+  if(sheetName=="set")togRow("📊 프레임 표시","전투 화면 DPS 옆에 초당 프레임(fps)을 보여 줘요",()=>!!S.fpsOn,()=>{S.fpsOn=!S.fpsOn;save();fpsShow(0)});
   if(sheetName=="set"){const hl=()=>document.querySelectorAll(".srow.fcap .bw .btn").forEach((b,i)=>b.classList.toggle("sel",FCAPS[i]==fpsCap())),cs=v=>()=>{S.fpsCap=v;save();hl()},r=srow("🎞️ 프레임 제한","낮추면 발열·배터리가 줄어요 (게임 속도는 같아요)","30",false,cs(30),["60",cs(60)],["120",cs(120)]);r.classList.add("fcap");hl();dmRow("💥 숫자 투명도","dmA",0,100);dmRow("🔢 숫자 크기","dmS",70,140)}
   if(sheetName=="set")srow("🔄 직업 변경","현재 "+CL().ic+" "+CL().n+" · 직업·🧩 캐릭터 프리셋 고르기 · 레벨·스탯 유지","변경",false,()=>{closeSheet();chooseClass(true)});
   if(sheetName=="set"){srow("🧩 캐릭터 프리셋 안내","💾 저장·고르기·장비는 🎒를 따라가요 설명 다시 보기","보기",false,()=>{closeSheet();cpGuide(1)})}
@@ -6651,7 +6728,7 @@ function ls6SkBuild(){if($("ls6sk"))return;const B=document.body,mk=(id,h)=>{con
 function ls6LvH(){return '<div class="l6-live"><span class="l6-l1">💥 DPS<s class="l6-db"></s><b class="l6-dv">0</b><span class="l6-dd"></span></span><span class="l6-bar"></span><span class="l6-top"></span></div>'}
 /* 장착 10칸 · 원소/탄 버튼 · 📜 프리셋 · 아래 설명 줄 = 가로 스킬 판·넓은 지도·세로 스킬 창(17b) 같이 씀 */
 function l6Slots(o,eqs,sel){const q=document.createElement("div"),rep=window._skRep,rs=skRS(o),selOk=sel&&psFit(sel)&&!eqs.has(sel.id)&&(S.rb||0)>=(sel.rb||0),fs=window._skSlot;
-    for(let i=0;i<PSLOTS;i++){const c=document.createElement("button");c.type="button";if(i>=o){c.className="l6s-s lk";c.innerHTML="<b>"+(i+1)+"</b><span class='l6lk'></span><em>"+(i+1)+"환생</em>";c.setAttribute("aria-label",(i+1)+"번 칸 잠김 · "+(i+1)+"번째 환생 때 열려요");c.onclick=()=>skLkTap(c,i);q.append(c);continue}
+    for(let i=0;i<PSLOTS;i++){const c=document.createElement("button");c.type="button";if(i>=o){c.className="l6s-s lk";c.innerHTML="<b>"+(i+1)+"</b><span class='l6lk'></span><em>"+(i+1)+"환생</em>";c.setAttribute("aria-label",(i+1)+"번 칸 잠김 · "+(i+1)+"번째 환생 때 열려요");c.onpointerdown=()=>skLkTap(c,i);q.append(c);continue}
       const t=psGet(S.psl[i]),ok=t&&psFit(t);if(ok){const w=skWhy(t);c.className="l6s-s"+(w?" bad":"")+(rep?" pick":"")+((fs===i||rs===i)?" sel":"");c.innerHTML="<b>"+(i+1)+"</b>"+(t.img?skI(t):"<span>"+t.ic+"</span>")+(w?"<i>🚫</i>":"");c.setAttribute("aria-label",(i+1)+"번 칸 "+t.n)}
       else{c.className="l6s-s em"+(rep||(selOk&&rs==null)?" pick":"")+(rs===i?" sel":"");c.innerHTML="<b>"+(i+1)+"</b>＋";c.setAttribute("aria-label",(i+1)+"번 빈 칸")}
       c.onclick=()=>skSlotTap(i,o,eqs);q.append(c)}return q}
@@ -6662,9 +6739,11 @@ function l6ElB(){const r=[];try{if(elRow()){const id=elId(),s=id&&psGet(id),b=do
 function l6PrH(){let d=null;try{d=cpDiff()}catch(e){}return pnTb("s",1)+(d&&d.length?'<i class="cpdot" title="🧩 저장 안 한 변경: '+d.join(" · ")+'">●</i>':"")}
 function l6Bars(R,o,eqs,sel,fm){const rep=window._skRep&&psGet(window._skRep),rs=skRS(o);
     if(rep||rs!=null){const b=document.createElement("div");b.className="l6s-f rp";const ct=rs!=null&&psGet(S.psl[rs]);b.innerHTML="<span>"+(rep?skI(rep)+" <b>"+rep.n+"</b>"+(josa(rep.n)=="이"?"과":"와")+" 바꿀 칸을 눌러 주세요":"📍 <b>"+(rs+1)+"번 칸</b>에 넣을 스킬을 지도에서 고르세요")+"</span>";const cb=document.createElement("button");cb.type="button";cb.className="btn";cb.textContent="취소";cb.onclick=e=>{e.stopPropagation();window._skRep=null;window._skRepS=null;renderSheet()};b.append(cb);R.append(b)}
-    if(sel&&!fm){const b=document.createElement("div");b.className="l6s-f";const ow=(S.rb||0)>=(sel.rb||0),fit=psFit(sel),w=ow&&fit&&!skElR(sel)?skWhy(sel):"",cc=[].concat(sel.cls||"all"),cl=!fit&&!cc.includes("all")?cc.map(c=>CLS[c]?CLS[c].n:c).join("·")+"만":"";
-      b.innerHTML="<i class='l6s-fi'>"+(ow?skI(sel):"🔒")+"</i><div class='l6s-fx'><b>"+sel.n+"</b>"+(cl?" <span class='c'>"+cl+"</span>":"")+(w?" <span class='w'>"+w+"</span>":"")+" · "+dsLn(psDesc(sel)).join(" · ")+(!ow?" · <span class='w'>"+sel.rb+"번째 환생 때 열려요</span>":"")+"</div>";
-      const bt=skSelBtns(sel,o,eqs,"btn",b);if(bt)b.append(bt);R.append(b)}}
+    /* 고른 스킬 설명 = 위로 자라는 판 (사용자 2026-11-09 "설명이 잘려"): 머리(그림·이름·가지·✕) / 설명 전부 / 버튼 줄 · 판 높이의 55%까지, 넘치면 설명만 스크롤 */
+    if(sel&&!fm){const b=document.createElement("div");b.className="l6s-f fx2";const ow=(S.rb||0)>=(sel.rb||0),fit=psFit(sel),w=ow&&fit&&!skElR(sel)?skWhy(sel):"",cc=[].concat(sel.cls||"all"),cl=!fit&&!cc.includes("all")?cc.map(c=>CLS[c]?CLS[c].n:c).join("·")+"만":"",lc=skTLoc(sel.id);
+      b.innerHTML="<div class='l6f-hd'><i class='l6s-fi'>"+(ow?skI(sel):"<span class='l6lk'></span>")+"</i><div class='l6f-nm'><b>"+sel.n+"</b>"+(lc?"<span class='skt-ch'>"+lc+"</span>":"")+(cl?"<span class='skt-ch c'>"+cl+"</span>":"")+"</div><button type='button' class='l6f-x' aria-label='설명 닫기'>✕</button></div><div class='l6s-fx'>"+(w?"<span class='w'>"+w+"</span><br>":"")+dsLn(psDesc(sel)).join("<br>")+(!ow?"<br><span class='w'>"+sel.rb+"번째 환생 때 열려요</span>":"")+"</div>";
+      b.querySelector(".l6f-x").onclick=e=>{e.stopPropagation();window._skSel=null;window._skSlot=null;window._skLT=null;renderSheet();try{ls6SkR(1)}catch(x){}};
+      const bt=skSelBtns(sel,o,eqs,"btn",b);if(bt){const f=document.createElement("div");f.className="l6f-bt";f.append(bt);b.append(f)}b.addEventListener("click",e=>e.stopPropagation());R.append(b)}}
 /* 판 다시 그리기 (바뀐 게 있을 때만) */
 function ls6SkR(force){if(!L6S.on||!ls6On())return;if(window._skGest&&!force)return;const sg=psSig()+"|"+L6S.fm+"|"+innerWidth+"x"+innerHeight+"|"+(S&&S.elm||"");if(!force&&sg===L6S.sig)return;L6S.sig=sg;
   const o=psOpen();S.psl=S.psl||[];const eqs=skEqs(o),sel=window._skSel&&psGet(window._skSel),fm=L6S.fm,P=$(fm?"ls6fm":"ls6sk");if(!P)return;
@@ -7033,6 +7112,18 @@ $("eqp").addEventListener("click",e=>{const st=e.target.closest(".es em");if(st)
   const b=e.target.closest("[data-fgo],[data-fga]");if(!b)return;e.stopPropagation();if(b.disabled)return;if(b.dataset.fga){if(FG.eat&&performance.now()-FG.eat<600){FG.eat=0;return}FG.eat=0;if(fgA)fgEnd("멈춤");else fgAsk();return}fgOne(b.dataset.fgo)},true);
 /* 폰을 돌려도 대장간 그대로: 세로에서 대장간을 보던 중 가로로 → 🎒 카드 열기 (가로 → 세로는 invTab 그대로라 세로 칸에 대장간) */
 if(typeof ls6Sync=="function"){const _sy=ls6Sync;ls6Sync=function(){const was=document.body.classList.contains("ls6"),r=_sy.apply(this,arguments);if(!was&&ls6On()&&invTab=="fg"&&!sheetName&&!L6E.on)setTimeout(()=>{if(ls6On()&&!sheetName&&$("pop").hidden&&!L6E.on)ls6Eq(1,1)},0);return r}}
+/* 게임 전체: 길게 누르기로 뜨는 폰 메뉴(복사·공유)·오른쪽 클릭 메뉴 막기 (이름 바꾸기 칸은 그대로) · 사용자 2026-11-09 */
+addEventListener("contextmenu",e=>{const t=e.target;if(t&&t.closest&&t.closest("input,textarea,[contenteditable=true]"))return;e.preventDefault()},true);
+addEventListener("selectstart",e=>{const t=e.target,el=t&&t.nodeType==1?t:t&&t.parentElement;if(el&&el.closest&&el.closest("input,textarea,[contenteditable=true]"))return;e.preventDefault()},true);
+/* 🔄 직업 창에서 🧩 고르기·"(직업)으로만 바꾸기" = 확인 한 번 (사용자 2026-11-09 "선택하고 바꾸시겠습니까? 나왔으면 좋겠어") · [아니요][예] · 저장 안 한 변경이 있으면 한 줄 · 쓰는 중인 🧩(변경 없음)는 아무 일 없음 · 이 확인 창도 사냥은 계속(_np)
+   (예전 2026-11-05에 없앤 "저장 안 한 변경" 경고와 다름: 이번엔 바꿀지 한 번 묻는 것) */
+if(typeof bsPick=="function"){const _bp=bsPick;bsPick=function(c,i){if(!CLS[c]||window._bsGo){window._bsGo=0;return _bp.apply(this,arguments)}const same=c===S.cls;
+  if(same&&i==null)return _bp.apply(this,arguments);if(same&&i!=null){const C=cpG();if(C.cur===i&&!cpDiff())return}
+  let nm="";if(i!=null){try{nm=(same?pnm(i,"c"):bsNm(c,i,"c"))||""}catch(e){}nm="🧩"+(i+1)+(nm?" '"+nm+"'":" 캐릭터 프리셋")}const dr=(()=>{try{return cpDiff()}catch(e){return null}})();
+  popup("🔄 바꿀까요?",'<div style="text-align:center;line-height:1.7">'+(nm?"<b>"+nm+"</b>(으)로 바꿀까요?":CLS[c].ic+" <b>"+CLS[c].n+"</b>(으)로 바꿀까요? <small>(마지막 세팅)</small>")+(same?"":"<br>"+CLS[S.cls].ic+" "+CLS[S.cls].n+" → "+CLS[c].ic+" <b>"+CLS[c].n+"</b>")+(dr&&dr.length?'<br><small style="color:#ffb08a">저장 안 한 변경은 사라져요</small>':"")+"</div>",
+    [["아니요",()=>{if(typeof ls6On=="function"&&ls6On())closePop();else chooseClass(true,c)}],["예",()=>{closePop();window._bsGo=1;bsPick(c,i)}]]);window._np=1}}
+/* 세로 🔄 직업 창: 🧩 줄마다 스킬 그림 (가로 🔄 카드와 같은 17 ls6PcIc, 보이기만) */
+if(typeof bsClsWin=="function"){const _bw=bsClsWin;bsClsWin=function(){const r=_bw.apply(this,arguments);try{if(!(typeof ls6On=="function"&&ls6On())&&!$("pop").hidden&&typeof ls6PcIc=="function")$("popb").querySelectorAll(".bvbb").forEach(b=>{const m=/bsPick\('(\w+)',(\d+)\)/.exec(b.getAttribute("onclick")||"");if(!m||b.querySelector(".l6p-ic"))return;const ic=ls6PcIc(m[1],+m[2]);if(ic)b.insertAdjacentHTML("beforeend",'<span class="l6p-ic">'+ic+'</span>')})}catch(e){console.error(e)}return r}}
 
 </script>
 </body>
