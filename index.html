@@ -6478,11 +6478,11 @@ bossWarnFx=ls6Scr(bossWarnFx);bossFailFx=ls6Scr(bossFailFx);bossTimeFx=ls6Scr(bo
 /* 보스 착지(15 visX, 게임 동작)는 따라가기와 상관없이 예전 그대로 (밀어 둔 만큼 되돌려 잼) */
 {const _vx=visX;visX=function(){const r=_vx.apply(this,arguments);if(!L6C.d||!lsOn())return r;try{const b=$("lsbtn"),q=b&&b.getBoundingClientRect(),cr=cvBox();if(!q||!q.width||!cr.width)return r;return [0,Math.max(W*.45,Math.min(W,(q.left-(cr.left+L6C.d))/cr.width*W))]}catch(e){return r}}}
 /* 넓은 지도의 작은 전투 화면 = 진짜 전투 캔버스에서 주인공 둘레만 옮겨 그림 (그리기 한 번, 전투는 하나라 숫자·그림이 같이 바뀜) */
-/* 그리기 횟수 줄이기 (QA: 매 프레임 옮기면 진짜 캔버스를 읽느라 스크립트 시간 ×2) = 1배속 초당 약 20번 · 2배속 이상 약 12번 (L6MI, 손가락으로 확대 중엔 바로) */
-const L6MI=[50,80];
-function ls6Mini(){const mc=L6S.mc;if(!L6S.fm||!mc||!mc.isConnected||!L6S.mw)return;const n=performance.now();if(n-(L6Z.lm||0)<L6MI[SPD>=2?1:0]&&!L6Z.d0)return;L6Z.lm=n;const w=L6S.mw,h=L6S.mh,kk=Math.min(h/190,w/300)*l6mz(),sw=Math.min(W,w/kk),sh=Math.min(H,h/kk),dt=L6Z.t?Math.min(300,Math.max(0,n-L6Z.t)):16,tx=PX,ty=PY-34+Math.max(0,l6mz()-1)*5;L6Z.t=n;
+/* 큰 전투가 그린 프레임마다 한 번 (사용자 2026-11-09 "작은 전투만 렉": 예전 초당 20·12번 → 큰 전투와 같은 프레임) · 프레임 제한(16 fpsCap)으로 건너뛴 화면 새로 고침엔 안 그림 (L6Z.dr = 15 frame 끝 dcTick이 불림)
+   QA가 잰 "스크립트 시간 ×2"는 소프트웨어 캔버스에서 큰 캔버스 그리기(어차피 할 일)가 drawImage 안으로 옮겨 잡힌 것 → 실제 바쁜 시간(TaskDuration)·fps는 지도만 연 것과 같음 (docs/UI/점검/ls6/mini) */
+function ls6Mini(){if(!L6Z.dr)return;L6Z.dr=0;const mc=L6S.mc;if(!L6S.fm||!mc||!mc.isConnected||!L6S.mw)return;const n=performance.now();const w=L6S.mw,h=L6S.mh,kk=Math.min(h/190,w/300)*l6mz(),sw=Math.min(W,w/kk),sh=Math.min(H,h/kk),dt=L6Z.t?Math.min(300,Math.max(0,n-L6Z.t)):16,tx=PX,ty=PY-34+Math.max(0,l6mz()-1)*5;L6Z.t=n;
   if(L6Z.cx==null||Math.abs(tx-L6Z.cx)>W/3||Math.abs(ty-L6Z.cy)>H/3){L6Z.cx=tx;L6Z.cy=ty}else{const a=1-Math.exp(-dt/180);L6Z.cx+=(tx-L6Z.cx)*a;L6Z.cy+=(ty-L6Z.cy)*a}
-  const sx=Math.max(0,Math.min(W-sw,L6Z.cx-sw/2)),sy=Math.max(0,Math.min(H-sh,L6Z.cy-sh/2)),r=cv.width/W,c=mc.getContext("2d");
+  const sx=Math.max(0,Math.min(W-sw,L6Z.cx-sw/2)),sy=Math.max(0,Math.min(H-sh,L6Z.cy-sh/2)),r=cv.width/W,c=L6Z.mcv===mc?L6Z.mx:(L6Z.mcv=mc,L6Z.mx=mc.getContext("2d"));
   /* 작게 = 판 전체가 칸에 들어감 → 남는 쪽은 어두운 띠 (늘이지 않음) */const q=mc.width/w,dw=Math.min(w,sw*kk)*q,dh=Math.min(h,sh*kk)*q,dx=(mc.width-dw)/2,dy=(mc.height-dh)/2;if(dw<mc.width-1||dh<mc.height-1){c.fillStyle="#0b0806";c.fillRect(0,0,mc.width,mc.height)}
   try{c.drawImage(cv,sx*r,sy*r,sw*r,sh*r,dx,dy,dw,dh)}catch(e){}}
 /* 🔍 작은 전투 확대 (넓은 지도 왼쪽 작은 전투만, 사용자 2026-11-09 "1"): 작게(판 전체) → 보통(예전 크기) → 크게 ×1.5 → 더 크게 ×2.2 → 작게 (사용자 2026-11-09 "보통보다 더 작게") · 두 손가락 벌리기·휠 = 작게~2.6 사이 아무 배율 · 주인공을 따라감(약 0.2초, 15n 카메라처럼) · 보던 배율 S.l6mz (없으면 보통) · 보는 것만 (큰 전투·세로 카메라·게임 규칙 그대로) */
@@ -6499,6 +6499,7 @@ function l6mzG(m){if(!m)return;const P=L6Z.P,d=()=>{const[a,b]=[...P.values()];r
   const up=e=>{if(!P.delete(e.pointerId))return;if(P.size<2&&L6Z.d0){L6Z.d0=0;save()}};m.addEventListener("pointerup",up);m.addEventListener("pointercancel",up);
   m.addEventListener("wheel",e=>{e.preventDefault();l6mzSet(l6mz()*Math.exp(-e.deltaY*.0015),0);clearTimeout(L6Z.wt);L6Z.wt=setTimeout(save,400)},{passive:false})}
 {const _fr=frame;frame=function(){const r=_fr.apply(this,arguments);try{ls6CamF();ls6Mini()}catch(e){}return r}}
+{const _dc=dcTick;dcTick=function(){L6Z.dr=1;return _dc.apply(this,arguments)}}
 /* 가로에선 스킬 메뉴 = 판 (세로·큰 화면은 예전 창 그대로) · 다른 창을 열면 판을 닫음 */
 {const _os=openSheet;openSheet=function(n){if(n=="ps"&&ls6On()){if(L6S.on&&!L6S.fm)ls6Sk(0);else ls6Sk(1);return}if(L6S.on)ls6Sk(0);if(L6P.on)ls6Pc(0);if(L6E.on||L6E.dp)ls6Pan(null);return _os.apply(this,arguments)}}
 {const _rs=renderSheet;renderSheet=function(){const r=_rs.apply(this,arguments);try{if(L6S.on)ls6SkR();if(L6P.on)ls6PcR()}catch(e){console.error(e)}return r}}
