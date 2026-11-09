@@ -5523,6 +5523,13 @@ function bkRg(){let b=null;try{const w=smWant();for(const k in w){if(!(w[k]>0)||
 /* 📖 위성만 낀 마도서 (위성 사거리가 가장 멀 때): 대상의 "옆"으로 붙기 (사용자 OK 2026-11-03) — 위성 궤도는 납작한 타원(위아래 SATRY배)이라 위아래로는 잘 안 닿음 → 대상과 높이를 맞추고 좌우로 반지름만큼 떨어져 섬 (반지름이 바뀌면 따라감) */
 function bkSat(){try{if(!bkOn())return false;const w=smWant();if(!(w.satellite>0))return false;return bkRg()[0]===smRg("satellite")[0]}catch(e){return false}}
 {const _ap=approach;approach=function(t0){if(S&&S.cls=="mage"&&mon&&bkSat()){const R=satRd(),m=mon,dx=PX-m.px,dy=PY-m.py,tx=Math.max(10,R*.3),ty=Math.max(6,R*SATRY*.45);if(Math.abs(Math.abs(dx)-R)<=tx&&Math.abs(dy)<=ty){hm={x0:PX,y0:PY,x1:PX,y1:PY,t0:t0,dur:0};arrive=marrive=t0;return}let sd=dx>=0?1:-1,ax=m.px+sd*(R-4);if(ax<BX0+8||ax>BX1-8){sd=-sd;ax=m.px+sd*(R-4)}ax=Math.max(BX0+8,Math.min(BX1-8,ax));const ay=Math.max(BY0,Math.min(BY1,m.py));hm={x0:PX,y0:PY,x1:ax,y1:ay,t0:t0,dur:Math.hypot(ax-PX,ay-PY)/hSpd()*1000};arrive=marrive=hm.t0+hm.dur;return}return _ap.apply(this,arguments)}}
+/* 📖💫 위성 마도서: 도착한 뒤 대상이 위성 궤도에 안 닿으면 다시 다가가기 (2026-11-09 버그 "마도서 끼고 위성 넣었는데 가만히 있음", 사용자 OK)
+   설 자리(approach)는 대상을 고를 때(07 spawn) 한 번만 정해짐 → 마도서·위성을 그 뒤에 끼면(🧩 바꾸기 포함) 예전 마법사 거리에 선 채, 마도서는 일반 공격이 없어 대상이 영영 안 죽었음 · 맞고 다가온 적이 위아래에 멈춰 납작한 궤도 밖일 때도 같음
+   닿는 범위 = 위 approach 감싸기와 같은 상자 · 0.5초에 한 번 · 걷는 중·대상이 움직이는 중·보스 등장(BI)·보스 경고·보스 패턴(bpAway)·쓰러짐엔 안 함 (일시정지면 frame이 smStep을 안 부름) · 다른 직업·무기는 bkSat()가 false라 그대로 */
+const BKSRT=500;let _bkSrT=-1e9;
+function bkSatRe(t){if(!S||S.cls!="mage"||!mon||!(mon.hp>0)||dead||!(S.hp>0)||t-_bkSrT<BKSRT||t<arrive||t<marrive)return;const v=mon.mv;if(v&&t<v.t0+v.dur)return;if(BI||t-bossWarn<2200||bpAway()||!bkSat())return;
+  const R=satRd(),[X,Y]=monPt(mon),dx=PX-X,dy=PY-Y,tx=Math.max(10,R*.3),ty=Math.max(6,R*SATRY*.45);if(Math.abs(Math.abs(dx)-R)<=tx&&Math.abs(dy)<=ty)return;_bkSrT=t;approach(t)}
+{const _ss=smStep;smStep=function(t){const r=_ss.apply(this,arguments);try{bkSatRe(t)}catch(e){console.error(e)}return r}}
 /* 📖 마도서 시전 줄: 소환수가 새로 나올 때 (09 mbCast, 보이기만) */
 {const _sn=smNew;smNew=function(k,t){const u=_sn.apply(this,arguments);mbCast(t);return u}}
 
