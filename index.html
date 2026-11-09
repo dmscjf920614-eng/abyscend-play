@@ -127,6 +127,8 @@ main{max-width:760px;margin:0 auto;padding:6px 6px calc(84px + env(safe-area-ins
 #boss{display:none!important}.spd{background:#000b;border:1px solid var(--ln);border-radius:6px;padding:4px 10px;font-size:13px;font-weight:700;color:var(--tx);min-width:58px}.spd.on{color:#1a1000;background:linear-gradient(#ffd77a,#e0a030);border-color:#ffe2a0}#skill{opacity:1;font-size:22px;color:#cfeaff}#skill span{position:relative;z-index:1}#skill::after{content:"";position:absolute;inset:10%;border-radius:50%;background:conic-gradient(#000b var(--cd,0deg),transparent 0);pointer-events:none}
 #pop{position:fixed;inset:0;background:#000b;display:grid;place-items:center;z-index:20;padding:16px}#pop[hidden]{display:none}
 .pp{width:100%;max-width:380px;text-align:center;border-width:16px;border-image-width:16px}
+/* 팝업이 화면보다 길면 글 칸만 스크롤, 제목·버튼(닫기)은 늘 화면 안 (QA: 가로 800×360 "어느 🧩 칸에 저장할까요?" 닫기가 화면 밖) */
+.pp{display:flex;flex-direction:column;max-height:calc(100dvh - 32px)}.ppt,#popf{flex:none}#popb{min-height:0;overflow-y:auto;overscroll-behavior:contain}
 .ppt{color:var(--gold);font-weight:700;margin-bottom:8px}#popb{font-size:14px;line-height:1.6}#popf{display:flex;justify-content:center;gap:8px;margin-top:10px}
 .chs{display:flex;gap:8px;justify-content:center}
 .ch{flex:1;background:#0006;border:1px solid var(--ln);border-radius:8px;padding:10px 4px;font-size:34px;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--tx)}
@@ -712,6 +714,342 @@ body.lyP .view #rtw #rtwp{line-height:1}
 .hsk .hs.lk{position:relative;font-size:0!important;color:transparent;overflow:hidden}
 .hsk .hs.lk::before{content:"";position:absolute;left:28%;top:46%;width:44%;height:32%;border-radius:1px;background:#8a7650}
 .hsk .hs.lk::after{content:"";position:absolute;left:35%;top:20%;width:30%;height:34%;box-sizing:border-box;border:max(1px,.12em) solid #8a7650;border:1.2px solid #8a7650;border-bottom:0;border-radius:50% 50% 0 0}
+/* ===== 🌳 스킬 지도 = 기능별 나무 노드 (13 skNM, 세로 스킬 창·가로 스킬 판·넓은 지도 같이, 2026-11-09 가로 6차 P3) — 칸 = .skt-vp(세로 창 높이 그대로) ===== */
+.skm-vp{cursor:grab;background:radial-gradient(circle at 50% 50%,#2a2014,#0e0a06 70%)}
+.skm-in{position:absolute;left:0;top:0;transform-origin:0 0}.skm-in.anim{transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.skm-in svg{position:absolute;left:0;top:0;pointer-events:none}
+.skm-hub{position:absolute;width:0;height:0;z-index:2}
+.skm-hub i{position:absolute;left:-30px;top:-30px;width:60px;height:60px;transform:rotate(45deg);border:3px solid #ffc94a;background:radial-gradient(circle,#4a3214,#120c06);box-shadow:0 0 0 3px #000,0 0 24px #ff7a3a99}
+.skm-hub i>s,.skm-gh i>s{display:grid;place-items:center;width:100%;height:100%;transform:rotate(-45deg);text-decoration:none;font-style:normal;font-size:17px;line-height:1}.skm-hub i>s{font-size:28px}
+.skm-gh{position:absolute;width:0;height:0;border:0;padding:0;margin:0;background:none;z-index:2;font:inherit;color:inherit;cursor:pointer;touch-action:none}
+.skm-gh::after{content:"";position:absolute;left:-26px;top:-26px;width:52px;height:52px}.skm-gh.big::after{left:-30px;top:-30px;width:60px;height:60px}
+.skm-gh i{position:absolute;left:-17px;top:-17px;width:34px;height:34px;box-sizing:border-box;transform:rotate(45deg);border:2px solid #8a6d38;background:linear-gradient(135deg,#2a2014,#0e0a06);box-shadow:0 0 0 2px #000;font-style:normal}
+.skm-gh span{position:absolute;left:0;top:22px;transform:translateX(-50%) scale(var(--iv,1));transform-origin:50% 0;white-space:nowrap;font-size:12px;font-weight:800;color:#e5bf64;text-shadow:0 1px 2px #000,0 0 4px #000;pointer-events:none}
+.skm-gh span small{font-size:11px;color:#b8a67a;margin-left:3px;font-weight:600}
+.skm-gh.on i{border-color:#ffc94a;box-shadow:0 0 0 2px #000,0 0 14px #ff5a3a}.skm-gh.on span{color:#ffe08a}
+.skm-gh.big i{left:-22px;top:-22px;width:44px;height:44px;border-color:#c9a24a}.skm-gh.big i>s{font-size:21px}.skm-gh.big span{top:28px;font-size:13.5px;color:#ffe08a}
+.skm-nd{position:absolute;width:52px;margin:-17px 0 0 -26px;z-index:2;border:0;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:1px;font:inherit;color:inherit;cursor:pointer;touch-action:none}
+.skm-nd i{position:relative;width:34px;height:34px;box-sizing:border-box;border-radius:6px;border:1.5px solid #5a4630;background:radial-gradient(circle at 50% 35%,#3a2e1e,#0d0906 75%);box-shadow:0 0 0 2px #000;display:grid;place-items:center;font-style:normal;font-size:18px;line-height:1;overflow:hidden}
+.skm-nd i .ski{width:100%!important;height:100%!important;object-fit:contain}
+.skm-nd span{font-size:11px;line-height:1.15;max-width:52px;color:#cdbf9f;white-space:normal;word-break:keep-all;text-align:center;text-shadow:0 1px 2px #000;pointer-events:none}
+.skm-nd em{position:absolute;left:calc(50% + 9px);top:-7px;min-width:16px;height:16px;padding:0 2px;box-sizing:border-box;border-radius:8px;background:#c8321e;color:#fff;font-size:10px;font-weight:900;line-height:16px;text-align:center;font-style:normal;box-shadow:0 0 0 1.5px #000,0 0 6px #ff5a3a}
+.skm-nd u{position:absolute;left:calc(50% - 26px);top:-4px;width:18px;height:18px;box-sizing:border-box;text-decoration:none;font-size:10px;line-height:16px;text-align:center;border-radius:50%;background:#0a1630;border:1px solid #7fb0ff;color:#cfe2ff;box-shadow:0 0 0 1.5px #000;overflow:hidden}
+.skm-nd.pa i{border-color:#a0603a}
+.skm-nd.on i{border-color:#ffc94a;box-shadow:0 0 0 2px #c8321e,0 0 14px #ff5a3a,inset 0 0 8px #ff8a3a66;background:radial-gradient(circle at 50% 35%,#6a3218,#1a0a06 75%)}.skm-nd.on span{color:#ffe08a;font-weight:800}
+.skm-nd.sel i{outline:2px solid #fff3c0;outline-offset:2px}
+.skm-nd.el i{border-color:#7fb0ff;border-style:dashed}.skm-nd.el.on i{border-style:solid;border-color:#9fd0ff;box-shadow:0 0 0 2px #2a5ab0,0 0 14px #5ab0ff}.skm-nd.el.on em{background:#2a5ab0;box-shadow:0 0 0 1.5px #000,0 0 6px #5ab0ff}
+.skm-nd.off{opacity:.55}.skm-nd.off i{filter:grayscale(.7)}.skm-nd.cl{opacity:.42}.skm-nd.cl u{border-color:#8a7a5a;background:#1a140c;color:#cdb98a}.skm-nd.lk i{filter:grayscale(1);opacity:.75}
+.skm-in.far .skm-nd span,.skm-in.far .skm-nd em,.skm-in.far .skm-nd u,.skm-in.far .skm-gh:not(.big) span,.skm-in.far .skm-gh span small{display:none}
+.skm-h{position:absolute;left:6px;bottom:4px;z-index:5;font-size:11px;color:#b8a67a;pointer-events:none;background:#0b0806e8;border:1px solid #3a2c1a;border-radius:8px;padding:1px 7px;white-space:nowrap}
+/* ===== 📱 가로 6차 (17_ls_ui.js, docs/UI/2026-11-08_가로_UI_6차_계획.md) — 새 칸은 늘 숨김, 가로 폰(body.ls6)에서만 보임 · 세로(P)·큰 화면(S)은 그대로 ===== */
+.bnav .mbtn.ls6b,#ls6m,#ls6dim,#ls6mn,#ls6r,#ls6sk,#ls6fm,#ls6pc,#ls6eq,#ls6edim,#ls6dp{display:none}
+@media (orientation:landscape) and (max-height:600px){
+body.ls6{--l6mw:min(300px,36vw)}
+/* 예전 ◀ 탭 = 안 보이게만 (15 visX 보스 착지가 이 자리를 잼) · 예전 메뉴 판(#mid)이 열리면 ▶ 닫기 탭 */
+body.ls6 #lsbtn{visibility:hidden;pointer-events:none}body.ls6.lsp #lsbtn{visibility:visible;pointer-events:auto}body.ls6 #lsbtn small{font-size:0}body.ls6 #lsbtn small::after{content:"닫기";font-size:8px}
+body.ls6 .mid{height:100dvh;z-index:9}/* 예전 메뉴 판은 화면 높이 전체 + 메뉴 줄 위 (시안 카드처럼 전투·아래 줄 위에 뜸, P2에서 카드로) */
+/* 아래 가운데 메뉴 5칸: 🌟 환생 · 💪 단련 · 🎒 장비 · 📜 스킬 · 🧩 프리셋 (칭호·상점·설정 = ☰) */
+body.ls6 .bnav{z-index:8;left:50%!important;right:auto!important;bottom:calc(10px + env(safe-area-inset-bottom,0px));width:var(--l6mw);transform:translateX(-50%)!important;transition:none;padding:0!important;margin:0!important;background:none!important;border:0!important;box-shadow:none!important;gap:4px;justify-content:center}
+body.ls6 .bnav .mbtn{flex:1 1 0;min-width:0;height:54px;justify-content:flex-start;gap:0;font-size:10.5px!important;font-weight:700;text-shadow:0 1px 2px #000,0 0 4px #000}
+body.ls6 .bnav .fr{width:40px!important}body.ls6 .bnav .apb{right:calc(50% - 26px)}
+body.ls6 .bnav .mbtn.ls6b{display:flex}body.ls6 .bnav .mbtn:is([data-m=title],[data-m=shop],[data-m=set]){display:none}
+/* 첫 환생 안내 카드: 아래 🌟 환생 칸(반짝이는 곳)을 가리지 않게 넓고 낮게, 메뉴 줄 위 가운데 */
+body.ls6 #tut{top:calc(50% - 36px);width:min(560px,70vw)}
+body.ls6 .bnav .mbtn.on{color:#ffe08a}body.ls6 .bnav .mbtn.on .fr{filter:brightness(1.3) drop-shadow(0 0 6px #ffc94a)}
+/* 왼쪽 아래 등반 칸 = #rtw 그대로(상태 색 그대로), 메뉴 줄 왼쪽까지 한 줄 · 효율 글자·DPS·세팅 배지는 오른쪽 칸(#ls6r)으로 */
+body.ls6 .view #rtw{left:calc(var(--l6cl,0px) + 6px);right:calc(50% + var(--l6mw) / 2 + 8px);bottom:calc(16px + env(safe-area-inset-bottom,0px));height:32px;box-sizing:border-box;padding:0 8px;display:flex;align-items:center;border-width:1.5px}
+body.ls6 .view #rtw .rth{flex:1;min-width:0}body.ls6 .view #rtw .rth b{white-space:nowrap}body.ls6 .view #rtw .rtp{min-width:30px;height:14px}
+body.ls6 .view #rtw :is(.rte,em,#dpsb,#sstb){display:none}
+/* 로그 = 등반 칸 위, 메뉴 줄 왼쪽까지 (줄이 넘치면 … ) */
+body.ls6 .view .olog{left:calc(var(--l6cl,0px) + 8px)!important;right:calc(50% + var(--l6mw) / 2 + 8px)!important}
+body.ls6 .view .olog>div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* 오른쪽 아래 💥 DPS · ⏱ 세팅 */
+body.ls6 #ls6r{position:fixed;left:calc(50% + var(--l6mw) / 2 + 8px);right:calc(var(--l6cb,0px) + 6px);bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:3;height:32px;box-sizing:border-box;display:flex;align-items:center;gap:6px;padding:0 4px 0 8px;border:1.5px solid #c9a24a;border-radius:7px;background:linear-gradient(#2a1c0cf0,#170f06f0);font-size:11px;white-space:nowrap;overflow:hidden}
+#ls6r .ls6-dps{position:relative;flex:none;border:0;background:none;padding:0;min-height:30px;font:inherit;font-size:11px;color:#ffb39a;font-weight:800;display:flex;align-items:center;gap:3px;cursor:pointer;touch-action:manipulation}#ls6r .ls6-dps b{color:#ffd75a;font-size:12px}
+#ls6r .ls6-dps::after{content:"";position:absolute;inset:-5px -6px -6px -8px}
+#ls6r .ls6-set{margin-left:auto;min-width:0;font-size:10.5px;color:#cfe2ff;border:1px solid #5aaeff;border-radius:9px;padding:0 6px;background:#0a1c3ccc;overflow:hidden;text-overflow:ellipsis}#ls6r .ls6-set i{font-style:normal}#ls6r .ls6-spm b{font-weight:800;color:#fff}
+#ls6r.nr .ls6-spm{display:none}
+/* 오른쪽 위 ☰ (등반·배속·층 칸은 그 왼쪽으로) */
+body.ls6 #ls6m{display:grid;place-items:center;position:fixed;top:6px;right:calc(var(--l6cr,0px) + 6px);z-index:7;width:48px;height:48px;padding:0;border:0;background:var(--u-sq) center/100% 100% no-repeat;font-size:22px;line-height:1;color:#ffe08a;font-weight:900;text-shadow:0 1px 3px #000;cursor:pointer;touch-action:manipulation}
+body.ls6 .view .trc{right:calc(var(--l6cr,0px) + 60px)}
+/* ☰ 판 (오른쪽, 전투 위, 게임 창 테두리 ui_panel) */
+body.ls6.l6mn #ls6dim{display:block;position:fixed;inset:0;z-index:11;background:#000;opacity:.5}
+body.ls6.l6mn #ls6mn{display:flex;flex-direction:column;position:fixed;top:0;bottom:0;right:0;z-index:12;width:clamp(280px,36vw,340px);box-sizing:border-box;border:12px solid transparent;border-image:var(--u-panel) 28 fill/12px stretch;padding:0 2px;animation:ls6in .2s ease-out}
+@keyframes ls6in{from{opacity:0;transform:translateX(24px)}}
+#ls6mn .ls6-ph{display:flex;align-items:center;gap:6px;height:28px;flex:none;margin:-4px -2px 6px;border-bottom:1px solid #6e543099}
+#ls6mn .ls6-ph b{flex:1;color:var(--gold);font-size:14px;white-space:nowrap}
+#ls6mn .ls6-x{flex:none;min-width:44px;min-height:40px;margin:-8px -6px -8px 0;border:0;background:none;color:#e9d7a8;font-size:20px;line-height:1;padding:0;cursor:pointer}#ls6mn .ls6-x:active{background:#ffffff14;border-radius:8px}
+#ls6mn .ls6-tiles{flex:1;min-height:0;overflow-y:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px 4px;align-content:start}
+#ls6mn .ls6-tile{position:relative;min-height:72px;border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font:inherit;font-size:12px;font-weight:700;color:var(--tx);padding:2px;border-radius:10px;cursor:pointer;touch-action:manipulation}#ls6mn .ls6-tile:active{background:#ffffff10}
+#ls6mn .ls6-tile .fr{width:48px!important}#ls6mn .ls6-tile .fr .ic{width:70%}
+#ls6mn .ls6-mnf{flex:none;font-size:11px;color:#9a8a6a;border-top:1px solid #6e543066;padding-top:4px;word-break:keep-all}
+/* 📜 스킬 판 (P3, 사용자 "스킬을 바꿀 때마다 바뀌는 게 실시간으로 보이는 게 핵심"): 오른쪽, 전투 위, 전투는 안 어둡게 · 폭 = 800×360에서 384px · 맨 위 실시간 줄 · 왼쪽 장착 10칸(그림+번호) · 오른쪽 노드 지도 + 떠 있는 설명 줄 */
+body.ls6.l6sk #ls6sk{display:flex;flex-direction:column;position:fixed;top:6px;bottom:6px;right:calc(var(--l6cr,0px) + 6px);z-index:9;width:clamp(380px,48vw,470px);box-sizing:border-box;border:12px solid transparent;border-image:var(--u-panel) 28 fill/12px stretch;padding:0 2px;animation:ls6in .2s ease-out}
+:is(#ls6sk,#ls6fm) .l6s-h{display:flex;align-items:center;gap:4px;height:34px;flex:none;margin:-6px -2px 3px;border-bottom:1px solid #6e543099}
+:is(#ls6sk,#ls6fm) .l6s-h>b{flex:none;color:var(--gold);font-size:14px;white-space:nowrap}
+.l6s-n{flex:none;font-size:11px;color:#cdb98a;white-space:nowrap}.l6s-n b{color:#ffe08a}
+.l6s-h .sp{flex:1;min-width:0}
+.l6s-c{position:relative;flex:none;min-width:40px;height:32px;border-radius:9px;border:1px solid #6a5634;background:linear-gradient(#2a2014,#160f08);color:#cdb98a;font:inherit;font-size:12px;font-weight:800;padding:0 7px;white-space:nowrap;cursor:pointer;touch-action:manipulation}.l6s-c:active{filter:brightness(1.3)}
+.l6s-c::after{content:"";position:absolute;inset:-3px -2px}
+.l6s-h .pnt{flex:0 1 auto;min-width:0;max-width:120px;height:32px;padding:0 6px}
+.l6s-h .cpdot{font-style:normal;color:#ffd23a;font-size:13px;flex:none;animation:cpd 1.4s ease-in-out infinite}
+.l6s-x{position:relative;flex:none;min-width:44px;min-height:40px;margin:-8px -6px -8px 0;border:0;background:none;color:#e9d7a8;font-size:20px;line-height:1;padding:0;cursor:pointer}.l6s-x:active{background:#ffffff14;border-radius:8px}
+/* 실시간 줄: 지금 DPS(07 dpsWin 5초) · 바꾼 뒤 ▲▼(바꾸기 직전 10초 평균 vs 바꾼 뒤, 처음 3초 "재는 중…", 그 뒤 7초) · 딜량 막대(피해원 비율) · 위 3개 % · 공속 — 글자만 0.25초마다 */
+.l6-live{display:flex;gap:7px;align-items:center;flex:none;border-radius:8px;background:#000a;border:1px solid #c9a24a;padding:2px 8px;min-height:34px;box-sizing:border-box;font-size:11.5px;white-space:nowrap;overflow:hidden;box-shadow:0 0 10px #ffc94a33;color:#e9dcb8}
+.l6-live>.l6-l1,.l6-live>.l6-as{flex:none}.l6-live .l6-dv{font-size:16px;color:#ffe08a;font-weight:900;margin-left:2px}
+.l6-db{text-decoration:none;color:#b8a67a;font-size:11px;font-weight:700;margin-left:3px}.l6-db:empty,.l6-live.nb .l6-db{display:none}
+.l6-dd{font-size:12px;font-weight:900;margin-left:4px}.l6-dd.up{color:#6fd49a}.l6-dd.dn{color:#ff8a7a}.l6-dd.wt{color:#b8a67a;font-weight:700;font-size:11px}
+.l6-bar{display:flex;flex:1 1 40px;min-width:30px;height:12px;border-radius:6px;overflow:hidden;border:1px solid #3a2c1a;background:#0008}.l6-bar i{display:block;height:100%;transition:width .5s}
+.l6-top{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:11px;color:#d8cdb4}.l6-top b{color:#ffd36a;margin-right:3px}
+.l6-as b{color:#9dffa8}
+.l6-live:has(.l6-dd:not(:empty)) .l6-top{display:none}
+.l6s-b{flex:1;min-height:0;display:flex;gap:5px;margin-top:4px}
+.l6s-l{width:clamp(86px,11vw,100px);flex:none;display:flex;flex-direction:column;gap:3px;min-height:0}
+.l6s-r{position:relative;flex:1;min-width:0;display:flex;flex-direction:column;min-height:0}
+.l6s-r .skm-vp{flex:1;height:auto;min-height:0;margin:0;border-radius:8px}
+.l6s-r .skm-h{display:none}
+/* 원소 줄(마법사)·탄(석궁) = 누르면 고르기 창 (15h elPick · 15f btPick) */
+.l6s-el{flex:none;min-height:36px;border-radius:8px;border:1.5px dashed #7fb0ff;background:#0a1630;color:#cfe2ff;display:flex;align-items:center;gap:3px;padding:0 5px;font:inherit;font-size:16px;min-width:0;overflow:hidden;cursor:pointer}
+.l6s-el span{font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}.l6s-el.on{border-style:solid;border-color:#9fd0ff;background:linear-gradient(#1a2c50,#0a1630);box-shadow:0 0 8px #5ab0ff66}
+.l6s-el.bt{border-color:#c9a24a;background:#1a140c;color:#ffe9b0}.l6s-el.bt.on{border-color:#ffd36a;background:linear-gradient(#3a2c14,#1a140c);box-shadow:0 0 8px #ffc94a55}
+/* 장착 10칸 = 그림 + 번호 (2줄×5, 이름은 누르면 아래 설명 줄) */
+.l6s-q{flex:1;min-height:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(5,minmax(0,1fr));gap:3px;max-height:292px}/* 칸 높이 최대 56 (QA: 1024×600에서 칸이 90px로 길쭉) */
+.l6s-s{position:relative;min-width:0;min-height:0;border:1.5px solid #c9a24a;border-radius:7px;background:linear-gradient(#2e2516,#1a140c);padding:1px;display:grid;place-items:center;font:inherit;font-size:19px;line-height:1;color:#eadfc6;cursor:pointer;touch-action:manipulation}
+.l6s-s .ski{width:min(30px,80%)!important;height:auto!important;max-height:30px;aspect-ratio:1;object-fit:contain}
+.l6s-s>b{position:absolute;left:3px;top:2px;font-size:10px;line-height:1;color:#c9a24a;font-weight:800}
+.l6s-s.em{border:1.5px dashed #7a6238;color:#8a7a5a;font-size:15px}.l6s-s.lk{border:1px solid #3a2c1a;background:#120d08;color:#5a4a30;font-size:11px;cursor:default}
+.l6s-s.bad{border-color:#a0604a}.l6s-s.bad .ski,.l6s-s.bad>span{filter:grayscale(1);opacity:.6}.l6s-s>i{position:absolute;right:1px;top:1px;font-style:normal;font-size:10px;line-height:1}
+.l6s-s.sel{outline:2px solid #fff3c0;outline-offset:1px}.l6s-s.pick{border-color:#5ab0ff;box-shadow:0 0 8px #5ab0ff;animation:skPk 1.2s ease-in-out infinite}
+/* 지도 위 떠 있는 줄: 위 = 바꿀 칸 고르는 중 · 아래 = 누른 스킬 설명 + 버튼 */
+.l6s-f{position:absolute;left:4px;right:4px;bottom:4px;z-index:7;display:flex;align-items:center;gap:5px;padding:4px 4px 4px 6px;min-height:46px;box-sizing:border-box;border:1px solid #c9a24a;border-radius:9px;background:#140e08f2;box-shadow:0 4px 14px #000c}
+.l6s-f.rp{top:4px;bottom:auto;right:50px;border-color:#5ab0ff;background:#0a1c3cf2;color:#cfe2ff;font-size:12px}.l6s-f.rp>span{flex:1;min-width:0}
+.l6s-f .l6s-fi{width:34px;height:34px;flex:none;border-radius:7px;border:1.5px solid #c9a24a;display:grid;place-items:center;font-size:19px;font-style:normal;background:radial-gradient(circle at 50% 35%,#ffffff1a,#000a 75%);overflow:hidden}.l6s-f .l6s-fi .ski{width:100%!important;height:100%!important}
+.l6s-f .l6s-fx{flex:1;min-width:0;max-height:40px;overflow-y:auto;font-size:11px;line-height:1.3;color:#d8cdb4;word-break:keep-all}.l6s-f .l6s-fx b{color:#fff;font-size:12.5px}.l6s-f .l6s-fx .w{color:#ff9a8a}.l6s-f .l6s-fx .c{color:#9fc4ff}
+.l6s-f .btn,.l6-pop .btn{flex:none;min-width:52px;min-height:38px;padding:0 4px;font-size:12.5px;white-space:nowrap}.l6s-f .skbw,.l6-pop .skbw{display:flex;gap:4px;flex:none}
+.l6s-f .btn.un,.l6-pop .btn.un{color:#ffb0a0}
+.l6s-r .pnrw{position:absolute;left:0;right:0;top:0;z-index:8;margin:0;padding:4px;border-radius:8px;background:#140e08f5;border:1px solid #c9a24a;box-shadow:0 6px 16px #000c}
+/* 🌳 넓은 지도 = 화면 전체 (왼쪽: 프리셋·10칸 한 줄·작은 전투 화면 · 오른쪽: 지도 + 누른 스킬 옆 설명 창) */
+body.ls6.l6fm #ls6fm{display:flex;flex-direction:column;position:fixed;inset:0;z-index:10;box-sizing:border-box;border:12px solid transparent;border-image:var(--u-panel) 28 fill/12px stretch;padding:0 calc(var(--l6cr,0px) + 2px) env(safe-area-inset-bottom,0px) calc(var(--l6cl,0px) + 2px);background:#0b0806;animation:ls6in .2s ease-out}
+#ls6fm .l6f-b{flex:1;min-height:0;display:flex;gap:6px}
+#ls6fm .l6f-l{width:clamp(300px,40vw,380px);flex:none;display:flex;flex-direction:column;gap:4px;min-height:0}
+#ls6fm .l6f-lt{flex:none;display:flex;flex-direction:column;gap:3px;min-height:0}
+#ls6fm .l6f-lt .cph,#ls6fm .l6f-lt .pnh{margin:0}#ls6fm .l6f-lt .cph .cpq{min-width:40px}/* ? 26→40 (터치 규칙, 프리셋 이름 칸이 줄어듦) */#ls6fm .l6f-lt .pnt,#ls6fm .l6f-lt .pnl{height:34px}#ls6fm .l6f-lt .pnrw{margin:0}
+#ls6fm .l6f-er{display:flex;gap:4px}#ls6fm .l6f-er .l6s-el{flex:1}
+#ls6fm .l6f-q{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:2px}#ls6fm .l6f-q .l6s-s{min-height:40px;font-size:16px}#ls6fm .l6f-q .l6s-s .ski{max-height:24px}
+#ls6fm .l6f-mini{position:relative;flex:1;min-height:70px;border-radius:8px;overflow:hidden;border:1px solid #6e5430;background:#0b0806}
+#ls6fm .l6f-mini canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#ls6fm .l6f-mini{touch-action:none}
+/* 넓은 지도 실시간 줄 = 머리줄 빈 곳 (사용자 2026-11-09 "dps랑 공속이 화면 보는 게 방해" + "화면이 작아지는 건 싫음": 작은 전투 위에서 빼고 크기는 그대로) · 좁으면 제목 "📜 스킬 ·"부터 숨김(17 ls6Lv) */
+#ls6fm .l6s-h .l6-live{flex:0 1 auto;min-width:0;min-height:0;height:30px;padding:0 8px;gap:6px;box-shadow:none}#ls6fm .l6s-h .l6-live .l6-top,#ls6fm .l6s-h .l6-live .l6-bar{display:none}
+#ls6fm .l6s-h>b.l6f-tt{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}#ls6fm .l6s-h.nt .l6f-t1{display:none}
+/* 🔍 작은 전투 확대 버튼 (오른쪽 위 구석, 주인공은 늘 가운데라 안 가림) */
+#ls6fm .l6f-zb{position:absolute;right:4px;top:4px;z-index:2;min-width:44px;height:36px;padding:0 9px;border-radius:9px;border:1px solid #c9a24a;background:#000b;color:#ffe9b0;font:inherit;font-size:12px;font-weight:800;white-space:nowrap;cursor:pointer;touch-action:manipulation}#ls6fm .l6f-zb:active{filter:brightness(1.3)}
+#ls6fm .l6f-mt{position:absolute;left:5px;bottom:3px;font-size:11px;color:#d8cdb4;pointer-events:none;text-shadow:0 1px 2px #000}
+#ls6fm .l6f-r{position:relative;flex:1;min-width:0;display:flex;flex-direction:column;min-height:0}
+#ls6fm .l6f-rh{flex:none;font-size:11px;color:#b8a67a;padding:0 2px 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#ls6fm .l6f-rh b{color:#ffe08a;font-size:13px;margin-right:4px}
+#ls6fm .l6f-r .skm-vp{flex:1;height:auto;min-height:0;margin:0;border-radius:8px}
+.l6-pop{position:absolute;z-index:6;width:min(230px,48%);box-sizing:border-box;border-radius:10px;border:1.5px solid #c9a24a;background:#140e08f5;box-shadow:0 6px 18px #000d;padding:6px 7px;cursor:default}
+.l6-pop .l6p-h{display:flex;gap:6px;align-items:center;padding-right:30px}.l6-pop .l6p-h i{width:34px;height:34px;flex:none;border-radius:7px;border:1.5px solid #c9a24a;display:grid;place-items:center;font-size:19px;font-style:normal;overflow:hidden}.l6-pop .l6p-h i .ski{width:100%!important;height:100%!important}
+.l6-pop .l6p-h b{display:block;font-size:13px;color:#fff;line-height:1.2}.l6-pop .skt-ch{margin-top:2px}
+.l6-pop .l6p-d{font-size:11.5px;line-height:1.35;max-height:64px;overflow-y:auto;margin:4px 0;color:#d8cdb4;word-break:keep-all}.l6-pop .l6p-d .w{color:#ff9a8a}
+.l6-pop .l6p-b{display:flex;gap:4px;justify-content:flex-end}.l6-pop .l6p-x{position:absolute;right:0;top:0;width:40px;height:36px;border:0;background:none;color:#cdb98a;font-size:15px;cursor:pointer}
+/* 🔄 직업·프리셋 카드 (P3b): 왼쪽, 전투 위, 전투는 안 어둡게 · 폭 = 800×360에서 304px · 내용 = 15l bsClsWin 글 그대로 + 🧩 줄 스킬 그림 · 아래 [🎒 장비][📜 스킬][💾 저장] · 카드 아래 끝 = 아래 메뉴 줄 위 (QA: 800·844에서 카드가 🌟 환생 자리를 덮어 💾 저장이 눌렸음) */
+body.ls6 .view .hud .pt::before{content:"⇄";position:absolute;right:-6px;top:-5px;z-index:5;width:17px;height:17px;box-sizing:border-box;border-radius:50%;background:#1a120a;border:1.5px solid #ffc94a;color:#ffe08a;font-size:11px;font-weight:900;line-height:14px;text-align:center;pointer-events:none}
+body.ls6.l6pc #ls6pc{display:flex;flex-direction:column;position:fixed;top:6px;bottom:calc(70px + env(safe-area-inset-bottom,0px));left:6px;z-index:9;width:clamp(300px,38vw,350px);box-sizing:border-box;border:12px solid transparent;border-image:var(--u-panel) 28 fill/12px stretch;padding:0 2px;animation:ls6inL .2s ease-out}
+@keyframes ls6inL{from{opacity:0;transform:translateX(-24px)}}
+#ls6pc .l6s-h{display:flex;align-items:center;gap:4px;height:34px;flex:none;margin:-6px -2px 3px;border-bottom:1px solid #6e543099}#ls6pc .l6s-h>b{flex:none;color:var(--gold);font-size:14px;white-space:nowrap}
+#ls6pc .l6-live .l6-bar,#ls6pc .l6-live .l6-top{display:none}#ls6pc .l6-live{justify-content:space-between}
+#ls6pc .l6p-b{flex:1;min-height:0;display:flex;flex-direction:column;margin-top:4px}
+#ls6pc .bvw{flex:1;min-height:0;display:flex;flex-direction:column;gap:4px}
+#ls6pc .bvcs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;width:auto;flex:none;margin:0 2px}
+#ls6pc .bvcd{flex-direction:row;justify-content:center;gap:2px;min-width:0;min-height:44px;padding:2px;border-radius:9px}#ls6pc .bvcd .ci{font-size:17px;flex:none}#ls6pc .bvcd .ct{align-items:flex-start;min-width:0;overflow:hidden;line-height:1.15}#ls6pc .bvcd b{font-size:12.5px}#ls6pc .bvcd small{font-size:10.5px}#ls6pc .bvcd .ct>*{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#ls6pc .bvcd.op::after{bottom:-6px;border-width:5px}
+#ls6pc .bvlb{flex:1;min-height:0;display:flex;flex-direction:column;margin-top:4px;padding:4px 5px}
+#ls6pc .bvlh{flex:none;font-size:12px;margin:0 2px 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#ls6pc .bvlg{flex:1;min-height:0;max-height:none;display:flex;flex-direction:column;gap:4px;overflow-y:auto;overscroll-behavior:contain}
+#ls6pc .bvbb{flex:none;display:grid;grid-template-columns:minmax(45%,1fr) minmax(0,auto);column-gap:6px;align-items:center;min-height:44px;padding:2px 7px}
+#ls6pc .bvbb .nm{grid-column:1}#ls6pc .bvbb>small{grid-column:2;grid-row:1;text-align:right}#ls6pc .bvbb>small.lk{grid-column:1/-1;grid-row:auto;text-align:left}
+#ls6pc .bvbb small.st{font-style:normal;font-size:11px;color:#9dffa8;border:1px solid #3a7a4a;border-radius:7px;padding:0 5px}#ls6pc .bvbb small.st.dt{color:#ffd36a;border-color:#a07a2a}
+#ls6pc .l6p-ic{grid-column:1/-1;display:flex;align-items:center;gap:2px;height:20px;overflow:hidden;font-size:15px;line-height:1}#ls6pc .l6p-ic .ski{width:18px!important;height:18px!important;flex:none}#ls6pc .l6p-ic>span{flex:none}
+#ls6pc .l6p-ic em{font-style:normal;display:flex;align-items:center;flex:none;font-size:10px;margin-right:2px;padding-right:3px;border-right:1px solid #4a3a22}
+#ls6pc .bvgo{flex:none;min-height:40px;height:auto;width:100%;font-size:12.5px;white-space:normal;line-height:1.2;padding:2px 6px;word-break:keep-all}
+#ls6pc .bvem{font-size:11.5px}
+#ls6pc .l6p-dt{flex:none;font-size:11px;color:#ffd36a;line-height:1.3;word-break:keep-all;padding:0 2px}
+#ls6pc .bvh{flex:none;margin-top:0;font-size:11px;text-align:left;padding:0 2px}
+#ls6pc .l6p-f{flex:none;display:flex;gap:4px;margin-top:4px}#ls6pc .l6p-f .btn{flex:1;min-width:0;min-height:40px;padding:0 4px;font-size:12.5px;white-space:nowrap}
+/* 카드가 열리면 가운데 알림(🧩 적용 등)은 보이는 칸(카드 오른쪽) 가운데로 */
+body.ls6.l6pc #gtoast{left:calc(50% + (clamp(300px,38vw,350px) + 12px) / 2);max-width:calc(100% - clamp(300px,38vw,350px) - 30px);box-sizing:border-box}
+/* 🎒 장비 카드 3장 (P2): ① 착용(#eqp 왼쪽 칸) | ② 비교(#tip) | ③ 가방(#eqp 오른쪽 칸) · 뒤 전투 30% 어둡게 · 800×360에서 232 + 250 + 228 */
+body.ls6.l6eq #ls6edim{display:block;position:fixed;inset:0;z-index:9;background:#000;opacity:.3}
+body.ls6.l6eq #ls6eq{display:flex;position:fixed;top:6px;bottom:6px;left:calc(var(--l6cl,0px) + 6px);right:calc(var(--l6cr,0px) + 6px);z-index:9;justify-content:center;gap:6px;pointer-events:none;animation:l6eqin .2s ease-out}
+@keyframes l6eqin{from{opacity:0;transform:translateY(10px)}}
+#ls6eq>*,#ls6eq #eqp>.mw{pointer-events:auto}
+#ls6eq #eqp>.mw,#ls6eq .l6e-c2,#ls6dp{box-sizing:border-box;border:12px solid transparent!important;border-image:var(--u-panel) 28 fill/12px stretch!important;background:none!important;box-shadow:none!important;border-radius:0!important;padding:0 2px!important;margin:0!important;min-height:0}
+#ls6eq #eqp>.mw:nth-child(1){order:1;width:clamp(232px,28vw,290px);flex:none;overflow-y:auto;overflow-x:hidden}
+#ls6eq #eqp>.mw:nth-child(2){order:3;width:clamp(228px,27vw,282px);flex:none;display:flex;flex-direction:column;overflow:hidden;align-self:stretch}
+/* 가방은 늘 펴진 채 (접기는 세로 장비창 것) */
+#ls6eq #eqp>.mw:nth-child(2)>.mwt{pointer-events:none;color:var(--gold);font-size:13px;font-weight:800;padding:0 2px 3px;margin:-4px 0 2px;background:none;border-bottom:1px solid #6e543099;border-radius:0}
+#ls6eq #eqp>.mw:nth-child(2)>.mwt::after{content:none}
+#ls6eq #eqp.fold>.mw:nth-child(2)>.itabs,#ls6eq #eqp.fold>.mw:nth-child(2)>.ift{display:flex}#ls6eq #eqp.fold>.mw:nth-child(2)>.igw{display:block}
+#ls6eq .itabs button{min-height:34px;font-size:12px}
+#ls6eq .ift .btn,#ls6eq .ifb .btn{min-height:36px}
+#ls6eq .ifb .btn{font-size:10.5px;padding:0 1px;letter-spacing:-.3px}
+/* ① 🧩·🎒 줄 버튼은 카드에선 조금 크게 (게임 22px → 32px, 누르기 쉽게) */
+#ls6eq .cph :is(.pnt,.pnl),#ls6eq .eqh :is(.pnt,.pnl){height:34px}#ls6eq .cph :is(.cpq,.cpsv),#ls6eq .eqh .pnl{flex:none;min-width:36px!important}#ls6eq .cph{margin-bottom:4px}
+/* 고른 것 표시: 가방 칸·착용 칸 = 흰 테두리 / 비교되는 착용 칸 = 하늘색 */
+#ls6eq .l6sel{outline:2px solid #fff3c0;outline-offset:1px;z-index:2}
+#ls6eq .l6vs{outline:2px solid #8fd0ff;outline-offset:1px;z-index:2;box-shadow:0 0 10px #5ab0ff}
+/* ② 비교 카드 */
+#ls6eq .l6e-c2{order:2;flex:0 1 340px;min-width:250px;display:flex;flex-direction:column}
+#ls6eq .l6e-c2 .l6s-h{display:flex;align-items:center;gap:4px;height:36px;flex:none;margin:-6px -2px 3px;border-bottom:1px solid #6e543099}
+#ls6eq .l6e-c2 .l6s-h>b{flex:none;color:var(--gold);font-size:14px;white-space:nowrap}
+.l6e-tab{display:none;flex:0 1 auto;min-width:0;gap:3px}#ls6eq .l6e-c2.inv .l6e-tab{display:flex}
+.l6e-tab button{flex:1 1 auto;min-width:0;min-height:34px;padding:0 7px;border-radius:9px;border:1px solid #6a5634;background:#0008;color:#b8a67a;font:inherit;font-size:11.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;touch-action:manipulation}
+.l6e-tab button.on{border-color:#ffd23a;background:linear-gradient(#ffcc66,#d9922e);color:#2a1a00}
+#ls6eq .l6e-c2 .l6-live .l6-bar,#ls6eq .l6e-c2 .l6-live .l6-top{display:none}#ls6eq .l6e-c2 .l6-live{justify-content:space-between}
+.l6e-emp{display:none;margin:auto;text-align:center;color:#a89a7a;font-size:12.5px;word-break:keep-all;padding:8px 6px;line-height:1.6}#ls6eq .l6e-c2.emp .l6e-emp{display:block}
+.l6e-emp>b{display:block;font-size:26px;opacity:.5}.l6e-emp em{font-style:normal;color:#ffe08a;font-weight:800}.l6e-emp small{display:block;margin-top:6px;font-size:11px;color:#8a7c60;line-height:1.5}
+/* #tip(게임 설명창)을 카드 안 칸으로: 떠 있는 창 → 카드 몸통 (글·버튼은 그대로) */
+#ls6eq #tip{position:static;inset:auto;z-index:auto;background:none;padding:0;display:flex;flex-direction:column;flex:1;min-height:0;margin-top:4px}
+#ls6eq #tip[hidden]{display:none}
+#ls6eq #tip>.tt{max-width:none!important;width:auto;flex:1;min-height:0;max-height:none;background:#0a0e1ecc;border:1px solid #3a4462;border-radius:7px;box-shadow:none;padding:6px 7px}
+#ls6eq #tip .txw{display:none}
+#ls6eq #tip .tbtn .btn{min-height:38px}
+#ls6eq #tip .tt.gsk .gpw{display:block}#ls6eq #tip .tt.gsk .gpk{grid-template-columns:repeat(5,minmax(0,1fr));max-height:none}#ls6eq #tip .tt.gsk .gps{margin-top:6px}
+/* 가방 장비 비교 (17 ls6CmpH) */
+#ls6eq #tip>.l6c{flex:1;min-height:0;display:flex;flex-direction:column}
+.l6c-vs{display:grid;grid-template-columns:minmax(0,1fr) 12px minmax(0,1fr);gap:3px;align-items:stretch;flex:none}
+.l6c-vh{border:1px solid #3a4462;border-radius:7px;background:#0007;padding:4px;min-width:0;display:flex;gap:4px;align-items:center}
+.l6c-vh.nw{border-color:#8fd0ff;box-shadow:0 0 8px #5ab0ff44}.l6c-vh.em{opacity:.75}
+.l6c-vh>.es{width:34px;flex:none;font-size:17px}.l6c-vh>div{min-width:0}
+.l6c-vh small{display:block;font-size:10px;color:#9aa4c0;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.l6c-vh.nw small{color:#8fd0ff}
+.l6c-vh b{font-size:11.5px;line-height:1.2;word-break:keep-all;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.l6c-vh .t{display:block;font-size:10px;color:#cdb98a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.l6c-ar{font-style:normal;align-self:center;color:#ffd23a;font-size:11px;text-align:center}
+.l6c-pw{display:flex;justify-content:space-between;align-items:center;gap:6px;border-radius:8px;padding:2px 8px;margin:4px 0 3px;border:1px solid #6e5430;background:#0007;flex:none;font-size:12px;min-height:28px;color:#e9dcb8}
+.l6c-pw.u{background:#10301a90;border-color:#3a7a4a}.l6c-pw.d{background:#3a101090;border-color:#8a3a3a}.l6c-pw b{font-size:14px;white-space:nowrap}.l6c-pw small{font-size:10px;color:#b8a67a}
+.l6c-pw .dn,.l6c-t .dn{color:#ff8a7a;font-weight:700}
+.l6c-sc{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.l6c-t{width:100%;border-collapse:collapse;font-size:11.5px;table-layout:fixed;color:#e6e9f2}.l6c-t col.v{width:60px}.l6c-t col.d{width:56px}
+.l6c-t th{font-size:10.5px;color:#9a8a6a;font-weight:700;text-align:right;padding:0 2px 2px;position:sticky;top:0;background:#140e09}.l6c-t th:first-child{text-align:left}
+.l6c-t td{padding:1px 2px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-top:1px solid #ffffff10;font-variant-numeric:tabular-nums}
+.l6c-t td:first-child{text-align:left;color:#d8cdb4;white-space:normal;word-break:keep-all;line-height:1.2;padding-top:2px;padding-bottom:2px}.l6c-t td:first-child small{color:#888;font-size:10px}
+.l6c-t td:nth-child(2){color:#aab0c0}.l6c-t td s{color:#777}
+.l6c-t td.up{color:#7dff7d;font-weight:700}.l6c-t td.dn{color:#ff8a7a}.l6c-t .zr{color:#6a6458}
+.l6c-t tr.uq td:first-child{color:#ffe6a0}
+.l6c-t tr.hd td{color:#9a8a6a;font-size:10.5px;text-align:left;border-top:0;padding-top:5px;white-space:normal}
+.l6c-t tr.gm td{text-align:left;white-space:normal;font-size:11px;color:#cfe4ff;border-top:0;line-height:1.3}
+.l6c-t td.l6c-wip{text-align:center;white-space:normal;color:#b8a67a;line-height:1.6;padding:10px 4px;word-break:keep-all}.l6c-wip b{color:#ffe08a}
+.l6c .bvc{margin-top:6px}.l6c-nt{font-size:11px;color:#ffd77a;margin-top:5px;word-break:keep-all;line-height:1.35}
+.l6c-f{display:flex;gap:4px;flex:none;padding-top:4px;margin-top:3px;border-top:1px solid #6e543066}.l6c-f .btn{flex:1;min-width:0;min-height:38px;padding:0 2px;font-size:12.5px}
+/* 💥 딜량 카드 (오른쪽, 어둡게 안 함) = 딜량 칸(#dpw) 그대로 */
+body.ls6.l6dp #ls6dp{display:flex;flex-direction:column;position:fixed;top:6px;bottom:6px;right:calc(var(--l6cr,0px) + 6px);z-index:9;width:clamp(260px,34vw,320px);animation:ls6in .2s ease-out}
+#ls6dp .l6s-h{display:flex;align-items:center;gap:4px;height:34px;flex:none;margin:-6px -2px 3px;border-bottom:1px solid #6e543099}#ls6dp .l6s-h>b{flex:none;color:var(--gold);font-size:14px;white-space:nowrap}
+#ls6dp #dpw{flex:1;min-height:0;display:flex!important;flex-direction:column;background:none;border:0;box-shadow:none;padding:0;margin:0}
+#ls6dp #dpt{display:none}#ls6dp #dpp{flex:1 1 0;min-height:0;display:block}
+#ls6dp .dpm button{min-height:34px;font-size:11.5px}
+}
+/* ===== 📱 가로 6차 P4 화면 전체 페이지 (17 ls6FG): 머리줄 [←] 제목 · 지갑 · [✕] + 메뉴별 칸 (.l6g) — 세로·큰 화면은 그대로 (← · 지갑 숨김, 칸 안 나눔) ===== */
+#sheet .l6-bk,#sheet .l6-wal{display:none}
+@media (orientation:landscape) and (max-height:600px){
+/* 사용자 2026-11-09 "칭호·환생·단련 등등 화면에 꽉차지 않는 쪽으로, 장비는 괜찮은 거 같단 말이지" → 화면 전체 대신 가운데 뜬 창 (둘레로 전투가 보임, 장비 카드와 같은 어둡기 30%·같은 ui_panel 테두리) · 바깥(어두운 곳)을 누르면 ✕와 같음 (16 #sheet onclick) */
+body.ls6 #sheet{background:rgba(0,0,0,.3);align-items:center;justify-content:center}
+body.ls6 #sheet .sh{width:min(940px,calc(100vw - var(--l6cl,0px) - var(--l6cr,0px) - 2 * clamp(28px,6vw,72px)));max-width:none!important;height:calc(100dvh - 2 * clamp(12px,4.5dvh,40px));max-height:none!important;box-shadow:0 8px 28px #000c;border-width:12px;border-image-width:12px;padding:0 4px calc(2px + env(safe-area-inset-bottom,0px));box-sizing:border-box}
+body.ls6 #sheet .shh{gap:6px;justify-content:flex-start;min-height:40px;margin:0 -4px 4px;padding:0 2px}
+body.ls6 #sheet .l6-bk{display:block;flex:none;min-width:44px;min-height:40px;margin:-6px 0;padding:0;border:0;background:none;color:#ffe08a;font-size:22px;font-weight:900;line-height:1}
+body.ls6 #sheet .l6-bk:active{background:#ffffff14;border-radius:8px}
+body.ls6 #stitle{flex:0 1 auto;min-width:0;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.ls6 #sheet .l6-wal{display:flex;gap:10px;margin-left:auto;flex:none;font-size:12.5px;font-weight:600;color:#d8c8a0;white-space:nowrap}body.ls6 #sheet .l6-wal b{color:#ffd36a;font-variant-numeric:tabular-nums}body.ls6 #sheet .l6-wal .r b{color:#ff8494}
+body.ls6 #sheet[data-l6p="shop"] .l6-wal{display:none}body.ls6 #sheet[data-l6p="shop"] #sx{margin-left:auto}
+body.ls6 #sx{flex:none;min-width:44px!important}
+/* 칸 나눈 페이지: 창은 안 움직이고 칸마다 스크롤 */
+body.ls6 #sheet .sh:has(>#sbody.l6gd){display:flex;flex-direction:column;overflow:hidden}
+body.ls6 #sbody.l6gd{flex:1;min-height:0;display:flex;gap:6px;align-items:stretch}
+body.ls6 #sbody.l6gd>.l6g{min-width:0;min-height:0;overflow-y:auto;overscroll-behavior:contain;border-radius:9px;background:#0005;border:1px solid #3a2c1a;padding:2px 8px 6px;box-sizing:border-box}
+body.ls6 #sbody.l6gd>.l6g:empty{display:none}
+body.ls6 #sbody.l6gd .srow{padding:7px 0;font-size:13px}body.ls6 #sbody.l6gd .l6g>.srow:first-child{border-top:0}
+/* 🌟 환생 = 환생(좁게) | ♾️ 영혼 각성(가장 넓게) | 편의 특성 — 사용자 2026-11-09 "환생 너무 불편, 편의 특성은 간소화, 가장 중요한 건 가운데" (17 L6FX.rb가 이름만 em으로 감싸고 각성 설명 2줄을 비율 칸 아래로 옮김, 버튼·누르기·끌기는 16 그대로) */
+body.ls6 #sheet[data-l6p="rb"] .l6g[data-k="a"]{flex:0 1 clamp(120px,15vw,200px);min-width:104px}
+body.ls6 #sheet[data-l6p="rb"] .l6g[data-k="b"]{flex:1 1 0;min-width:280px;container-type:inline-size}
+body.ls6 #sheet[data-l6p="rb"] .l6g[data-k="c"]{flex:0 1 clamp(240px,29vw,300px);min-width:150px;container-type:inline-size}
+body.ls6 #sheet[data-l6p="rb"] .l6g[data-k="a"]>.srow:not(.rbinfo){flex-wrap:wrap;row-gap:4px}body.ls6 #sheet[data-l6p="rb"] .l6g[data-k="a"]>.srow>.bw{margin-left:auto;max-width:100%}body.ls6 #sheet[data-l6p="rb"] .l6g[data-k="a"]>.srow>.bw .btn{min-width:0;max-width:100%;min-height:38px;padding:0 6px}
+body.ls6 #sheet[data-l6p="rb"] .sosect{padding:6px 0 5px;border-top:0}
+body.ls6 #sheet[data-l6p="rb"] .l6g[data-k="b"]>.sosect{display:none}
+/* 맨 위 한 줄: ♾️ 영혼 각성 Lv · 총량 · [+1][전부] */
+body.ls6 #sheet[data-l6p="rb"] .soc{display:flex;align-items:center;gap:6px;margin-top:4px;padding:3px 4px 3px 8px}
+body.ls6 #sheet[data-l6p="rb"] .soh{display:contents}
+body.ls6 #sheet[data-l6p="rb"] .soh>span{order:1;flex:0 1 auto;min-width:0;display:flex;flex-direction:column;font-size:13px;line-height:1.25;white-space:nowrap}
+body.ls6 #sheet[data-l6p="rb"] .soh>span .l6n{font-style:normal;min-width:0;overflow:hidden;text-overflow:ellipsis}body.ls6 #sheet[data-l6p="rb"] .soh>span>b{flex:none}
+body.ls6 #sheet[data-l6p="rb"] .sot{order:2;flex:none;margin:0}body.ls6 #sheet[data-l6p="rb"] .sot>span{display:none}body.ls6 #sheet[data-l6p="rb"] .sot>b{font-size:16px}
+body.ls6 #sheet[data-l6p="rb"] .soh>.bw{order:3;margin-left:auto}body.ls6 #sheet[data-l6p="rb"] .soh>.bw .btn{min-width:42px;min-height:36px;padding:0 4px}
+body.ls6 #sheet[data-l6p="rb"] .l6-soi{margin-top:6px;padding:0 4px}body.ls6 #sheet[data-l6p="rb"] .l6-soi small{display:block;font-size:11px;line-height:1.45;color:#cdb98a;margin-top:2px}body.ls6 #sheet[data-l6p="rb"] .l6-soi small b{color:#ffe08a}
+/* 비율 막대 + 4갈래 한 줄씩: 이름 · % · [−] 칸 [+] (칸 누르기·끌기 그대로) */
+body.ls6 #sheet[data-l6p="rb"] .sor{margin-top:5px;padding:4px 8px}
+body.ls6 #sheet[data-l6p="rb"] .soa{font-size:12px}
+body.ls6 #sheet[data-l6p="rb"] .sostk{height:10px;margin:4px 0 3px}body.ls6 #sheet[data-l6p="rb"] .sostl{display:none}
+body.ls6 #sheet[data-l6p="rb"] .sobr{display:flex;align-items:center;gap:4px;padding:1px 0}
+body.ls6 #sheet[data-l6p="rb"] .sobt{flex:0 0 auto;align-items:center;gap:3px;font-size:13px}
+body.ls6 #sheet[data-l6p="rb"] .sobp{font-size:14px;min-width:36px}body.ls6 #sheet[data-l6p="rb"] .sobe,body.ls6 #sheet[data-l6p="rb"] .solv{display:none}body.ls6 #sheet[data-l6p="rb"] .sodl{min-width:0}
+body.ls6 #sheet[data-l6p="rb"] .sobc{flex:1 1 auto;min-width:0;width:auto;margin:0;gap:4px}
+body.ls6 #sheet[data-l6p="rb"] .sobc .btn.sosq{min-width:40px;width:40px;min-height:36px;font-size:18px}
+body.ls6 #sheet[data-l6p="rb"] .socl{height:26px;gap:2px}
+@container (min-width:430px){body.ls6 #sheet[data-l6p="rb"] .sobe{display:block;flex:0 1 auto;font-size:11.5px}body.ls6 #sheet[data-l6p="rb"] .sobe b{font-size:12.5px}}
+@media (max-width:699px){body.ls6 #sheet[data-l6p="rb"] .l6g[data-k="b"]{min-width:200px}}
+@container (max-width:249px){body.ls6 #sheet[data-l6p="rb"] .socl{display:none}body.ls6 #sheet[data-l6p="rb"] .sobt{flex:0 1 auto;min-width:0}body.ls6 #sheet[data-l6p="rb"] .sobn{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}body.ls6 #sheet[data-l6p="rb"] .sobc{justify-content:flex-end}body.ls6 #sheet[data-l6p="rb"] .soc{flex-wrap:wrap}}
+/* 편의 특성: 한 줄씩 = 이름 Lv / 최대 · 현재 값 | [+1][전부] (다 찼으면 MAX 글자만) */
+body.ls6 #sheet[data-l6p="rb"] .l6g[data-k="c"] .srow .bw .btn{min-width:44px;padding-left:6px;padding-right:6px}
+body.ls6 #sheet[data-l6p="rb"] .l6g[data-k="c"]>.srow{flex-wrap:wrap;row-gap:2px}body.ls6 #sheet[data-l6p="rb"] .l6g[data-k="c"]>.srow>span{flex:1 1 100%}body.ls6 #sheet[data-l6p="rb"] .l6g[data-k="c"]>.srow>.bw{margin-left:auto}
+body.ls6 #sheet[data-l6p="rb"] .l6g[data-k="c"]>.srow.l6tr{flex-wrap:nowrap;gap:6px;padding:4px 0}
+body.ls6 #sheet[data-l6p="rb"] .l6g[data-k="c"]>.srow.l6tr>span{flex:1 1 auto;min-width:0;display:grid;grid-template-columns:minmax(0,max-content) max-content max-content;column-gap:3px;align-items:baseline;line-height:1.3}
+body.ls6 #sheet[data-l6p="rb"] .srow.l6tr>span>.l6n{font-style:normal;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}body.ls6 #sheet[data-l6p="rb"] .srow.l6tr>span>small{white-space:nowrap}body.ls6 #sheet[data-l6p="rb"] .srow.l6tr>span>br{display:none}
+body.ls6 #sheet[data-l6p="rb"] .srow.l6tr>span>small:last-child{grid-column:1/-1;contain:inline-size;overflow:hidden;text-overflow:ellipsis;font-size:11.5px}
+body.ls6 #sheet[data-l6p="rb"] .l6g[data-k="c"]>.srow.l6tr>.bw{margin-left:0}
+@container (max-width:249px){body.ls6 #sheet[data-l6p="rb"] .srow.l6tr>span>small:not(:last-child){display:none}}
+@container (max-width:189px){body.ls6 #sheet[data-l6p="rb"] .l6g[data-k="c"]>.srow.l6tr{flex-wrap:wrap}body.ls6 #sheet[data-l6p="rb"] .l6g[data-k="c"]>.srow.l6tr>span{flex-basis:100%}body.ls6 #sheet[data-l6p="rb"] .l6g[data-k="c"]>.srow.l6tr>.bw{margin-left:auto}}
+body.ls6 #sheet[data-l6p="rb"] .rbinfo{padding:0 6px}body.ls6 #sheet[data-l6p="rb"] .rbinfo>button{flex-wrap:wrap}body.ls6 #sheet[data-l6p="rb"] .rbinfo>button em{white-space:nowrap;flex:none;margin-left:4px}
+/* 다 찬 버튼(MAX) = 글자만 (17 l6Mx) */
+body.ls6 #sbody.l6gd .btn.l6-mx{min-width:0!important;border:0;border-image:none;background:none;opacity:1;color:#ffd36a;font-weight:800;font-size:12.5px;padding:0 4px}
+/* 💪 단련 = 한 줄씩(이름 Lv ★ / 다음 +N · 비용 | [+1][+10][최대]) | 보유 골드·설명(한 번)·자동 단련 — 사용자 2026-11-09 "단련도 간소화" (17 L6FX.gu) */
+body.ls6 #sheet[data-l6p="gu"] .l6g[data-k="a"]{flex:1.9 1 0;container-type:inline-size}
+body.ls6 #sheet[data-l6p="gu"] .l6g[data-k="b"]{flex:1 1 0;min-width:200px}
+body.ls6 #sheet[data-l6p="gu"] .srow.gur{flex-wrap:nowrap;gap:6px;padding:5px 0}
+body.ls6 #sheet[data-l6p="gu"] .srow.gur>small{display:none}
+body.ls6 #sheet[data-l6p="gu"] .srow.gur>span{flex:1 1 auto;min-width:0;display:grid;grid-template-columns:minmax(0,max-content) max-content max-content max-content;column-gap:4px;align-items:baseline;line-height:1.3}
+body.ls6 #sheet[data-l6p="gu"] .srow.gur>span>.l6n{font-style:normal;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}body.ls6 #sheet[data-l6p="gu"] .srow.gur>span>small{white-space:nowrap}
+body.ls6 #sheet[data-l6p="gu"] .srow.gur .l6st{font-size:11.5px;white-space:nowrap}
+body.ls6 #sheet[data-l6p="gu"] .srow.gur .l6q{grid-column:1/-1;contain:inline-size;font-style:normal;font-size:12px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.ls6 #sheet[data-l6p="gu"] .srow.gur .bw .btn{min-width:44px;padding-left:6px;padding-right:6px}
+@container (max-width:329px){body.ls6 #sheet[data-l6p="gu"] .srow.gur{flex-wrap:wrap}body.ls6 #sheet[data-l6p="gu"] .srow.gur>span{flex-basis:100%}body.ls6 #sheet[data-l6p="gu"] .srow.gur>.bw{margin-left:auto}}
+/* 🏪 상점 = 왼쪽 세로 탭 | 내용 | 지갑 (뽑기 = 탭 맨 끝, 탭 순서는 게임 그대로) */
+body.ls6 #sheet[data-l6p="shop"] .l6g[data-k="t"]{flex:0 0 clamp(124px,16vw,170px);padding:4px}
+body.ls6 #sheet[data-l6p="shop"] .l6g[data-k="c"]{flex:1 1 0}
+body.ls6 #sheet[data-l6p="shop"] .l6g[data-k="w"]{flex:0 0 clamp(124px,16vw,170px);padding:4px}
+body.ls6 #sheet[data-l6p="shop"] .shp-hd{display:none}
+body.ls6 #sheet[data-l6p="shop"] .shp-t{display:flex;flex-direction:column;gap:4px;margin:0}
+body.ls6 #sheet[data-l6p="shop"] .shp-t button{min-height:42px;text-align:left;padding:0 8px;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.ls6 #sheet[data-l6p="shop"] .shp-t button i{display:inline;font-size:15px;margin-right:4px}
+body.ls6 #sheet[data-l6p="shop"] .shp-w{grid-template-columns:minmax(0,1fr);gap:4px}
+body.ls6 #sheet[data-l6p="shop"] .shp-w div{text-align:left;padding:4px 7px}body.ls6 #sheet[data-l6p="shop"] .shp-w small{display:block}
+body.ls6 #sheet[data-l6p="shop"] .l6g[data-k="c"]>:not(.shp-hd):first-of-type{margin-top:4px}
+/* ⚙️ 설정 = 왼쪽 분류 | 내용 (분류를 누르면 그 줄만) */
+body.ls6 #sheet[data-l6p="set"] .l6g[data-k="t"]{flex:0 0 clamp(132px,18vw,180px);padding:4px}
+body.ls6 #sheet[data-l6p="set"] .l6g[data-k="c"]{flex:1 1 0}
+body.ls6 .l6-vt{display:flex;flex-direction:column;gap:4px}
+body.ls6 .l6-vt button{min-height:42px;border-radius:9px;border:1px solid #4a3a22;background:#18120b;color:#cdb98a;font:inherit;font-size:13px;font-weight:700;text-align:left;padding:0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.ls6 .l6-vt button.on{background:linear-gradient(90deg,#5a4520,#2a2010);color:#ffe9b0;border-color:#c79a48}
+body.ls6 .l6-sc{display:none}body.ls6 .l6-sc.on{display:block}
+body.ls6 .l6-sch{font-size:12px;font-weight:800;color:#ffe08a;padding:5px 0 2px}
+body.ls6 #sheet[data-l6p="set"] .appdg{font-size:11.5px;line-height:1.5;color:#b8a67a;padding:6px 0;word-break:break-all}
+/* 🏅 칭호 = 지금 칭호 | 목록 (넓으면 2줄씩) */
+body.ls6 #sheet[data-l6p="title"] .l6g[data-k="a"]{flex:0 0 clamp(190px,24vw,250px)}
+body.ls6 #sheet[data-l6p="title"] .l6g[data-k="a"]>.srow{flex-direction:column;align-items:flex-start}body.ls6 #sheet[data-l6p="title"] .l6g[data-k="a"]>.srow>span{text-align:left!important}
+body.ls6 #sheet[data-l6p="title"] .l6g[data-k="b"]{flex:1 1 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));column-gap:12px;align-content:start}
+body.ls6 #sheet[data-l6p="title"] .l6g[data-k="b"]>.srow{border-top:1px solid #3a2c1a!important}
+/* 👘 스킨 = 내 스킨·뽑기 | 목록 */
+body.ls6 #sheet[data-l6p="wd"] .l6g[data-k="a"]{flex:0 0 clamp(200px,26vw,260px)}
+body.ls6 #sheet[data-l6p="wd"] .l6g[data-k="a"]>.srow:first-child{flex-wrap:wrap}
+body.ls6 #sheet[data-l6p="wd"] .l6g[data-k="b"]{flex:1 1 0;padding-top:6px}
+}
 
 </style>
 </head>
@@ -737,7 +1075,9 @@ body.lyP .view #rtw #rtwp{line-height:1}
 <nav class="menu bnav">
   <button class="mbtn" data-m="rb"><span class="fr" style="font-size:20px">🌟</span>환생<b class="apb" id="apb" hidden></b></button>
   <button class="mbtn" data-m="gu"><span class="fr" style="font-size:20px">💪</span>단련</button>
+  <button class="mbtn ls6b" data-l6="eq"><span class="fr" style="font-size:20px">🎒</span>장비</button>
   <button class="mbtn" data-m="ps"><span class="fr" style="font-size:20px">📜</span>스킬<b class="apb" id="psb" hidden></b></button>
+  <button class="mbtn ls6b" data-l6="pc"><span class="fr" style="font-size:20px">🧩</span>프리셋</button>
   <button class="mbtn" data-m="title"><span class="fr" style="font-size:20px">🏅</span>칭호</button>
   <button class="mbtn" data-m="shop"><span class="fr"><i class="ic " style="background-position:0% 0.0%"></i></span>상점</button>
   <button class="mbtn" data-m="set"><span class="fr"><i class="ic " style="background-position:60% 0.0%"></i></span>설정</button>
@@ -938,6 +1278,8 @@ function drawEqChar(){const c=$("eqc");if(!c)return false;{const K=KS();if(K){co
 /* 고유옵션이 꺼지는 장비는 아예 못 낌 (사용자 2026-11-02 "고유 꺼짐 거슬림 → 그냥 못 끼게"): 방어구·장신구만 막음 (무기·보조는 짝을 맞추는 중에 막히면 못 바꿔서 그대로 둠)
    조건이 바뀌면(무기 종류·직업·프리셋·보조 해제) 안 맞게 된 장비는 가방으로 (save()마다 hdFix → uqPut, 가방 100칸 넘어도 들어감) · 다시 맞춰도 자동으로 안 낌 */
 const UQN={k2:"🗡️ 두손검",ks:"⚔️ 방패",mt:"📖 마도서",mo:"🔮 오브",ac:"🗼 저격 석궁"};
+/* 아이템 무기 종류 이름 (툴팁·비교 머리줄): 기본 무기도 "한손검·활·지팡이"로 (사용자 2026-11-09 "한손검은 한손검이라고 써 있으면") */
+function wtNmI(it){const w=it.wt,c=it.c||"knight";return w=="2h"?"두손검":w=="bk"?"마도서":w=="cb"?"저격 석궁":c=="archer"?"활":c=="mage"?"지팡이":"한손검"}
 function wtNm(){const w=S&&S.eq&&S.eq.weapon;return !w?"":w.wt=="2h"?"두손검":w.wt=="bk"?"마도서":w.wt=="cb"?"저격 석궁":S.cls=="archer"?"활":S.cls=="mage"?"지팡이":"한손검"}
 function uqJo(w,a,b){const c=w.charCodeAt(w.length-1)-0xAC00;return w+(c>=0&&c<11172&&c%28?a:b)}
 function uqWhy(b){const w=wtNm();return (UQN[b]||"고유옵션")+" 전용 — "+((b=="ks"||b=="mo")&&!hdNo()?uqJo(b=="ks"?"방패":"오브","을","를")+" 먼저 껴 주세요":w?"지금 무기는 "+w:"지금 무기가 없어요")}
@@ -968,7 +1310,7 @@ function renderEq(){const p=$("eqp");if(!p)return;const T=invTab,sig=JSON.string
 function FST(){return {atk:atkNoVow(),def:def(),hp:mhp(),mp:mmp()}}
 function itemCard(it,cmp,sl){const n=sl?slv(sl):0,req=ireq(it);
   let h=(sl?starRow(n):'')+'<div class="tn" style="color:'+GC[it.g]+'">'+it.n+(n?" (+"+n+")":"")+'</div><div class="tg">('+GN[it.g]+' 아이템)</div>'+(sl&&eqOff(sl)?'<div class="tg" style="color:#ff8a7a">⛔ '+(eqOff(sl)=="두손검"?"두손검 착용 중 — 꺼짐":eqOff(sl)+" — 꺼짐")+'</div>':'');
-  h+='<div class="tb"><div class="tic g'+it.g+'">'+iic(it)+'</div><div class="treq">티어 : <b style="color:#ffd23a">'+tierTxt(it)+'</b><br>'+SL[it.sl][0]+(it.wt=="2h"?" · 두손":it.wt=="bk"?" · 마도서":it.wt=="cb"?" · 저격 석궁":"")+(it.c?' · <b'+(clsOk(it)?'':' style="color:#ff5a5a"')+'>'+CLS[it.c].n+'</b>':'')+(it.sl=="weapon"&&(it.c||"knight")=="knight"&&(!it.wt||it.wt=="2h")?'<br><span style="color:#cfe0ff">⚔️ 칼 길이 '+wblOf(it).L+' · 칼 폭 '+wblOf(it).w+'</span>':'')+(it.wt=="2h"?'<br><span style="color:#ff9a8a">🩸 흡혈 +5% · 흡혈석 상한 무시<br>넘친 회복은 혈막으로 (최대 HP 200%)<br>끼면 방패는 가방으로 해제돼요</span>':it.wt=="bk"?'<br><span style="color:#d2b4ff">'+BKTX+'</span>':it.wt=="cb"?'<br><span style="color:#ffd59a">'+CBTX+'</span>':'')+(ubOf(it)=="ac"?'<br><span style="color:#ffd59a">🗼 저격 석궁 고유옵션 · 저격 석궁일 때만 고유옵션 활성</span>':ubOf(it)=="mt"?'<br><span style="color:#d2b4ff">📖 마도서 마법사 고유옵션 (소환) · 마도서일 때만 고유옵션 활성</span>':ubOf(it)=="mo"?'<br><span style="color:#9fd0ff">🔮 오브 마법사 고유옵션 (주문) · 지팡이 + 오브일 때만 고유옵션 활성</span>':ubOf(it)=="k2"?'<br><span style="color:#ff9a8a">🗡️ 두손검 기사 고유옵션 · 두손검일 때만 고유옵션 활성</span>':ubOf(it)=="ks"?'<br><span style="color:#ffd77a">⚔️ 방패 기사 고유옵션 · 방패 착용 시만 고유옵션 활성</span>':'')+(it.sl=="shield"?({knight:'<br><span style="color:#ffd77a">🛡️ 맞을 때 10% 확률로 반격<br>공격력 50% + 방어력 70%로 되받아침<br>🔰 방벽(보석) 효과 ×1.5 (상한도 52.5%로)</span>',archer:'<br><span style="color:#c8ff7a">🎯 치명타 화살이 적을 관통<br>🚀 투사체 이동 속도 +50%</span>',mage:'<br><span style="color:#9fd0ff">'+OBTX+'</span>'})[it.c||"knight"]||"":"")+'<br>판매 '+iprice(it).toLocaleString()+'G</div></div><div class="tsep"></div>';
+  h+='<div class="tb"><div class="tic g'+it.g+'">'+iic(it)+'</div><div class="treq">티어 : <b style="color:#ffd23a">'+tierTxt(it)+'</b><br>'+SL[it.sl][0]+(it.sl!="weapon"?"":" · "+wtNmI(it))+(it.c?' · <b'+(clsOk(it)?'':' style="color:#ff5a5a"')+'>'+CLS[it.c].n+'</b>':'')+(it.sl=="weapon"&&(it.c||"knight")=="knight"&&(!it.wt||it.wt=="2h")?'<br><span style="color:#cfe0ff">⚔️ 칼 길이 '+wblOf(it).L+' · 칼 폭 '+wblOf(it).w+'</span>':'')+(it.wt=="2h"?'<br><span style="color:#ff9a8a">🩸 흡혈 +5% · 흡혈석 상한 무시<br>넘친 회복은 혈막으로 (최대 HP 200%)<br>끼면 방패는 가방으로 해제돼요</span>':it.wt=="bk"?'<br><span style="color:#d2b4ff">'+BKTX+'</span>':it.wt=="cb"?'<br><span style="color:#ffd59a">'+CBTX+'</span>':'')+(ubOf(it)=="ac"?'<br><span style="color:#ffd59a">🗼 저격 석궁 고유옵션 · 저격 석궁일 때만 고유옵션 활성</span>':ubOf(it)=="mt"?'<br><span style="color:#d2b4ff">📖 마도서 마법사 고유옵션 (소환) · 마도서일 때만 고유옵션 활성</span>':ubOf(it)=="mo"?'<br><span style="color:#9fd0ff">🔮 오브 마법사 고유옵션 (주문) · 지팡이 + 오브일 때만 고유옵션 활성</span>':ubOf(it)=="k2"?'<br><span style="color:#ff9a8a">🗡️ 두손검 기사 고유옵션 · 두손검일 때만 고유옵션 활성</span>':ubOf(it)=="ks"?'<br><span style="color:#ffd77a">⚔️ 방패 기사 고유옵션 · 방패 착용 시만 고유옵션 활성</span>':'')+(it.sl=="shield"?({knight:'<br><span style="color:#ffd77a">🛡️ 맞을 때 10% 확률로 반격<br>공격력 50% + 방어력 70%로 되받아침<br>🔰 방벽(보석) 효과 ×1.5 (상한도 52.5%로)</span>',archer:'<br><span style="color:#c8ff7a">🎯 치명타 화살이 적을 관통<br>🚀 투사체 이동 속도 +50%</span>',mage:'<br><span style="color:#9fd0ff">'+OBTX+'</span>'})[it.c||"knight"]||"":"")+'<br>판매 '+iprice(it).toLocaleString()+'G</div></div><div class="tsep"></div>';
   if(!cmp)return h+statLines(it,sl)+opLines(it)+(sl?"":sockLine(it));if(!clsOk(it)||wtX(it)){const a=istats(it),b=cmp.n?istats(cmp):{},dp=ipow(it)-(cmp.n?ipow(cmp):0);return h+["atk","def","hp","mp"].filter(k=>a[k]||b[k]).map(k=>{const d=(a[k]||0)-(b[k]||0);return '<div class="tl">'+SN[k]+' : +'+(a[k]||0)+(d?' <span class="'+(d>0?"up":"dn")+'">'+(d>0?"▲":"▼")+Math.abs(d).toLocaleString()+'</span>':'')+'</div>'}).join("")+'<div class="tl">'+(cpd(dp)||'전투력 변화 없음')+' <small>('+(wtX(it)?'같은 종류 무기끼리':CLS[it.c||"knight"].n+' 장비끼리')+' 비교)</small></div>'+opLines(it)+sockLine(it)}const a=istats(it),b=istats(cmp),fa=withEq(it.sl,withMoved(it),FST),fb=FST();
   return h+["atk","def","hp","mp"].filter(k=>a[k]||b[k]||fa[k]!=fb[k]).map(k=>{const d=fa[k]-fb[k];return '<div class="tl">'+SN[k]+' : +'+(a[k]||0)+(d?' <span class="'+(d>0?"up":"dn")+'">'+(d>0?"▲":"▼")+Math.abs(d).toLocaleString()+'</span>':'')+'</div>'}).join("")+opDiff(it,cmp)+sockLine(it)}
 function statLines(it,sl){const s=istats(it),b=sl?slotB(sl):{atk:0,def:0,hp:0,mp:0};return ["atk","def","hp","mp"].filter(k=>s[k]+b[k]).map(k=>'<div class="tl">'+SN[k]+' : +'+(s[k]+b[k])+(b[k]?' <span class="tsb">('+s[k]+' +★'+b[k]+')</span>':'')+'</div>').join("")}
@@ -1080,11 +1422,11 @@ function doRebirth(){const g=rbGain();if(!g)return;S.rb=(S.rb||0)+1;S.rp=(S.rp||
   log("🌟 "+S.rb+"번째 환생! 환생 포인트 +"+g,"o");if(S.rb==1&&!S.tut2)S.tutP=2;else if(S.rb<=2&&!S.tut3)S.tutP=3;if(moved.length)log("📦 레벨 제한으로 해제: "+moved.join(", ")+" → 인벤토리","o");addText(PX+30,PY-60,"🌟 환생!","#ffe066",0,1)}
 function rbRow(html){const d=document.createElement("div");d.className="srow";d.innerHTML=html;$("sbody").append(d)}
 function cyclePotAt(){S.potAt=POTL[(POTL.indexOf(potAt())+1)%POTL.length];log("🧪 물약 자동 사용: "+potAtL(),"o");save();render()}
-/* 무기 종류를 아이콘으로 구분 (사용자 2026-11-09 "대검이랑 한손검, 활이랑 석궁 모양이 같잖아"): 두손검 = 넓은 대검 · 저격 석궁 = 가로 활대+개머리 · 코드로 그린 SVG(글자 크기 1em 따라감 → 칸 크기 그대로) · 캐릭터 그림은 나중 */
-const GSIC='<svg viewBox="0 0 24 24" style="width:1.3em;height:1.3em;display:inline-block;vertical-align:middle;overflow:visible" aria-label="두손검"><g transform="rotate(45 12 12)" stroke="#1b2029" stroke-width=".9" stroke-linejoin="round"><path d="M12 -.6 15.7 3.4V15H8.3V3.4Z" fill="#c9d3df"/><path d="M12 .2 14.8 3.6V14.6H12Z" fill="#f4f8fc" stroke="none"/><path d="M12 3.8V14" stroke="#7f8b9b" stroke-width="1"/><rect x="4.4" y="14.8" width="15.2" height="3" rx="1.2" fill="#e2b04a"/><rect x="10.6" y="17.8" width="2.8" height="4.4" fill="#7a4a24"/><circle cx="12" cy="23" r="1.7" fill="#e2b04a"/></g></svg>',XBIC='<svg viewBox="0 0 24 24" style="width:1.3em;height:1.3em;display:inline-block;vertical-align:middle;overflow:visible" aria-label="저격 석궁"><g stroke="#1b2029" stroke-width=".9" stroke-linejoin="round" stroke-linecap="round"><path d="M1.6 9.4Q12 2.2 22.4 9.4" fill="none" stroke-width="3.6"/><path d="M1.6 9.4Q12 2.2 22.4 9.4" fill="none" stroke="#a0662e" stroke-width="2"/><path d="M1.9 9.6 12 12.6 22.1 9.6" fill="none" stroke="#e8e2cf" stroke-width=".7"/><rect x="10.3" y="5.2" width="3.4" height="17.6" rx="1" fill="#b98146"/><rect x="9.2" y="5.6" width="5.6" height="2.4" rx=".6" fill="#aeb8c4"/><path d="M12 .6 13.6 3.4H10.4Z" fill="#dfe6ee"/><path d="M12 3.4V12" stroke="#dfe6ee" stroke-width="1.1"/><path d="M13.7 16.5 15.6 19.2" stroke="#6b4320" stroke-width="1.6"/></g></svg>';
-function iic(it){return it.wt=="bk"?"📖":it.wt=="cb"?XBIC:it.wt=="2h"?GSIC:it.sl=="weapon"||it.sl=="shield"?CLS[it.c||"knight"][it.sl=="weapon"?"w":"s"][1]:SL[it.sl][1]}
+/* 무기 종류를 아이콘으로 구분 (사용자 2026-11-09 "대검이랑 한손검, 활이랑 석궁 모양이 같잖아" → "한손검이 더 두손검같이 길어 보여, 바꿔 줘"): 한손검 = 짧은 칼 SWIC(코드 SVG) · 두손검 = 🗡️(길어 보임) · 저격 석궁 = 가로 활대+개머리 · SVG는 글자 크기(em)를 따라가 칸 크기 그대로 · GSIC(넓은 대검)는 지금 안 씀 · 캐릭터 그림은 나중 */
+const SWIC='<svg viewBox="0 0 24 24" style="width:1.3em;height:1.3em;display:inline-block;vertical-align:middle;overflow:visible" aria-label="한손검"><g transform="rotate(45 12 12)" stroke="#1b2029" stroke-width=".9" stroke-linejoin="round"><path d="M12 2.4 14.2 5V15.4H9.8V5Z" fill="#c9d3df"/><path d="M12 3.1 13.5 5.2V15H12Z" fill="#f4f8fc" stroke="none"/><rect x="6.6" y="15.2" width="10.8" height="2.4" rx="1.1" fill="#e2b04a"/><rect x="10.9" y="17.6" width="2.2" height="3.6" fill="#7a4a24"/><circle cx="12" cy="22.2" r="1.4" fill="#e2b04a"/></g></svg>',GSIC='<svg viewBox="0 0 24 24" style="width:1.3em;height:1.3em;display:inline-block;vertical-align:middle;overflow:visible" aria-label="두손검"><g transform="rotate(45 12 12)" stroke="#1b2029" stroke-width=".9" stroke-linejoin="round"><path d="M12 -.6 15.7 3.4V15H8.3V3.4Z" fill="#c9d3df"/><path d="M12 .2 14.8 3.6V14.6H12Z" fill="#f4f8fc" stroke="none"/><path d="M12 3.8V14" stroke="#7f8b9b" stroke-width="1"/><rect x="4.4" y="14.8" width="15.2" height="3" rx="1.2" fill="#e2b04a"/><rect x="10.6" y="17.8" width="2.8" height="4.4" fill="#7a4a24"/><circle cx="12" cy="23" r="1.7" fill="#e2b04a"/></g></svg>',XBIC='<svg viewBox="0 0 24 24" style="width:1.3em;height:1.3em;display:inline-block;vertical-align:middle;overflow:visible" aria-label="저격 석궁"><g stroke="#1b2029" stroke-width=".9" stroke-linejoin="round" stroke-linecap="round"><path d="M1.6 9.4Q12 2.2 22.4 9.4" fill="none" stroke-width="3.6"/><path d="M1.6 9.4Q12 2.2 22.4 9.4" fill="none" stroke="#a0662e" stroke-width="2"/><path d="M1.9 9.6 12 12.6 22.1 9.6" fill="none" stroke="#e8e2cf" stroke-width=".7"/><rect x="10.3" y="5.2" width="3.4" height="17.6" rx="1" fill="#b98146"/><rect x="9.2" y="5.6" width="5.6" height="2.4" rx=".6" fill="#aeb8c4"/><path d="M12 .6 13.6 3.4H10.4Z" fill="#dfe6ee"/><path d="M12 3.4V12" stroke="#dfe6ee" stroke-width="1.1"/><path d="M13.7 16.5 15.6 19.2" stroke="#6b4320" stroke-width="1.6"/></g></svg>';
+function iic(it){return it.wt=="bk"?"📖":it.wt=="cb"?XBIC:it.wt=="2h"?CLS.knight.w[1]:it.sl=="weapon"&&(it.c||"knight")=="knight"?SWIC:it.sl=="weapon"||it.sl=="shield"?CLS[it.c||"knight"][it.sl=="weapon"?"w":"s"][1]:SL[it.sl][1]}
 /* 직업 고르기 창 (사용자 2026-11-02): 카드 = 쓰는 무기만 · 카드를 누르면 그 직업으로 · 바꿀 때 아래 버튼은 [취소]만 (처음 고를 때는 버튼도 그대로) */
-const CLWP={knight:"🗡️ 한손검<br>"+GSIC+" 두손검<br>🛡️ 방패",archer:"🏹 활<br>"+XBIC+" 저격 석궁<br>🎯 화살통",mage:"🪄 지팡이<br>📖 마도서<br>🔮 오브"};
+const CLWP={knight:SWIC+" 한손검<br>🗡️ 두손검<br>🛡️ 방패",archer:"🏹 활<br>"+XBIC+" 저격 석궁<br>🎯 화살통",mage:"🪄 지팡이<br>📖 마도서<br>🔮 오브"};
 function chooseClass(chg,op){if(chg){bsClsWin(op);return}const cur=chg&&S.cls;popup(chg?"🔄 직업 변경":"직업을 선택하세요",'<div class="chs">'+Object.entries(CLS).map(([k,c])=>'<div class="ch'+(cur==k?' pick':'')+'" style="font-size:30px;animation:none;cursor:'+(cur==k?'default':'pointer')+'"'+(cur==k?'':' onclick="pickClass(&quot;'+k+'&quot;)"')+'>'+c.ic+'<b style="font-size:14px">'+c.n+(cur==k?' (현재)':'')+'</b><small>'+(CLWP[k]||"")+(chg&&S.ceq&&S.ceq[k]&&S.ceq[k].weapon?'<br><span style="color:#ffd23a">보관: '+S.ceq[k].weapon.n+'</span>':'')+'</small></div>').join("")+'</div>'+(chg?'<small style="color:var(--mut)">카드를 누르면 바뀌어요 · 레벨·단련은 그대로, 장비는 직업별로 보관돼요</small>':''),
   chg?[["취소",closePop]]:Object.entries(CLS).map(([k,c])=>[c.ic+" "+c.n,()=>pickClass(k)]))}
 function itId(it){return it?(it.id||(it.id="i"+Date.now().toString(36)+Math.random().toString(36).slice(2,8))):null}
@@ -1490,6 +1832,23 @@ function statDetail(){const G=gemSum(),pc=v=>(Math.round(v*1000)/10)+"%",row=(a,
     +row("골드","+"+pc(tr("gold")*TRS.gold.v/100+tb("gold")+G.gold))+row("경험치","+"+pc(tr("exp")*TRS.exp.v/100+tb("exp")+G.exp))+row("드롭률","+"+pc(G.drop))+row("물약 회복",potHeal())+row("레벨 보너스","+"+pc(lvB()));try{SDESC["레벨 보너스"]="Lv."+S.lv+" 보너스예요. 공격력 +"+Math.floor(lvF(.5))+" · 방어력 +"+Math.floor(lvF(.3))+" · HP +"+Math.floor(lvF(5))+", 전체 능력치 +"+pc(lvB())+" (위 숫자에 이미 들어 있어요)"}catch(e){}
   const G2=thLs()>0?Object.assign({},G,{blood:G.blood+thLs()}):G;const sp=[["blood","🩸 흡혈"],["combo","⚡ 연격"],["counter","🛡️ 반격"],["burst","✴️ 폭렬"],["fire","🔥 화염"],["hunter","👑 사냥꾼"],["wall","🔰 방벽"],["undying","✝️ 불사"],["luck","🍀 행운"]].filter(([k])=>G2[k]>0);
   h+=sp.map(([k,n])=>'<div class="spx" data-sd="'+n+'"><span>'+n+'</span><b>'+pc(G2[k])+'</b></div>').join("")+'</div>';return h+smdHtml()}
+/* ===== 📊 statsWith(it) — 장비를 바꾸면 상세 능력치가 어떻게 되나 (가로 6차 장비 비교, 사용자 2026-11-09 "비교 숫자 = 둘 다 탭, 처음은 장비끼리") =====
+   it을 그 칸에 꼈다고 치고 상세 능력치 줄(statDetail과 같은 줄·순서) + 전투력(cp)을 지금과 나란히 셈 · S·화면·저장·로그는 안 바꿈 (S.eq를 잠깐 복사본으로 바꿨다 finally로 되돌림)
+   진짜 장착(02 equipIt → save → hdFix·uqPut)과 같게: 보석 옮기기(withMoved) · 두손검·석궁·마도서면 보조 칸 빠짐 · 조건 안 맞게 된 고유 장비(방어구·장신구)는 빠짐(off에 적음)
+   피의 맹세·🐎 기세는 뺌 (비교창 FST·atkNoVow와 같음: 계속 출렁이는 값) · 0.25초 묶음 opPR 캐시는 계산 전후로 비움
+   돌려줌 {ok, why, sl, rows:[{k,n,a,b,ta,tb,d}] (a=지금·b=고르면·d=b−a, 숫자 줄 순서 그대로, 한쪽에만 있는 줄도 포함), now:{k:값}, after:{k:값}, cpNow, cpAfter, off:[빠지는 장비]} · UI는 보여 주기만 */
+function stRows(){const G=gemSum(),pc=v=>(Math.round(v*1000)/10)+"%",sg=v=>(v<0?"":"+")+pc(v),r=[],o=(k,n,v,t)=>r.push({k,n,v,t:t==null?String(v):t}),N=v=>v.toLocaleString();
+  o("atk","공격력",atkNoVow(),N(atkNoVow()));o("def","방어력",def(),N(def()));o("hp","최대 HP",mhp(),N(mhp()));o("mp","최대 MP",mmp(),N(mmp()));o("crit","치명 확률",crit(),pc(crit()));o("critD","치명 피해",critD(),pc(critD()));{const a=aspd();o("aspd","공격 속도",a,sg(a))}{const m=hSpd()/HSPD-1;o("mspd","이동 속도",m,sg(m))}
+  const rw0=opRw;opRw=function(row,p,k,nm){const {P,R}=opPR(),on=R[k]>1e-9?R[k]:0,of=P[k]-on;o("o_"+k,nm,on,"+"+(OPD[k].su?opV(k,on):pc(on)));if(of>1e-9)r[r.length-1].of=of;return ""};try{opRows(()=>"",pc)}finally{opRw=rw0}
+  o("gold","골드",tr("gold")*TRS.gold.v/100+tb("gold")+G.gold);o("exp","경험치",tr("exp")*TRS.exp.v/100+tb("exp")+G.exp);o("drop","드롭률",G.drop);for(const x of r.slice(-3))x.t="+"+pc(x.v);o("pot","물약 회복",potHeal(),N(potHeal()));o("lvB","레벨 보너스",lvB(),"+"+pc(lvB()));
+  const G2=thLs()>0?Object.assign({},G,{blood:G.blood+thLs()}):G;for(const [k,n] of [["blood","🩸 흡혈"],["combo","⚡ 연격"],["counter","🛡️ 반격"],["burst","✴️ 폭렬"],["fire","🔥 화염"],["hunter","👑 사냥꾼"],["wall","🔰 방벽"],["undying","✝️ 불사"],["luck","🍀 행운"]])if(G2[k]>0)o("g_"+k,n,G2[k],pc(G2[k]));return r}
+function stCalc(){_opPRc=null;const va=vowAtk;vowAtk=()=>0;try{return {rows:stRows(),cp:cp()}}finally{vowAtk=va;_opPRc=null}}
+function statsWith(it){if(!S||!S.eq||!it||!it.sl)return null;const sl=it.sl,e0=S.eq;let why=!clsOk(it)?"다른 직업 장비예요":S.lv<ireq(it)?"Lv."+ireq(it)+"부터 낄 수 있어요":"",A,B,off=[];
+  if(!why&&e0[sl]!==it){if(sl=="shield"&&hdNo())why=th2()?"두손검을 낀 동안은 방패를 못 껴요":bkOn()?"마도서를 낀 동안은 오브를 못 껴요":"저격 석궁을 낀 동안은 화살통을 못 껴요";if(!why)why=uqBad(it)}
+  try{A=stCalc();const E=Object.assign({},e0);S.eq=E;if(e0[sl]!==it)E[sl]=withMoved(it);if(hdNo()&&E.shield&&sl!="shield"){off.push(E.shield);delete E.shield}for(const k of SLK){if(k=="weapon"||k=="shield"||k==sl)continue;const x=E[k],b=x&&ubOf(x);if(b&&!ubOk(b)){off.push(x);delete E[k]}}B=stCalc()}finally{S.eq=e0;_opPRc=null}
+  const now={},after={},rows=[],ix={};for(const x of A.rows){now[x.k]=x.v;ix[x.k]=rows.length;rows.push({k:x.k,n:x.n,a:x.v,b:0,ta:x.t,tb:"",of:x.of||0})}
+  let at=0;for(const x of B.rows){after[x.k]=x.v;if(ix[x.k]==null){rows.splice(at,0,{k:x.k,n:x.n,a:0,b:x.v,ta:"",tb:x.t,ofB:x.of||0});for(const k in ix)if(ix[k]>=at)ix[k]++;ix[x.k]=at}else{const q=rows[ix[x.k]];q.b=x.v;q.tb=x.t;if(x.of)q.ofB=x.of}at=ix[x.k]+1}
+  for(const q of rows)q.d=q.b-q.a;return {ok:!why,why,sl,rows,now,after,cpNow:A.cp,cpAfter:B.cp,off}}
 /* ===== 🐾 상세 능력치 · 소환수 (사용자 2026-11-04 B안 "실시간으로 바뀌는 모습을 볼 수 있게") =====
    소환수가 있을 때만 (smWant) · 틀은 장비창을 다시 그릴 때(statDetail) · 숫자는 0.25초마다 글자만 바꿈(smdV → [data-q]) — 창을 다시 그리지 않음
    숫자는 게임 계산 그대로 (15i smDm·smMelee·satStep·smUpR): 피해 = 보통 몬스터에게 평균(무작위·치명·보스 피해 빼고) · 간격 = 기본 ÷ (1+공격 속도) ÷ (1+소환수 공격 속도) · 📢 군주의 함성 중첩(근접만) 포함 */
@@ -2796,7 +3155,7 @@ function skUnequip(i){const s=psGet(S.psl[i]);S.psl[i]=null;if(s)log("📜 "+s.n
 function skTop(sb,o,eqs,rep,bl,bv){sb._sks=psSig();
   /* 맨 위 한 줄: 장착 수 · [🎒 프리셋 N ▾] (장비창과 같은 프리셋·접기 줄, 03 pnHd) · [🌳 지도] → 펼치면 아래에 10칸 줄 (pnRw) */
   const pk=!!(S&&S.cls),hd=document.createElement("div");hd.className="skq-h"+(pk?" skq-hp":"");hd.innerHTML="<span class=\"ns\">"+(o?"장착 "+eqs.size+" / "+o+(pk?"":" <small>칸을 누르면 설명</small>"):"스킬 칸"+(pk?"":" <small>환생하면 열려요</small>"))+"</span>"+(pk?pnHd("s"):"");const vb=document.createElement("button");vb.className="skvt";vb.textContent=bl;vb.onclick=()=>{window._skView=bv;window._skRep=null;renderSheet()};hd.append(vb);if(pk){const cw=document.createElement("div");cw.innerHTML=cpHd()+cpRw();const cr=[...cw.children];cr.forEach(x=>sb.append(x));try{pnFix(cr[1])}catch(e){}setTimeout(()=>{try{if(cr[1].isConnected)pnFix(cr[1])}catch(e){}},0)}sb.append(hd);if(pk){const w=document.createElement("div");w.innerHTML=pnRw("s");const pr=w.firstChild;sb.append(pr);try{pnFix(pr)}catch(e){}setTimeout(()=>{try{if(pr.isConnected)pnFix(pr)}catch(e){}},0)}
-  if(rep){const rb=document.createElement("div");rb.className="skq-rep";rb.innerHTML="<span>"+rep.ic+" <b>"+rep.n+"</b>와 바꿀 칸을 눌러 주세요</span>";const cb=document.createElement("button");cb.textContent="취소";cb.onclick=()=>{window._skRep=null;renderSheet()};rb.append(cb);sb.append(rb)}
+  if(rep){const rb=document.createElement("div");rb.className="skq-rep";rb.innerHTML="<span>"+rep.ic+" <b>"+rep.n+"</b>"+(josa(rep.n)=="이"?"과":"와")+" 바꿀 칸을 눌러 주세요</span>";const cb=document.createElement("button");cb.textContent="취소";cb.onclick=()=>{window._skRep=null;renderSheet()};rb.append(cb);sb.append(rb)}
   /* 칸 먼저 고른 "바꾸기"(2026-11-02): 고른 칸에 넣을 스킬을 목록·지도에서 고름 */
   const rs=skRS(o);if(rs!=null){const ct=psGet(S.psl[rs]),rb=document.createElement("div");rb.className="skq-rep";rb.innerHTML="<span>📍 <b>"+(rs+1)+"번 칸</b>"+(ct&&psFit(ct)?" ("+ct.n+")":"")+"에 넣을 스킬을 골라 주세요</span>";const cb=document.createElement("button");cb.textContent="취소";cb.onclick=()=>{window._skRepS=null;renderSheet()};rb.append(cb);sb.append(rb)}
   /* 장착 칸: 누르면 설명판([빼기][바꾸기]) · 바꿀 칸 고르는 중이면 그 칸에 넣기 · 빈 칸은 고른 스킬을 넣거나, 넣을 스킬 고르기 */
@@ -2804,11 +3163,7 @@ function skTop(sb,o,eqs,rep,bl,bv){sb._sks=psSig();
   for(let i=0;i<o;i++){const t=psGet(S.psl[i]),ok=t&&psFit(t),c=document.createElement("button");c.type="button";
     if(ok){const w=skWhy(t);c.className="skq-s on"+(w?" bad":"")+(rep?" pick":"")+((fs===i||rs===i)?" sel":"");c.innerHTML="<span class='sqi'>"+skI(t)+"</span><b>"+t.n+"</b>"+(w?"<i class='sqw'>🚫</i>":"");c.setAttribute("aria-label",(i+1)+"번 칸 "+t.n+" (누르면 설명·바꾸기·빼기)")}
     else{c.className="skq-s em"+(rep||(selOk&&rs==null)?" pick":"")+(rs===i?" sel":"");c.innerHTML="<span class='sqi'>＋</span><b>빈 칸</b>";c.setAttribute("aria-label",(i+1)+"번 빈 칸")}
-    c.onclick=()=>{if(window._skRep){const id=window._skRep;window._skRep=null;psEquip(id,i);return}
-      if(rs!=null){window._skRepS=rs===i?null:i;renderSheet();return}
-      if(ok){if(window._skSlot===i){window._skSlot=null;window._skSel=null}else{window._skSlot=i;window._skSel=t.id}renderSheet();return}
-      if(selOk){window._skSlot=null;psEquip(sel.id,i);return}
-      skPickFor(i)};sl.append(c)}
+    c.onclick=()=>skSlotTap(i,o,eqs);sl.append(c)}
   if(o)sb.append(sl);
   /* 🧹 지금 프리셋 스킬 전부 빼기 (사용자 2026-11-03 "하나씩 빼기 어렵다") · 확인 창 [아니요][예] */
   if(o&&eqs.size>=2){const cw=document.createElement("div");cw.className="skq-clr";const cb=document.createElement("button");cb.type="button";cb.textContent="🧹 전부 빼기 ("+eqs.size+")";cb.onclick=skClearAll;cw.append(cb);sb.append(cw)}
@@ -2851,65 +3206,155 @@ function skTags(s){const m=skDs(s).match(/^\(([^)]*)\)/);return m?m[1].split(/[�
 /* 지도 연계 = SKE + 꼬리표 자동(SKON: 그 꼬리표가 붙은 스킬과 이어짐, 예 그물 ↔ (폭발) 스킬들) — 지도에 그리는 줄만, ◆ 표시·내 빌드 연계는 그대로 SKE */
 function skMapE(L){const ids=new Set(L.map(s=>s.id)),E=[],seen=new Set(),add=(a,b,t)=>{if(a==b||!ids.has(a)||!ids.has(b))return;const q=a<b?a+"|"+b:b+"|"+a;if(seen.has(q))return;seen.add(q);E.push([a,b,t])};
   SKE.forEach(([a,b])=>add(a,b,0));L.forEach(r=>{const on=r.on||SKON[r.id];if(on)L.forEach(s=>{if(skTags(s).includes(on))add(r.id,s.id,1)})});return E}
-function skTreeView(sb,o){const eqs=new Set(S.psl.slice(0,o).filter(x=>{const t=psGet(x);return t&&psFit(t)})),rep=window._skRep&&psGet(window._skRep);skTop(sb,o,eqs,rep,"☰ 목록","row");
-  const L0=PSK.filter(psFit),own=x=>(S.rb||0)>=(x.rb||0),free=()=>{for(let i=0;i<o;i++){const t=psGet(S.psl[i]);if(!t||!psFit(t))return i}return -1},rs=skRS(o),sel=window._skSel&&psGet(window._skSel);
-  const AI={};SKAXS.forEach((a,i)=>AI[a[0]]=i);const G=SKAXS.map(()=>[]),PI=new Map(PSK.map((s,i)=>[s.id,i]));L0.forEach(s=>{let k=skAx(s);if(AI[k]==null)k="cm";G[AI[k]].push(s)});G.forEach(g=>g.sort((a,b)=>skTier(a)-skTier(b)||PI.get(a.id)-PI.get(b.id)));
-  const E=skMapE(L0),rel=new Set();if(sel)E.forEach(([a,b])=>{if(a==sel.id)rel.add(b);if(b==sel.id)rel.add(a)});
+/* ===== 🌳 스킬 지도 = 기능별 나무 노드 (가로 6차, 사용자 2026-11-09 "빌드에 무엇을 하는지로" · 세로도 같이 "1번으로 같이 똑같이") =====
+   시안 docs/UI/시안/2026-11-08_가로_UI_6차.html TREE · 계획 docs/UI/2026-11-08_가로_UI_6차_계획.md 0-1
+   ⭐ → 큰 가지(마름모) → 작은 가지(빗살 하나) → 줄 [핵심 → 이어지는 스킬] · 빨간 길 = ⭐에서 장착한 스킬까지 · 장착 = 금·빨강 테두리 + 칸 번호
+   세로 스킬 창(skTreeView)·가로 스킬 판·🌳 넓은 지도(17)가 같이 씀 (skNM) · 넣기·빼기는 예전 함수 그대로 (psEquip·skUnequip·skInto·elSet)
+   ✏️ SKTREE = 배치 표 하나 (초안, 사용자가 "○○를 △△로" 옮기며 다시 정함): [큰 가지 그림, 이름, [[작은 가지 그림, 이름, [[줄1 위→아래 스킬 id],[줄2]…], (이 가지가 붙는 작은 가지 이름)]…]]
+   스킬 id만 다른 줄로 옮기고 python build.py → 자리는 불러올 때 저절로 다시 계산 · 스킬 규칙은 안 바뀜 (보이는 자리만)
+   "E:fbl" = 원소 칸(🔥 fbl · ⚡ lch · ❄️ ics) · "B:fbl" = 그 원소 큰 한 방 (직업마다 다른 스킬: 기사 15m EAU · 궁수 EAA · 마법사 SKTBM) · 표에 없는 스킬(새 스킬)은 맨 끝 "❔ 새 스킬" 가지에 */
+const SKTREE=[
+ ["⚔️","일반 공격",[
+  ["💪","공격 강화",[["dbl","tri"],["pj"],["as","ncm"]]],
+  ["🌈","원소 🔥⚡❄️",[["E:fbl","B:fbl"],["E:lch","B:lch"],["E:ics","B:ics"]],"공격 강화"],
+  ["🔄","공격 변환",[["sw"],["shb"]]],
+  ["🎯","투사체",[["ps","hm"],["pr","ch"]]],
+  ["💥","광역 공격",[["bx"],["swp"],["nqk"]]],
+  ["🎲","치명타",[["hey","trp"],["nex"]]]]],
+ ["🔥","버프",[
+  ["📈","세지는 버프",[["bth","gp"],["frz","mcv"]]],
+  ["⭕","오라",[["au","gd"],["ha","ar"]]]]],
+ ["🧚","소환",[
+  ["🧚","소환수",[["sm"],["wr"],["gol"],["tur","cmd","vly"]]],
+  ["🌟","소환 강화",[["su","ss"],["nlk","nsc"],["nlr"]]],
+  ["💫","닿기",[["sat"],["wir"],["ngl"]]]]],
+ ["💧","마나·주문",[
+  ["💧","마나",[["mu","mr"],["mab","bmn"],["ms","nmb","nbt"]]],
+  ["🪄","원소·주문 강화",[["ovl","anv"],["spa","bmg"],["qcs","ech"],["cmr","frn"]]]]],
+ ["🛡️","방어·생존",[
+  ["🧱","버티기",[["hu","hr"],["sp"],["dc"]]],
+  ["🌋","맞으면 반격",[["nrt"],["sb"]]]]],
+ ["🌀","이동",[
+  ["💨","빠르게",[["ds","ngs"],["nzc","nmo"]]],
+  ["🐂","달려들기",[["nch","nkb"],["nhs"]]],
+  ["🍖","몬스터",[["lr"]]]]],
+ ["🎳","처치·상태이상",[
+  ["🎳","처치 연쇄",[["ncx"],["nhv"]]],
+  ["🧪","상태이상",[["nvn","nct"],["net"],["nrx"]]]]]];
+const SKTBM={fbl:"mtr",lch:"thd",ics:"blz"};/* 마법사 원소 큰 한 방 (지팡이 15e) */
+/* 표 칸 이름 → 이 직업의 스킬 id */
+function skTKid(k,c){c=c||(S&&S.cls);if(k[1]!==":")return k;const e=k.slice(2);if(k[0]=="E")return e;return c=="knight"?(typeof EAU!="undefined"?EAU[e]:null):c=="archer"?(typeof EAA!="undefined"?EAA[e]:null):SKTBM[e]}
+/* 자리 계산 (표 → 좌표, 한 번만): 작은 가지마다 빗살 하나 · 각도 = 줄 수 비례(큰 가지끼리 더 띄움) · 시작 반지름 = 칸 52×62가 안 겹치는 가장 작은 값 (시안과 같은 계산) */
+let _skTL=null;
+function skTL(){if(_skTL&&_skTL.n===PSK.length)return _skTL;const T=SKTREE.map(b=>[b[0],b[1],b[2].map(s=>[s[0],s[1],s[2].map(c=>c.slice()),s[3]])]),used=new Set();
+  T.forEach(b=>b[2].forEach(s=>s[2].forEach(c=>c.forEach(k=>{if(k[1]===":"){const e=k.slice(2);used.add(e);["knight","archer","mage"].forEach(cl=>{const i=skTKid("B:"+e,cl);if(i)used.add(i)})}else used.add(k)}))));
+  const lo=PSK.filter(s=>!used.has(s.id)).map(s=>s.id);if(lo.length){const cs=[[],[],[]];lo.forEach((id,i)=>cs[i%3].push(id));T[T.length-1][2].push(["❔","새 스킬",cs.filter(c=>c.length)])}
+  const BR=[],SB=[],KI={};T.forEach((b,bi)=>{BR.push({e:b[0],n:b[1],subs:[]});b[2].forEach(s=>{const k=SB.length;SB.push({e:s[0],n:s[1],b:bi,cols:s[2],k,pn:s[3],par:null});BR[bi].subs.push(k);s[2].forEach((cl,c)=>cl.forEach((n,j)=>KI[n]={b:bi,s:k,c,j}))})});
+  SB.forEach(s=>{if(s.pn){const p=SB.find(q=>q.b==s.b&&q.n==s.pn);s.par=p?p.k:null}});
+  const NP={},SH=[],BH=[],W=52,H=62,nd=(px,py)=>Math.min(Math.abs(px)>1e-6?W/Math.abs(px):1e9,Math.abs(py)>1e-6?H/Math.abs(py):1e9),bx=[],hit=(x,y,w,h)=>bx.some(b=>Math.abs(b[0]-x)<(b[2]+w)/2+4&&Math.abs(b[1]-y)<(b[3]+h)/2+4);
+  let U=0;const pos=[];SB.forEach((s,i)=>{if(i)U+=SB[i-1].b==s.b?.7:1.6;const w=Math.max(1,s.cols.length);pos.push([U,U+w]);U+=w});U+=1.6;
+  const b0=SB.filter(s=>s.b==0),a0=(pos[b0[0].k][0]+pos[b0[b0.length-1].k][1])/2,BA=BR.map(b=>{const s=b.subs;return ((pos[s[0]][0]+pos[s[s.length-1]][1])/2-a0)/U*2*Math.PI}),tw=(s,f)=>Math.max(56,[...s].length*f+f*3.2);
+  BR.forEach((b,i)=>{BH[i]=[Math.sin(BA[i])*150,-Math.cos(BA[i])*150];bx.push([BH[i][0],BH[i][1]+12,tw(b.n,13.5),66])});bx.push([0,0,70,70]);
+  SB.forEach((s,i)=>{const a=((pos[i][0]+pos[i][1])/2-a0)/U*2*Math.PI,dx=Math.sin(a),dy=-Math.cos(a),px=Math.cos(a),py=Math.sin(a),lat=nd(px,py)+2,st=nd(dx,dy)+2,n=s.cols.length;
+    const P=R=>{const o=[],hr=Math.max(240,R-92);o.push(["h",dx*hr,dy*hr+10,tw(s.n,12),54]);s.cols.forEach((cl,c)=>{const of=(c-(n-1)/2)*lat;cl.forEach((nm,j)=>{const r=R+j*st;o.push([nm,dx*r+px*of,dy*r+py*of+12,W,H])})});return o};
+    let R=300,o;for(;R<1500;R+=6){o=P(R);if(!o.some(q=>hit(q[1],q[2],q[3],q[4])))break}
+    o.forEach(q=>{bx.push([q[1],q[2],q[3],q[4]]);if(q[0]=="h")SH[i]=[q[1],q[2]-10];else NP[q[0]]=[q[1],q[2]-12]})});
+  const ext=Math.max(...bx.map(b=>Math.max(Math.abs(b[0])+b[2]/2,Math.abs(b[1])+b[3]/2)))+30,MS=Math.ceil(ext*2),MO=MS/2;
+  for(const k in NP){NP[k][0]+=MO;NP[k][1]+=MO}SH.forEach(p=>{p[0]+=MO;p[1]+=MO});BH.forEach(p=>{p[0]+=MO;p[1]+=MO});
+  return _skTL={n:PSK.length,BR,SB,KI,NP,SH,BH,MS,MO}}
+/* 원소 칸 이름: 기사·궁수 = 무기 이름(화염검·염검·불화살…, 15m eaWn) · 마법사 = 게임 이름 그대로 */
+function skNmN(s,k){try{if(k&&k[0]=="E"&&k[1]==":"&&eaCl())return eaWn(s.id)}catch(e){}return s.n}
+/* 이 스킬이 지도 어디에 있나 (설명판 꼬리표): "⚔️ 일반 공격 · 공격 강화" */
+function skTLoc(id){const L=skTL();for(const k in L.KI)if(skTKid(k)===id){const q=L.KI[k];return L.BR[q.b].e+" "+L.BR[q.b].n+" · "+L.SB[q.s].n}return ""}
+/* 🪄 마법사 원소 = 10칸 밖 원소 줄 (15h·15m, 지팡이·마도서) · 기사·궁수 원소 = 10칸 중 한 칸 (게임 규칙 그대로) */
+function skElR(s){try{return !!(s&&elRow()&&ELK.includes(s.id))}catch(e){return false}}
+function skFree(o){for(let i=0;i<o;i++){const t=psGet(S.psl[i]);if(!t||!psFit(t))return i}return -1}
+/* 설명판 버튼 하나 누르기 (세로 설명판·가로 판 설명 줄·넓은 지도 설명 창 같이): 칸 고르는 중이면 그 칸에 · 낀 것 = 빼기 · 빈 칸 있으면 넣기 · 없으면 바꿀 칸 고르기 */
+function skSelAct(sel,o,eqs){if(skInto(sel,o))return;if(eqs.has(sel.id)){skUnequip(S.psl.indexOf(sel.id));return}const f=skFree(o);if(f>=0){window._skRep=null;psEquip(sel.id,f)}else{window._skRep=sel.id;renderSheet();if(sheetName=="ps"){const q=document.querySelector("#sbody .skq-h");if(q)q.scrollIntoView({block:"start",behavior:"smooth"})}}}
+/* 설명판 버튼 만들기 · p = 버튼 둘이면 "two" 붙일 판 · 직업이 안 맞는 스킬은 버튼 없음 */
+function skSelBtns(sel,o,eqs,bc,p){if(!psFit(sel))return null;const ow=(S.rb||0)>=(sel.rb||0),eq=eqs.has(sel.id),fs=window._skSlot,rs=skRS(o);
+  if(skElR(sel)){const on=elId()==sel.id,b=document.createElement("button");b.type="button";b.className=bc+(on?" un":"");b.textContent=on?"빼기":"🔹 원소 줄에";b.onclick=e=>{e.stopPropagation();elSet(on?"":sel.id)};return b}
+  if(eq&&fs!=null&&fs<o&&S.psl[fs]==sel.id){if(p)p.classList.add("two");return skSlotBtns(fs,bc,"un")}
+  const bt=document.createElement("button");bt.type="button";bt.className=bc+(eq&&rs==null?" un":"");const fi=skFree(o);bt.textContent=!ow?"환생"+sel.rb:rs!=null?skIntoT(sel,o,eqs):eq?"빼기":fi>=0?"넣기":"바꾸기";bt.disabled=!ow||o<1||(rs!=null&&S.psl[rs]==sel.id);
+  bt.onclick=e=>{e.stopPropagation();skSelAct(sel,o,eqs)};if(rs!=null){if(p)p.classList.add("two");const w2=document.createElement("span");w2.className="skbw";w2.append(bt);return w2}return bt}
+/* 지도 칸 누르기: 한 번 = 설명 · 두 번 = 넣기 (원소 줄이면 그 원소로 · 칸 고르는 중이면 그 칸에) */
+function skNdTap(s,o,eqs){if(window._skMoved)return;window._skGest=0;const nw=Date.now(),dbl=window._skLT&&window._skLT.id==s.id&&nw-window._skLT.t<450,ow=(S.rb||0)>=(s.rb||0);window._skLT={id:s.id,t:nw};window._skSel=s.id;window._skSlot=null;
+  if(dbl&&ow&&psFit(s)&&o>0){if(skElR(s)){window._skLT=null;if(elId()!=s.id){elSet(s.id);return}}
+    else if(skRS(o)!=null){window._skLT=null;skInto(s,o);return}
+    else if(!eqs.has(s.id)){window._skLT=null;skSelAct(s,o,eqs);return}}
+  renderSheet()}
+/* 장착 칸 누르기 (세로 위 10칸·가로 판 10칸 같이, 예전 skTop 그대로) */
+function skSlotTap(i,o,eqs){const t=psGet(S.psl[i]),ok=t&&psFit(t),rs=skRS(o),sel=window._skSel&&psGet(window._skSel),selOk=sel&&psFit(sel)&&!eqs.has(sel.id)&&(S.rb||0)>=(sel.rb||0);
+  if(window._skRep){const id=window._skRep;window._skRep=null;psEquip(id,i);return}
+  if(rs!=null){window._skRepS=rs===i?null:i;renderSheet();return}
+  if(ok){if(window._skSlot===i){window._skSlot=null;window._skSel=null}else{window._skSlot=i;window._skSel=t.id}renderSheet();return}
+  if(selOk){window._skSlot=null;psEquip(sel.id,i);return}
+  skPickFor(i)}
+function skEqs(o){return new Set(S.psl.slice(0,o).filter(x=>{const t=psGet(x);return t&&psFit(t)}))}
+function skTreeView(sb,o){const eqs=skEqs(o),rep=window._skRep&&psGet(window._skRep);skTop(sb,o,eqs,rep,"☰ 목록","row");
+  const own=x=>(S.rb||0)>=(x.rb||0),rs=skRS(o),sel=window._skSel&&psGet(window._skSel);
   /* 설명판 (지도 위) */
   const p=document.createElement("div");p.className="skt-sel top";
-  if(!sel){p.innerHTML="<span class='sqx'><small>"+(rs!=null?"넣을 스킬을 눌러 고르기 · 두 번 = 바로 넣기":"누르면 설명 + 이어진 스킬만 밝게 · 두 번 = 바로 장착")+" · 끌어서 이동 · <span style='color:#e04a35'>■</span>장착 <span style='color:#7fc8ff'>◆</span>연계 ⭐핵심</small></span>"}
-  else{const eq=eqs.has(sel.id),ow=own(sel),w=ow?skWhy(sel):"",syn=ow&&!eq?skSyn(sel,eqs):[],fs=window._skSlot,ax=SKAXS[AI[skAx(sel)]]||SKAXS[0],cc=[].concat(sel.cls||"all");p.innerHTML="<span class='sqi'>"+(ow?skI(sel):"🔒")+"</span><span class='sqx'><b>"+sel.n+"</b> <span class='skt-ch'>"+ax[1]+" "+ax[2]+"</span>"+(cc.includes("all")?"":"<span class='skt-ch c'>"+cc.map(c=>CLS[c]?CLS[c].n:c).join("·")+" 전용</span>")+(w?" <span style='color:#ff9a8a;font-size:11px'>"+w+"</span>":syn.length?" <span style='color:#7fc8ff;font-size:11px'>"+syn.slice(0,2).join("·")+" 연계</span>":"")+"<small>"+dsLn(psDesc(sel)).join("<br>")+"</small></span>";{const cx=document.createElement("button");cx.className="skt-x";cx.textContent="✕";cx.setAttribute("aria-label","설명 닫기");cx.onclick=e=>{e.stopPropagation();window._skSel=null;window._skSlot=null;window._skLT=null;renderSheet()};p.append(cx)}
-    if(eq&&fs!=null&&fs<o&&S.psl[fs]==sel.id){p.classList.add("two");p.append(skSlotBtns(fs,"bt","un"))}
-    else{const bt=document.createElement("button");bt.className="bt"+(eq&&rs==null?" un":"");const fi=free();bt.textContent=!ow?"환생"+sel.rb:rs!=null?skIntoT(sel,o,eqs):eq?"빼기":fi>=0?"넣기":"바꾸기";bt.disabled=!ow||o<1||(rs!=null&&S.psl[rs]==sel.id);
-      bt.onclick=()=>{if(skInto(sel,o))return;if(eq){skUnequip(S.psl.indexOf(sel.id));return}const f=free();if(f>=0){window._skRep=null;psEquip(sel.id,f)}else{window._skRep=sel.id;renderSheet();const q=document.querySelector(".skq-h");if(q)q.scrollIntoView({block:"start",behavior:"smooth"})}};
-      if(rs!=null){p.classList.add("two");const w2=document.createElement("span");w2.className="skbw";w2.append(bt);p.append(w2)}else p.append(bt)}}
-  sb.append(p);
-  /* 시계 배치: 무리 판 폭 = 줄 3개, 높이 = 가장 긴 줄 · 바퀴 반지름은 판끼리(·가운데 ⭐와) 안 겹칠 때까지 10씩 넓힘 */
-  const CW=78,CH=84,HH=26,B=[];G.forEach((g,i)=>{if(!g.length)return;const cs=skCols(SKAXS[i][0],g);B.push({i,g,cs,w:3*CW+8,h:HH+Math.max(1,...cs.map(c=>c.length))*CH+4})});
-  const th=i=>(-90+i*30)*Math.PI/180;let R=250;const ov=()=>{for(const b of B){b.cx=Math.cos(th(b.i))*R;b.cy=Math.sin(th(b.i))*R}for(let m=0;m<B.length;m++){const a=B[m];if(Math.abs(a.cx)<a.w/2+40&&Math.abs(a.cy)<a.h/2+40)return true;for(let n=m+1;n<B.length;n++){const b=B[n];if(Math.abs(a.cx-b.cx)<(a.w+b.w)/2+10&&Math.abs(a.cy-b.cy)<(a.h+b.h)/2+10)return true}}return false};
-  while(ov()&&R<1400)R+=10;let x0=-30,y0=-30,x1=30,y1=30;B.forEach(b=>{x0=Math.min(x0,b.cx-b.w/2);x1=Math.max(x1,b.cx+b.w/2);y0=Math.min(y0,b.cy-b.h/2);y1=Math.max(y1,b.cy+b.h/2)});
-  const PAD=30,ox=Math.round(PAD-x0),oy=Math.round(PAD-y0),W=Math.round(x1-x0+PAD*2),H=Math.round(y1-y0+PAD*2),box=document.createElement("div");box.className="skt bw";box.style.width=W+"px";box.style.height=H+"px";const P={},SP=[];
-  {const r=document.createElement("div");r.className="skt-hub on";r.style.left=ox+"px";r.style.top=oy+"px";r.innerHTML="<span>⭐</span>";box.append(r)}
-  B.forEach(b=>{const a=SKAXS[b.i],L=Math.round(ox+b.cx-b.w/2),T=Math.round(oy+b.cy-b.h/2),ne=b.g.filter(s=>eqs.has(s.id)).length,el=document.createElement("div");el.className="skt-blk";el.style.cssText="left:"+L+"px;top:"+T+"px;width:"+b.w+"px;height:"+b.h+"px";
-    el.innerHTML="<div class='skt-bh'><b>"+a[1]+" "+a[2]+"</b><em>"+(ne?"<span>"+ne+"</span>/":"")+b.g.length+"</em></div>";box.append(el);SP.push([L+b.w/2,T+b.h/2,ne,T]);
-    b.cs.forEach((col,ci)=>col.forEach((s,ri)=>{const x=L+4+CW*ci+CW/2,yN=T+HH+ri*CH+36,ow=own(s),eq=eqs.has(s.id),w=ow?skWhy(s):"",syn=!eq&&ow&&!w&&skSyn(s,eqs).length,cc=[].concat(s.cls||"all"),c=document.createElement("div");
-      c.className="skt-n"+(eq?" eq":"")+(w&&!eq?" off":"")+(syn?" syn":"")+(ow?"":" lk")+((sel&&sel.id==s.id)||(rs!=null&&S.psl[rs]==s.id)?" sel":"")+(sel&&sel.id!=s.id?(rel.has(s.id)?" rel":" dim"):"");c.dataset.sid=s.id;c.style.left=x+"px";c.style.top=yN+"px";
-      c.innerHTML="<i>"+(ow?skI(s):"🔒")+(skTier(s)==1?"<em class='skt-co'>⭐</em>":"")+(cc.includes("all")?"":"<em class='skt-cl' style='background:rgb("+((typeof DSC!="undefined"&&DSC[cc[0]])||"200,180,120")+")'></em>")+"</i><b>"+s.n+"</b>"+(syn?"<s class='sd'></s>":"");
-      c.onclick=()=>{if(window._skMoved)return;window._skGest=0;const nw=Date.now(),dbl=window._skLT&&window._skLT.id==s.id&&nw-window._skLT.t<450;window._skLT={id:s.id,t:nw};window._skSel=s.id;window._skSlot=null;
-        if(dbl&&ow&&skRS(o)!=null){window._skLT=null;skInto(s,o);return}
-        if(dbl&&ow&&!eq){window._skLT=null;const f=free();if(f>=0){window._skRep=null;psEquip(s.id,f)}else{window._skRep=s.id;renderSheet();const q=document.querySelector(".skq-h");if(q)q.scrollIntoView({block:"start",behavior:"smooth"})}return}renderSheet()};box.append(c);P[s.id]=[x,yN]}))});
-  /* 줄: ⭐→무리 빗살(장착 있는 무리는 빨강) + 장착끼리(같은 무리) 빨강 · 고른 스킬의 연계만 파랑(점선 = 꼬리표 자동) */
-  const ns="http://www.w3.org/2000/svg",svg=document.createElementNS(ns,"svg");svg.setAttribute("width",W);svg.setAttribute("height",H);
-  svg.innerHTML='<defs><filter id="sktg" filterUnits="userSpaceOnUse" x="0" y="0" width="'+W+'" height="'+H+'"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>';
-  SP.slice().sort((a,b)=>(a[2]>0)-(b[2]>0)).forEach(([x,y,ne])=>{const l=document.createElementNS(ns,"line");l.setAttribute("x1",ox);l.setAttribute("y1",oy);l.setAttribute("x2",x);l.setAttribute("y2",y);l.setAttribute("stroke",ne?"#c8281e":"#3a2e1e");l.setAttribute("stroke-width",ne?5:4);if(ne)l.setAttribute("filter","url(#sktg)");svg.append(l)});
-  const cv=(a,b,col,wd,dash)=>{const [x1,y1]=P[a],[x2,y2]=P[b],dx=x2-x1,dy=y2-y1,k=Math.min(.35,60/Math.max(1,Math.hypot(dx,dy))+.12),q=document.createElementNS(ns,"path");q.setAttribute("d","M"+x1+","+y1+" Q"+((x1+x2)/2-dy*k)+","+((y1+y2)/2+dx*k)+" "+x2+","+y2);q.setAttribute("fill","none");q.setAttribute("stroke",col);q.setAttribute("stroke-width",wd);q.setAttribute("stroke-linecap","round");if(dash)q.setAttribute("stroke-dasharray",dash);q.setAttribute("filter","url(#sktg)");svg.append(q)};
-  E.forEach(([a,b,t])=>{if(!P[a]||!P[b])return;if(sel&&(a==sel.id||b==sel.id))cv(a,b,"#7fc8ff",2.4,t?"5 4":null);else if(!sel&&eqs.has(a)&&eqs.has(b)&&skAx(psGet(a))==skAx(psGet(b)))cv(a,b,"#e04a35",2.2)});
-  box.prepend(svg);skMapZoom(sb,box,W,H,ox,oy,SP)}
-/* 지도 칸: 한 손가락 끌기 · 두 손가락 벌리기 · 휠 · ＋－⟲ · 높이는 창 아래 끝까지.
-   처음 = 장착이 가장 많은 무리를 0.9배로 가운데(판이 칸보다 길면 제목이 보이게 위쪽, 없으면 ⭐) · 보던 자리 기억(_skZ, 직업·지도 크기·칸 폭이 같으면 그대로, 위 설명판 높이가 바뀌어도 지도 내용은 화면에서 안 움직임)
-   지도 끝은 칸 가운데까지만 끌림 · 끄는 동안엔 창을 다시 그리지 않음(_skGest) · 6px 넘게 움직였으면 칸 누름 무시(_skMoved) */
-function skMapZoom(sb,box,W,H,hx,hy,SP){const vp=document.createElement("div");vp.className="skt-vp";vp.append(box);sb.append(vp);const sh=vp.closest(".sh");
-  /* 지도 높이 = 창 안에 남은 높이 · 가로(높이 600 이하)는 위 칸·설명판이 커져도 남은 만큼만(최소 130, 창 스크롤 위치와 상관없이 맨 위 기준) → 지도가 화면 아래로 안 밀림 (2026-11-04) · 세로는 예전 그대로 · 창 크기가 바뀌면 다시 잼(_skFit) */
+  if(!sel){p.innerHTML="<span class='sqx'><small>"+(rs!=null?"넣을 스킬을 눌러 고르기 · 두 번 = 바로 넣기":"누르면 설명 · 두 번 = 바로 장착")+" · 끌어서 이동 · <span style='color:#e04a35'>━</span> ⭐→장착까지 길 · 🔹 원소(하나만)</small></span>"}
+  else{const eq=eqs.has(sel.id),ow=own(sel),fit=psFit(sel),w=ow&&fit&&!skElR(sel)?skWhy(sel):"",syn=ow&&fit&&!eq?skSyn(sel,eqs):[],cc=[].concat(sel.cls||"all"),lc=skTLoc(sel.id);p.innerHTML="<span class='sqi'>"+(ow?skI(sel):"🔒")+"</span><span class='sqx'><b>"+sel.n+"</b> "+(lc?"<span class='skt-ch'>"+lc+"</span>":"")+(cc.includes("all")?"":"<span class='skt-ch c'>"+cc.map(c=>CLS[c]?CLS[c].n:c).join("·")+" 전용</span>")+(w?" <span style='color:#ff9a8a;font-size:11px'>"+w+"</span>":syn.length?" <span style='color:#7fc8ff;font-size:11px'>"+syn.slice(0,2).join("·")+" 연계</span>":"")+"<small>"+dsLn(psDesc(sel)).join("<br>")+"</small></span>";{const cx=document.createElement("button");cx.className="skt-x";cx.textContent="✕";cx.setAttribute("aria-label","설명 닫기");cx.onclick=e=>{e.stopPropagation();window._skSel=null;window._skSlot=null;window._skLT=null;renderSheet()};p.append(cx)}
+    const b=skSelBtns(sel,o,eqs,"bt",p);if(b)p.append(b)}
+  sb.append(p);skNM(sb,{id:"p",o,eqs,sel})}
+/* 지도 그리기 (host 안에 칸 하나): opt = {id: "p" 세로 · "l" 가로 판 · "f" 넓은 지도, o, eqs, sel, pop: 누른 스킬 옆 설명 창 만들기(넓은 지도)} · 보던 자리는 id마다 기억 (_skZs, 저장 안 함) */
+function skNM(host,opt){const L=skTL(),o=opt.o,eqs=opt.eqs,sel=opt.sel,c=S.cls,own=s=>(S.rb||0)>=(s.rb||0);let elR=false,eI="";try{elR=elRow();eI=elR?elId():""}catch(e){}
+  const K2={},onK=[];for(const k in L.KI){const id=skTKid(k,c);if(id&&psGet(id))K2[k]=id}
+  for(const k in K2){const id=K2[k];if(k[0]=="E"&&k[1]==":"&&elR){if(eI==id)onK.push(k)}else if(eqs.has(id))onK.push(k)}
+  /* 빨간 길: ⭐ → 큰 가지 → 작은 가지(위 가지 포함) → 줄을 따라 가장 깊이 낀 스킬까지 */
+  const S2=[],lit=[],bon=L.BR.map(()=>0),son=L.SB.map(()=>0),onP={},deep={},f1=v=>v.toFixed(1),ln=(a,b,on)=>(on?lit:S2).push('<line x1="'+f1(a[0])+'" y1="'+f1(a[1])+'" x2="'+f1(b[0])+'" y2="'+f1(b[1])+'"/>');
+  onK.forEach(k=>{const q=L.KI[k];bon[q.b]++;son[q.s]++;const d=q.s+"_"+q.c;deep[d]=Math.max(deep[d]==null?-1:deep[d],q.j)});
+  L.BR.forEach((b,i)=>ln([L.MO,L.MO],L.BH[i],bon[i]));L.SB.forEach(s=>{if(s.par!=null)son[s.par]+=son[s.k]});
+  L.SB.forEach((s,i)=>{ln(s.par!=null?L.SH[s.par]:L.BH[s.b],L.SH[i],son[i]);s.cols.forEach((cl,ci)=>{const d=deep[i+"_"+ci];cl.forEach((n,j)=>{const on=d!=null&&j<=d;if(on)onP[n]=1;ln(j?L.NP[cl[j-1]]:L.SH[i],L.NP[n],on)})})});
+  let h='<div class="skm-in" style="width:'+L.MS+'px;height:'+L.MS+'px"><svg width="'+L.MS+'" height="'+L.MS+'"><g stroke="#3a2e1e" stroke-width="5" stroke-linecap="round">'+S2.join("")+'</g><g stroke="#6e5430" stroke-width="1.6">'+S2.join("")+'</g><g stroke="#ff3a1a" stroke-width="14" stroke-linecap="round" opacity=".22">'+lit.join("")+'</g><g stroke="#c8321e" stroke-width="5" stroke-linecap="round">'+lit.join("")+'</g><g stroke="#ffd36a" stroke-width="1.4" stroke-linecap="round" opacity=".9">'+lit.join("")+'</g></svg>';
+  h+='<div class="skm-hub" style="left:'+L.MO+'px;top:'+L.MO+'px"><i><s>⭐</s></i></div>';
+  const cnt=a=>a.filter(n=>K2[n]).length;
+  L.BR.forEach((b,i)=>{const n=b.subs.reduce((a,k)=>a+cnt(L.SB[k].cols.flat()),0);h+='<button type="button" class="skm-gh big'+(bon[i]?" on":"")+'" data-gh="b'+i+'" style="left:'+f1(L.BH[i][0])+'px;top:'+f1(L.BH[i][1])+'px"><i><s>'+b.e+'</s></i><span>'+b.n+'<small>'+bon[i]+'/'+n+'</small></span></button>'});
+  L.SB.forEach((s,i)=>{h+='<button type="button" class="skm-gh'+(son[i]?" on":"")+'" data-gh="s'+i+'" style="left:'+f1(L.SH[i][0])+'px;top:'+f1(L.SH[i][1])+'px"><i><s>'+s.e+'</s></i><span>'+s.n+'<small>'+son[i]+'/'+cnt(s.cols.flat())+'</small></span></button>'});
+  const sk=sel&&sel.id;let selK=null;
+  for(const k in K2){const id=K2[k],s=psGet(id),p=L.NP[k],e=k[0]=="E"&&k[1]==":",fit=psFit(s),ow=own(s),on=onK.includes(k),si=on&&!(e&&elR)?S.psl.indexOf(id)+1:0,w=fit&&ow&&!on&&!(e&&elR)?skWhy(s):"",cc=[].concat(s.cls||"all"),bE=k[0]=="B"&&k[1]==":"&&typeof EAN!="undefined"?EAN[k.slice(2)]:null;if(sk==id&&!selK)selK=k;
+    const bd=e?'<u title="원소 · 하나만">🔹</u>':!fit&&!cc.includes("all")?'<u title="'+cc.map(x=>CLS[x]?CLS[x].n:x).join("·")+'만">'+(CLS[cc[0]]?CLS[cc[0]].ic:"")+'</u>':bE&&w?'<u title="'+bE.s+' 원소 필요">'+bE.e+'</u>':'';
+    h+='<button type="button" class="skm-nd'+(on?" on":onP[k]?" pa":"")+(e?" el":"")+(!fit?" cl":w?" off":"")+(ow?"":" lk")+(sk==id?" sel":"")+'" data-k="'+k+'" style="left:'+f1(p[0])+'px;top:'+f1(p[1])+'px" aria-label="'+s.n+'"><i>'+(ow?skI(s):"🔒")+'</i><span>'+skNmN(s,k)+'</span>'+bd+(on?'<em>'+(si||"원")+'</em>':'')+'</button>'}
+  const vp=document.createElement("div");vp.className="skt-vp skm-vp";vp.innerHTML=h+'</div><div class="skt-zc skm-z"><button type="button" data-z="1" aria-label="확대">＋</button><button type="button" data-z="-1" aria-label="축소">－</button><button type="button" data-z="0" aria-label="장착한 곳으로">⟲</button></div><div class="skm-h">끌기 · 두 손가락 = 크기 · 두 번 = 넣기</div>';
+  host.append(vp);const inr=vp.firstChild;let pop=null;if(opt.pop&&sel&&selK){pop=opt.pop(sel,selK);if(pop){pop.classList.add("skm-pop");vp.append(pop)}}
+  inr.addEventListener("click",e=>{const n=e.target.closest("[data-k]");if(n){e.stopPropagation();const id=K2[n.dataset.k],s=id&&psGet(id);if(s)skNdTap(s,o,eqs);return}const g=e.target.closest("[data-gh]");if(g){e.stopPropagation();if(window._skMoved)return;const v=g.dataset.gh,q=v[0]=="b"?L.BH[+v.slice(1)]:L.SH[+v.slice(1)];if(q)vp._go(q[0],q[1],Math.max(vp._Z().s,.8))}});
+  skNmZ(vp,inr,L,opt,onK,selK,pop);return vp}
+/* 지도 끌기·확대 (예전 skMapZoom과 같은 손동작): 한 손가락 끌기 · 두 손가락 벌리기 · 휠 · ＋－⟲ · 가지 마름모 누르기 = 그쪽으로
+   처음 = 장착한 스킬이 있는 가지들이 보이게 (배율 0.42~0.95, 없으면 ⭐ 가운데 0.6) · 멀리(0.62 미만) = 스킬 이름 숨기고 가지 이름만 조금 크게
+   끄는 동안엔 창을 다시 그리지 않음(_skGest) · 6px 넘게 움직였으면 칸 누름 무시(_skMoved) · 세로 창은 위 설명판 높이가 바뀌어도 지도 내용이 화면에서 안 움직임 */
+window._skZs=window._skZs||{};
+function skNmZ(vp,inr,L,opt,onK,selK,pop){const id=opt.id,sh=id=="p"?vp.closest(".sh"):null,MN=.38,MX=1.6;
   const SKLQ="(orientation:landscape) and (max-height:600px)",fitH=()=>{if(!sh||!vp.isConnected)return 0;const R=sh.getBoundingClientRect(),vt=vp.getBoundingClientRect().top;if(matchMedia(SKLQ).matches){const h=Math.round(sh.clientHeight-(vt-R.top-sh.clientTop+sh.scrollTop)-10);vp.style.height=Math.max(130,Math.min(h,640))+"px"}else{vp.style.height="";const h=Math.round(R.bottom-vt-16);if(h>=200)vp.style.height=Math.min(h,640)+"px"}return 1};fitH();
-  const vw=()=>vp.clientWidth,vh=()=>vp.clientHeight,KM=()=>Math.min(.5,Math.min(vw()/W,vh()/H)*.96),
-    def=()=>{const b=SP.slice().sort((a,c)=>c[2]-a[2])[0],k=.9,cx=b&&b[2]?b[0]:hx,cy=b&&b[2]?Math.min(b[1],b[3]+(vh()/2-8)/k):hy;return {k,x:vw()/2-cx*k,y:vh()/2-cy*k}},
-    key=S.cls+"|"+W+"x"+H+"|"+vw(),top=sh?vp.getBoundingClientRect().top-sh.getBoundingClientRect().top+sh.scrollTop:0;
-  let Z=window._skZ;if(!Z||window._skZK!==key){Z=window._skZ=def();window._skZK=key}else if(window._skZT!=null)Z.y-=top-window._skZT;window._skZT=top;
-  const clamp=()=>{Z.k=Math.max(KM(),Math.min(2.2,Z.k));const mx=vw()/2,my=vh()/2;Z.x=W*Z.k<=vw()?(vw()-W*Z.k)/2:Math.max(vw()-W*Z.k-mx,Math.min(mx,Z.x));Z.y=H*Z.k<=vh()?(vh()-H*Z.k)/2:Math.max(vh()-H*Z.k-my,Math.min(my,Z.y))},
-    ap=()=>{clamp();box.style.transform="translate("+Z.x+"px,"+Z.y+"px) scale("+Z.k+")"},
-    zoomAt=(f,cx,cy)=>{const k0=Z.k,k1=Math.max(KM(),Math.min(2.2,k0*f));Z.x=cx-(cx-Z.x)*k1/k0;Z.y=cy-(cy-Z.y)*k1/k0;Z.k=k1;ap()};
-  const ctl=document.createElement("div");ctl.className="skt-zc";[["＋","확대",()=>zoomAt(1.25,vw()/2,vh()/2)],["－","축소",()=>zoomAt(.8,vw()/2,vh()/2)],["⟲","처음 자리",()=>{Object.assign(Z,def());ap()}]].forEach(([t,al,f])=>{const b=document.createElement("button");b.type="button";b.textContent=t;b.setAttribute("aria-label",al);b.onclick=e=>{e.stopPropagation();f()};b.onpointerdown=e=>e.stopPropagation();ctl.append(b)});vp.append(ctl);
+  const vw=()=>vp.clientWidth,vh=()=>vp.clientHeight,SKPZ=.7,hm0=()=>{const pts=[];onK.forEach(k=>{pts.push(L.NP[k]);pts.push(L.SH[L.KI[k].s])});if(!pts.length)return {s:.6,x:vw()/2-L.MO*.6,y:vh()/2-L.MO*.6};
+    const xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]),x0=Math.min(...xs)-40,x1=Math.max(...xs)+40,y0=Math.min(...ys)-40,y1=Math.max(...ys)+50,s=Math.max(.42,Math.min(.95,vw()/(x1-x0),vh()/(y1-y0)));return {s,x:vw()/2-(x0+x1)/2*s,y:vh()/2-(y0+y1)/2*s}},
+    /* 세로 창(id p)은 처음·⟲ 배율을 늘 읽을 수 있게 (QA: 360×800에서 장착이 넓게 퍼지면 0.42배 = 그림 14px·이름 숨김) = 그림 34×0.7 = 24px · 이름 보임 · 장착 칸이 가장 많이 보이는 곳 · 손으로 줄이면 "멀리 = 그림만"은 그대로 */
+    home=()=>{const h=hm0();if(id!="p"||h.s>=SKPZ)return h;const s=SKPZ,W2=vw(),H2=vh(),m=34,ins=(q,x,y)=>{const a=x+q[0]*s,b=y+q[1]*s;return a>=m&&a<=W2-m&&b>=m&&b<=H2-m},eq=onK.map(k=>L.NP[k]),hb=[L.MO,L.MO],C=[[(W2/2-h.x)/h.s,(H2/2-h.y)/h.s],hb,...eq];let best=null;
+      /* 가운데 후보(장착 묶음 가운데·⭐·장착 칸들) 중 장착 칸이 가장 많이 보이는 곳 (같으면 ⭐도 보이는 곳) */for(const c of C){const x=W2/2-c[0]*s,y=H2/2-c[1]*s,sc=eq.filter(q=>ins(q,x,y)).length*2+(ins(hb,x,y)?1:0);if(!best||sc>best.sc)best={sc,x,y}}return {s,x:best.x,y:best.y}};
+  const key=S.cls+"|"+L.MS+"|"+vw()+(id=="p"?"":"x"+vh()),top=sh?vp.getBoundingClientRect().top-sh.getBoundingClientRect().top+sh.scrollTop:0;
+  let Z=window._skZs[id];if(!Z||Z.key!==key){Z=window._skZs[id]=Object.assign(home(),{key,top})}else if(sh){Z.y-=top-Z.top;Z.top=top}
+  const clamp=()=>{Z.s=Math.max(MN,Math.min(MX,Z.s));const M=L.MS*Z.s,mx=vw()/2,my=vh()/2;Z.x=Math.max(vw()-M-mx,Math.min(mx,Z.x));Z.y=Math.max(vh()-M-my,Math.min(my,Z.y))},
+    pp=()=>{if(!pop||!selK)return;const q=L.NP[selK],x=Z.x+q[0]*Z.s,y=Z.y+q[1]*Z.s,W2=vw(),H2=vh(),pw=pop.offsetWidth,ph=pop.offsetHeight,g=30*Z.s+8;let l,t;if(x+g+pw<=W2-4){l=x+g;t=y-ph/2}else if(x-g-pw>=4){l=x-g-pw;t=y-ph/2}else{l=x-pw/2;t=y+g+4+ph<=H2-4?y+g+4:y-g-12-ph}pop.style.left=Math.round(Math.max(4,Math.min(W2-pw-4,l)))+"px";pop.style.top=Math.round(Math.max(4,Math.min(H2-ph-4,t)))+"px"},
+    ap=()=>{clamp();inr.style.transform="translate("+Z.x.toFixed(1)+"px,"+Z.y.toFixed(1)+"px) scale("+Z.s.toFixed(4)+")";const far=Z.s<.62;if(inr.classList.contains("far")!=far)inr.classList.toggle("far",far);inr.style.setProperty("--iv",Math.max(1,Math.min(1.3,.62/Z.s)).toFixed(2));pp()},
+    zoomAt=(f,cx,cy)=>{const k0=Z.s,k1=Math.max(MN,Math.min(MX,k0*f));Z.x=cx-(cx-Z.x)*k1/k0;Z.y=cy-(cy-Z.y)*k1/k0;Z.s=k1;ap()},
+    go=(cx,cy,s)=>{Z.s=s;Z.x=vw()/2-cx*s;Z.y=vh()/2-cy*s;inr.classList.add("anim");setTimeout(()=>inr.classList.remove("anim"),380);ap()};
+  vp._Z=()=>Z;vp._go=go;
+  /* 넓은 지도 설명 창이 누른 칸을 가릴 수밖에 없으면 지도를 옆으로 조금 밀어 자리를 만듦 (누른 직후 한 번) */
+  if(pop&&selK&&Z.pk!==selK){Z.pk=selK;requestAnimationFrame(()=>{const q=L.NP[selK],x=Z.x+q[0]*Z.s,W2=vw(),pw=pop.offsetWidth,g0=30*Z.s+8;if(x+g0+pw>W2-4&&x-g0-pw<4){Z.x+=x<W2/2?(W2-4)-(x+g0+pw):4-(x-g0-pw);inr.classList.add("anim");setTimeout(()=>inr.classList.remove("anim"),380);ap()}})}else if(!pop)Z.pk=null;
+  vp.querySelector(".skm-z").addEventListener("click",e=>{const b=e.target.closest("[data-z]");if(!b)return;e.stopPropagation();const z=+b.dataset.z;if(z)zoomAt(z>0?1.25:.8,vw()/2,vh()/2);else{Object.assign(Z,home());inr.classList.add("anim");setTimeout(()=>inr.classList.remove("anim"),380);ap()}});
+  vp.querySelector(".skm-z").addEventListener("pointerdown",e=>e.stopPropagation());if(pop)pop.addEventListener("pointerdown",e=>e.stopPropagation());
   const PT=new Map();let st=null;const rect=()=>vp.getBoundingClientRect();
-  vp.addEventListener("pointerdown",e=>{if(e.target.closest(".skt-zc"))return;PT.set(e.pointerId,{x:e.clientX,y:e.clientY});window._skGest=1;window._skMoved=0;const r=rect(),pts=[...PT.values()];
-    if(pts.length==1)st={m:1,x0:pts[0].x,y0:pts[0].y,zx:Z.x,zy:Z.y};else if(pts.length==2){st={m:2,d0:Math.max(1,Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y)),k0:Z.k,zx:Z.x,zy:Z.y,cx:(pts[0].x+pts[1].x)/2-r.left,cy:(pts[0].y+pts[1].y)/2-r.top}}});
+  vp.addEventListener("pointerdown",e=>{if(e.target.closest(".skm-z,.skm-pop"))return;PT.set(e.pointerId,{x:e.clientX,y:e.clientY});window._skGest=1;window._skMoved=0;const r=rect(),pts=[...PT.values()];
+    if(pts.length==1)st={m:1,x0:pts[0].x,y0:pts[0].y,zx:Z.x,zy:Z.y};else if(pts.length==2){st={m:2,d0:Math.max(1,Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y)),k0:Z.s,zx:Z.x,zy:Z.y,cx:(pts[0].x+pts[1].x)/2-r.left,cy:(pts[0].y+pts[1].y)/2-r.top}}});
   vp.addEventListener("pointermove",e=>{if(!PT.has(e.pointerId)||!st)return;PT.set(e.pointerId,{x:e.clientX,y:e.clientY});const pts=[...PT.values()];
     if(st.m==1&&pts.length==1){const dx=pts[0].x-st.x0,dy=pts[0].y-st.y0;if(!window._skMoved&&Math.hypot(dx,dy)>6){window._skMoved=1;try{vp.setPointerCapture(e.pointerId)}catch(_){}}if(window._skMoved){Z.x=st.zx+dx;Z.y=st.zy+dy;ap()}}
-    else if(st.m==2&&pts.length==2){if(!window._skMoved){window._skMoved=1;for(const id of PT.keys())try{vp.setPointerCapture(id)}catch(_){}}const d=Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y),k1=Math.max(KM(),Math.min(2.2,st.k0*d/st.d0));Z.x=st.cx-(st.cx-st.zx)*k1/st.k0;Z.y=st.cy-(st.cy-st.zy)*k1/st.k0;Z.k=k1;ap()}});
+    else if(st.m==2&&pts.length==2){if(!window._skMoved){window._skMoved=1;for(const q of PT.keys())try{vp.setPointerCapture(q)}catch(_){}}const d=Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y),k1=Math.max(MN,Math.min(MX,st.k0*d/st.d0));Z.x=st.cx-(st.cx-st.zx)*k1/st.k0;Z.y=st.cy-(st.cy-st.zy)*k1/st.k0;Z.s=k1;ap()}});
   const up=e=>{PT.delete(e.pointerId);if(PT.size==1){const q=[...PT.values()][0];st={m:1,x0:q.x,y0:q.y,zx:Z.x,zy:Z.y}}else if(!PT.size){st=null;window._skGest=0;setTimeout(()=>{window._skMoved=0},30)}};
   vp.addEventListener("pointerup",up);vp.addEventListener("pointercancel",up);
-  vp.addEventListener("click",e=>{if(window._skMoved||e.target.closest(".skt-n,.skt-zc"))return;if(window._skSel||window._skSlot!=null){window._skSel=null;window._skSlot=null;window._skLT=null;renderSheet()}}); // 사용자 2026-11-04: 지도 빈 곳을 눌러도 설명판 닫기
+  vp.addEventListener("click",e=>{if(window._skMoved||e.target.closest(".skm-nd,.skm-gh,.skm-z,.skm-pop"))return;if(window._skSel||window._skSlot!=null){window._skSel=null;window._skSlot=null;window._skLT=null;renderSheet()}});/* 사용자 2026-11-04: 지도 빈 곳을 눌러도 설명 닫기 */
   vp.addEventListener("wheel",e=>{e.preventDefault();const r=rect();zoomAt(e.deltaY<0?1.12:.89,e.clientX-r.left,e.clientY-r.top)},{passive:false});
-  ap();requestAnimationFrame(ap);window._skFit=()=>{if(fitH())ap()}}
+  ap();requestAnimationFrame(ap);if(id=="p")window._skFit=()=>{if(fitH())ap()}}
 addEventListener("resize",()=>setTimeout(()=>{const f=window._skFit;if(f)f()},60));
 /* ===== 스킬 목록 (2026-11-02 정리): 무리별 칸 + 카드 ＋/해제 버튼 한 번에 장착 · 카드 누르면 아래 설명판 =====
    무리 = skGrp(s): 주문(spl·주문 돕는 스킬) → 직업 전용 → 공격·투사체·소환·오라·생존·기타. 새 스킬은 cls·cat·ef만 있으면 자동으로 들어감 (s.grp로 직접 지정도 가능) */
@@ -5897,6 +6342,327 @@ function fpsShow(v){const w2=$("rtw");let b=$("fpsb");if(!S||!S.fpsOn){if(b)b.hi
    게임 진행(공격·처치·골드)은 lp 루프와 시간 기준이라 그대로 · 위 fps 표시는 실제로 그린 수만 셈 */
 const FCAPS=[30,60,120];function fpsCap(){const v=S&&S.fpsCap;return FCAPS.includes(v)?v:60}
 {const _fr=frame;let nt=0;frame=function(ts){const n=typeof ts=="number"?ts:performance.now(),iv=1000/fpsCap();if(n<nt-iv*.25){requestAnimationFrame(frame);return}nt=Math.max(nt+iv,n);return _fr.apply(this,arguments)}}
+
+/* ===== 📱 가로 6차 화면 (docs/UI/2026-11-08_가로_UI_6차_계획.md · 시안 docs/UI/시안/2026-11-08_가로_UI_6차.html) — 가로 폰(L, 08 scrCls)만 body.ls6, 세로(P)·큰 화면(S)은 안 바뀜 (docs/UI/점검/ls6 p0diff = 0)
+   P1 전투 화면 틀: 아래 가운데 메뉴 5칸 🌟💪🎒📜🧩 (🎒·🧩 = page.html .ls6b, 칭호·상점·설정은 ☰로) · 왼쪽 등반 칸(#rtw 그대로) · 오른쪽 💥 DPS + ⏱ 세팅(#ls6r, 07 #dpsb·#sstb·#rte 글자를 옮겨 적기만)
+   오른쪽 위 ☰(#ls6m) → ☰ 판(#ls6mn: 💥 딜량 · 🏅 칭호 · 🏪 상점 · 👘 스킨 · ⚙️ 설정) · 🎒 = 장비 카드 3장 #ls6eq · 💥 딜량 = 오른쪽 카드 #ls6dp (P2, 맨 아래) · 🧩·상태바 초상화(⇄) = 직업 변경 chooseClass(true) → 가로에선 왼쪽 🔄 카드 #ls6pc (P3b, 맨 아래)
+   ◀ 탭(#lsbtn)은 안 보이게만 둠 = 15 visX(보스 착지)가 예전처럼 그 자리를 잼 (판이 열리면 ▶ 닫기 탭으로 보임) · 카메라 구멍 = ls6Cut이 겹치는 칸만 --l6cl/--l6cr/--l6cb 만큼 안쪽으로 */
+const L6MN=[["dp","💥","딜량"],["title","🏅","칭호"],["shop",null,"상점"],["wd","👘","스킨"],["set",null,"설정"]];
+const L6E={on:0,dp:0,cv:"it",sig:"",cus:0,hk:"",hn:null,H:null},L6EK=["eq","inv","gem","sock","pot","mat"];/* P2 🎒 장비 카드 3장·💥 딜량 카드 (아래 맨 끝) */
+const L6P={on:0,op:"",cls:"",sig:""};/* P3b 🔄 직업·프리셋 카드 (아래 칸) */
+function ls6On(){return document.body.classList.contains("ls6")}
+function ls6Fr(m,e){if(e)return '<span class="fr" style="font-size:22px">'+e+'</span>';const f=document.querySelector('.bnav .mbtn[data-m="'+m+'"] .fr');return f?f.outerHTML:'<span class="fr"></span>'}
+function ls6Build(){if($("ls6m"))return;const B=document.body,mk=(t,id,h)=>{const e=document.createElement(t);e.id=id;if(h)e.innerHTML=h;B.append(e);return e};
+  const m=mk("button","ls6m","☰");m.setAttribute("aria-label","메뉴");m.onclick=()=>ls6Mn(!B.classList.contains("l6mn"));
+  mk("div","ls6dim").onclick=()=>ls6Mn(false);
+  const p=mk("div","ls6mn",'<div class="ls6-ph"><b>☰ 메뉴</b><button class="ls6-x" aria-label="닫기">✕</button></div><div class="ls6-tiles">'+L6MN.map(([k,e,n])=>'<button class="ls6-tile" data-l6m="'+k+'">'+ls6Fr(k,e)+'<span>'+n+'</span></button>').join("")+'</div><div class="ls6-mnf">상점 안에 🎰 뽑기 탭 · 자주 쓰는 메뉴(환생·단련·장비·스킬·프리셋)는 아래 가운데 줄</div>');
+  p.querySelector(".ls6-x").onclick=()=>ls6Mn(false);p.querySelectorAll("[data-l6m]").forEach(b=>b.onclick=()=>{const k=b.dataset.l6m;ls6Mn(false);if(k=="dp")ls6Pan("dp",1);else{L6F.nx="mn";openSheet(k)}});
+  const r=mk("div","ls6r",'<button class="ls6-dps">💥 DPS <b>0</b></button><span class="ls6-set">⏱ <i>0:00</i><span class="ls6-spm"> · 분당 <b>0</b></span></span>');r.querySelector(".ls6-dps").onclick=()=>ls6Pan("dp");/* 또 누르면 닫힘 */
+  document.querySelectorAll(".bnav [data-l6]").forEach(b=>b.onclick=()=>{if(b.dataset.l6=="eq")ls6Pan("eq");else{if(sheetName)closeSheet();chooseClass(true)}})}/* 🧩 = 🔄 카드 (17 chooseClass 감싸기, 또 누르면 닫힘) */
+/* ☰ 판 열고 닫기 (뒤 전투는 50% 어둡게, 어두운 곳을 누르면 닫힘 = 시안 그대로) */
+function ls6Mn(on){const b=document.body.classList;if(on&&!ls6On())on=false;if(b.contains("l6mn")==on)return;b.toggle("l6mn",on);if(on){ls6Pan(null);ls6Sk(0);ls6Pc(0)}}
+/* 🎒 장비 카드 3장 / 💥 딜량 카드 (P2, 아래 맨 끝): k = eq / dp / null(둘 다 닫기) · 같은 것을 또 누르면 닫힘 (keep = 열기만) · 예전 가로 메뉴 판(#mid, body.lsp)은 가로 6차에선 안 씀 */
+function ls6Pan(k,keep){if(k=="eq"){if(L6E.on&&!keep)ls6Eq(0);else ls6Eq(1);return}if(k=="dp"){if(L6E.dp&&!keep)ls6Dp(0);else ls6Dp(1);return}ls6Eq(0);ls6Dp(0)}
+/* 아래 메뉴 칸 켜짐 표시 (🎒 = 장비 카드가 열려 있을 때) */
+function ls6On1(){const e=document.querySelector('.bnav [data-l6="eq"]');if(e){const on=ls6On()&&!!L6E.on;if(e.classList.contains("on")!=on)e.classList.toggle("on",on)}const p=document.querySelector('.bnav [data-m="ps"]');if(p){const on=ls6On()&&typeof L6S!="undefined"&&!!L6S.on;if(p.classList.contains("on")!=on)p.classList.toggle("on",on)}
+  const c=document.querySelector('.bnav [data-l6="pc"]');if(c){const on=ls6On()&&!!L6P.on;if(c.classList.contains("on")!=on)c.classList.toggle("on",on)}}
+/* 오른쪽 💥 DPS · ⏱ 세팅 칸: 07이 쓰는 글자를 그대로 옮김 (계산 안 함) · 칸이 좁으면 "분당"부터 숨김 */
+function ls6R(){if(!ls6On())return;const r=$("ls6r");if(!r)return;const d=$("dpsb"),s=$("sstb"),e=$("rte"),fb=$("fpsb");
+  const dv=d?d.textContent.replace(/^.*DPS\s*/,""):"0",tv=s?s.textContent.replace(/^⏱\s*(현재 세팅\s*)?/,""):"0:00",nb=e&&e.querySelector("b"),nv=nb?nb.textContent:"",fv=S&&S.fpsOn&&fb&&!fb.hidden?fb.textContent:"",k=dv+"|"+tv+"|"+nv+"|"+fv+"|"+innerWidth;if(r._k===k)return;r._k=k;
+  r.querySelector(".ls6-dps b").textContent=dv+(fv?" · "+fv:"");r.querySelector(".ls6-set i").textContent=tv;const sp=r.querySelector(".ls6-spm");sp.hidden=!nv;sp.querySelector("b").textContent=nv;
+  r.classList.remove("nr");if(r.scrollWidth>r.clientWidth+1)r.classList.add("nr")}
+/* 📐 카메라 구멍 (앱만, 15n appCut과 같은 방식: 실제로 겹치는 칸만): 왼쪽 아래(등반 칸·로그) = --l6cl, 오른쪽 위(☰·등반/배속/층) = --l6cr, 오른쪽 아래(DPS 칸) = --l6cb 만큼 안쪽으로 줄임 · ☰ 판은 appCut 안쪽 여백(CUTP) */
+function ls6Cut(){const st=document.body.style,V=["--l6cl","--l6cr","--l6cb"];let a=null;try{a=ls6On()&&window.ArcadiaApp&&ArcadiaApp.cut?JSON.parse(ArcadiaApp.cut()||"[]"):null}catch(e){a=null}
+  if(!a){V.forEach(k=>{if(st.getPropertyValue(k))st.removeProperty(k)});return}const o=V.map(k=>st.getPropertyValue(k)).join("|");V.forEach(k=>st.removeProperty(k));
+  const iw=innerWidth,G=3,hit=(c,r)=>r.width&&c[2]>r.left-G&&c[0]<r.right+G&&c[3]>r.top-G&&c[1]<r.bottom+G,R=q=>{const e=document.querySelector(q);return e?e.getBoundingClientRect():{width:0}};
+  const need=(qs,left)=>{let n=0;for(const q of qs){const r=R(q);for(const c of a){if(!c||!hit(c,r))continue;if(left&&c[0]<=2)n=Math.max(n,c[2]+G-r.left);else if(!left&&c[2]>=iw-2)n=Math.max(n,r.right-(c[0]-G))}}return Math.round(n)};
+  const v=[need([".view #rtw",".view .olog"],1),need(["#ls6m",".view .trc"],0),need(["#ls6r"],0)];V.forEach((k,i)=>{if(v[i]>0)st.setProperty(k,v[i]+"px")});if(V.map(k=>st.getPropertyValue(k)).join("|")!==o)try{appCut()}catch(e){}}
+/* 가로 폰(L)일 때만 body.ls6 (08 setWorld가 화면 모양을 바꿀 때마다) · 세로로 돌리면 판·☰ 닫음 */
+function ls6Sync(){const on=scrCls()=="L",b=document.body.classList;if(on){ls6Build();ls6SkBuild()}if(b.contains("ls6")!=on){const sk=on?typeof sheetName!="undefined"&&sheetName=="ps":!!L6S.on,sel=window._skSel||null,co=on?(ls6ClsPop()?window._bsCo||S.cls:""):L6P.on?L6P.op||S.cls:"";const eo=on?!!(tip&&L6EK.includes(tip.k)&&!sheetName):!!L6E.on;/* 장비: 세로에서 장비 설명창이 열려 있었으면 가로 카드로, 가로 카드에서 고른 장비는 세로 설명창으로 */b.toggle("ls6",on);if(!on){b.remove("l6mn");ls6Sk(0);ls6Pc(0);ls6Eq(0,1);ls6Dp(0)}try{hudFit();logFit()}catch(e){}if(co)setTimeout(()=>ls6RotC(on,co),0);else if(sk)setTimeout(()=>ls6Rot(on,sel),0);else if(eo)setTimeout(()=>{if(ls6On()&&!sheetName&&$("pop").hidden)ls6Eq(1,1)},0);if(!sk&&!co)setTimeout(ls6FRe,0)}ls6On1();ls6R();ls6Cut()}
+/* 세로 직업 변경 창(15l bsClsWin 팝업)이 열려 있나 */
+function ls6ClsPop(){const p=$("pop"),t=$("popt");return !!(p&&!p.hidden&&t&&t.textContent=="🔄 직업 변경"&&p.querySelector(".bvw"))}
+/* 폰을 돌려도 직업·프리셋은 열린 채로: 세로 직업 변경 창 → 가로 🔄 카드 · 가로 카드 → 세로 직업 변경 창 · 보던 직업(op) 그대로 */
+function ls6RotC(on,co){if(on!=ls6On()||!S||!S.cls)return;if(on){if(ls6ClsPop())closePop();ls6Pc(1,co)}else if(!sheetName&&$("pop").hidden)chooseClass(true,co)}
+/* 폰을 돌려도 스킬 창은 열린 채로 (사용자 2026-11-09): 세로 스킬 창 → 가로 스킬 판 #ls6sk · 가로 스킬 판·넓은 지도 → 세로 스킬 창 · 누른 스킬(_skSel)은 그대로 · 다른 창(장비 등)은 다음 단계에서 같은 규칙으로 */
+function ls6Rot(on,sel){if(on!=ls6On())return;if(on){if(typeof sheetName!="undefined"&&sheetName=="ps")closeSheet();ls6Sk(1)}else if(!sheetName)openSheet("ps");else return;if(sel&&psGet(sel)){window._skSel=sel;renderSheet();if(on)ls6SkR(1)}}
+{const _sw=setWorld;setWorld=function(){const r=_sw.apply(this,arguments);try{ls6Sync()}catch(e){console.error(e)}return r}}
+try{CUTP.push("#ls6mn")}catch(e){}
+setTimeout(ls6Sync,0);setInterval(()=>{if(ls6On()){ls6R();ls6On1()}},250);if(window.ArcadiaApp&&window.ArcadiaApp.cut){setInterval(ls6Cut,3000);addEventListener("resize",()=>setTimeout(ls6Cut,170))}
+/* ===== P3 📜 스킬 판 + 실시간 줄 + 🌳 넓은 지도 (사용자 "스킬을 바꿀 때마다 바뀌는 게 실시간으로 보이는 게 핵심") =====
+   가로 폰에선 스킬 메뉴(openSheet "ps")가 창 대신 오른쪽 판 #ls6sk (전투 안 어둡게) · 판 = 실시간 줄 + 장착 10칸(그림+번호) + 노드 지도(13 skNM) + 떠 있는 설명 줄
+   넣기·빼기·바꾸기·칸 고르기 = 세로 스킬 창과 같은 함수 (13 skSlotTap·skSelBtns·skNdTap·psEquip·skUnequip·skClearAll · 15h elPick · 15f btPick) → 규칙 그대로
+   다시 그리기: renderSheet를 감싸 판이 열려 있을 때만, 바뀐 게 있을 때만(psSig) · 실시간 숫자는 0.25초마다 글자만 (판을 다시 그리지 않음)
+   판이 열린 동안만 주인공 따라가기 (캔버스 CSS translateX, 보는 것만 · 보스 착지 visX·큰 글은 그대로/보이는 칸 가운데) */
+const L6S={on:0,fm:0,sig:"",mc:null,mw:0,mh:0};
+function ls6Sk(on){const B=document.body.classList;if(on&&!ls6On())on=0;if(!on){if(!L6S.on&&!L6S.fm)return;L6S.on=L6S.fm=0;B.remove("l6sk","l6fm");L6S.sig="";const a=$("ls6sk"),f=$("ls6fm");if(a)a.querySelector(".l6s-b").innerHTML="";if(f)f.querySelector(".l6f-lt").innerHTML="",f.querySelector(".l6f-r").innerHTML="";ls6On1();return}
+  if(S&&!S.tut3&&psOpen()>0){S.tut3=1;S.tutP=0}/* 16 openSheet("ps")와 같게 (첫 스킬 안내 끝) */
+  ls6Mn(false);ls6Pan(null);ls6Pc(0);if(sheetName)closeSheet();window._skSel=null;window._skRep=null;window._skRepS=null;window._skSlot=null;window._skLT=null;
+  L6S.on=1;L6S.fm=0;B.add("l6sk");B.remove("l6fm");ls6On1();ls6SkR(1);ls6Lv();ls6CamM();try{appCut()}catch(e){}}
+function ls6Fm(on){if(!L6S.on&&on)return;L6S.fm=on?1:0;document.body.classList.toggle("l6fm",!!on);if(on){window._skSel=null;window._skSlot=null;L6Z.cx=null;l6mzB()}ls6SkR(1);ls6Lv();try{appCut()}catch(e){}}
+function ls6SkBuild(){if($("ls6sk"))return;const B=document.body,mk=(id,h)=>{const e=document.createElement("div");e.id=id;e.innerHTML=h;B.append(e);return e};
+  const a=mk("ls6sk",'<div class="l6s-h"><b>📜 스킬</b><span class="l6s-n"></span><span class="l6s-pr"></span><span class="sp"></span><button type="button" class="l6s-c" data-a="clr" aria-label="스킬 전부 빼기">🧹</button><button type="button" class="l6s-c" data-a="fm">🌳 넓은 지도</button><button type="button" class="l6s-x" data-a="x" aria-label="닫기">✕</button></div>'+ls6LvH()+'<div class="l6s-b"></div>');
+  const f=mk("ls6fm",'<div class="l6s-h"><button type="button" class="l6s-x" data-a="back" aria-label="뒤로" style="margin:-8px 0 -8px -6px">←</button><b class="l6f-tt"><span class="l6f-t1">📜 스킬 · </span>🌳 넓은 지도</b><span class="l6s-n"></span>'+ls6LvH()+'<span class="sp"></span><button type="button" class="l6s-c" data-a="clr">🧹 전부 빼기</button><button type="button" class="l6s-x" data-a="x" aria-label="닫기">✕</button></div><div class="l6f-b"><div class="l6f-l"><div class="l6f-lt"></div><div class="l6f-mini"><canvas id="l6fmc"></canvas><button type="button" class="l6f-zb" data-a="mz" aria-label="작은 전투 확대">🔍 보통</button><span class="l6f-mt">지금 전투 (넣고 빼면 바로 바뀜)</span></div></div><div class="l6f-r"></div></div>');
+  const act=e=>{const b=e.target.closest("[data-a]");if(!b)return;const k=b.dataset.a;if(k=="x")ls6Sk(0);else if(k=="fm")ls6Fm(1);else if(k=="back")ls6Fm(0);else if(k=="clr")skClearAll();else if(k=="mz")l6mzStep()};a.addEventListener("click",act);f.addEventListener("click",act);l6mzG(f.querySelector(".l6f-mini"));l6mzB()}
+/* 실시간 줄 틀 (판·넓은 지도 같이, 숫자는 ls6Lv가 글자만) · 공속 = 06이 .asv 글자를 0.25초마다 바꿈 */
+function ls6LvH(){return '<div class="l6-live"><span class="l6-l1">💥 DPS<s class="l6-db"></s><b class="l6-dv">0</b><span class="l6-dd"></span></span><span class="l6-bar"></span><span class="l6-top"></span><span class="l6-as">⚡ 공속 <b class="asv"></b></span></div>'}
+/* 판 다시 그리기 (바뀐 게 있을 때만) */
+function ls6SkR(force){if(!L6S.on||!ls6On())return;if(window._skGest&&!force)return;const sg=psSig()+"|"+L6S.fm+"|"+innerWidth+"x"+innerHeight+"|"+(S&&S.elm||"");if(!force&&sg===L6S.sig)return;L6S.sig=sg;
+  const o=psOpen();S.psl=S.psl||[];const eqs=skEqs(o),sel=window._skSel&&psGet(window._skSel),fm=L6S.fm,P=$(fm?"ls6fm":"ls6sk");if(!P)return;
+  P.querySelector(".l6s-n").innerHTML=o?(fm?"장착 ":"")+"<b>"+eqs.size+"</b>/"+o:"🔒";
+  {const cb=P.querySelector('[data-a="clr"]');if(cb)cb.disabled=eqs.size<1}
+  const slots=()=>{const q=document.createElement("div"),rep=window._skRep,rs=skRS(o),selOk=sel&&psFit(sel)&&!eqs.has(sel.id)&&(S.rb||0)>=(sel.rb||0),fs=window._skSlot;
+    for(let i=0;i<PSLOTS;i++){const c=document.createElement("button");c.type="button";if(i>=o){c.className="l6s-s lk";c.disabled=true;c.innerHTML="<b>"+(i+1)+"</b>환생";c.setAttribute("aria-label",(i+1)+"번 칸 잠김");q.append(c);continue}
+      const t=psGet(S.psl[i]),ok=t&&psFit(t);if(ok){const w=skWhy(t);c.className="l6s-s"+(w?" bad":"")+(rep?" pick":"")+((fs===i||rs===i)?" sel":"");c.innerHTML="<b>"+(i+1)+"</b>"+(t.img?skI(t):"<span>"+t.ic+"</span>")+(w?"<i>🚫</i>":"");c.setAttribute("aria-label",(i+1)+"번 칸 "+t.n)}
+      else{c.className="l6s-s em"+(rep||(selOk&&rs==null)?" pick":"")+(rs===i?" sel":"");c.innerHTML="<b>"+(i+1)+"</b>＋";c.setAttribute("aria-label",(i+1)+"번 빈 칸")}
+      c.onclick=()=>skSlotTap(i,o,eqs);q.append(c)}return q};
+  /* 원소 줄(마법사, 10칸 밖) · 탄(저격 석궁) = 버튼 하나 → 게임 고르기 창 */
+  const elb=()=>{const r=[];try{if(elRow()){const id=elId(),s=id&&psGet(id),b=document.createElement("button");b.type="button";b.className="l6s-el"+(id?" on":"");b.innerHTML=s?s.ic+"<span>"+s.n+"</span>":"<small>🔹</small><span>"+(bkOn()?"소환 원소":"원소 줄")+"</span>";b.title="원소 줄 (10칸 밖 · 하나만)";b.onclick=()=>elPick(id);r.push(b)}}catch(e){}
+    try{if(cbOn()){const B=btCur(),b=document.createElement("button");b.type="button";b.className="l6s-el bt"+(B?" on":"");b.innerHTML=B?B.ic+"<span>"+B.n+"</span>":"🎯<span>탄 고르기</span>";b.onclick=()=>btPick(btId());r.push(b)}}catch(e){}return r};
+  /* 📜 스킬 프리셋 (장비창·세로 스킬 창과 같은 접기 줄 03 pnTb·pnRw) · 🧩에 저장 안 한 변경 = ● (15l cpDiff) */
+  const prH=()=>{let d=null;try{d=cpDiff()}catch(e){}return pnTb("s",1)+(d&&d.length?'<i class="cpdot" title="🧩 저장 안 한 변경: '+d.join(" · ")+'">●</i>':"")};
+  const bars=(R)=>{const rep=window._skRep&&psGet(window._skRep),rs=skRS(o);
+    if(rep||rs!=null){const b=document.createElement("div");b.className="l6s-f rp";const ct=rs!=null&&psGet(S.psl[rs]);b.innerHTML="<span>"+(rep?skI(rep)+" <b>"+rep.n+"</b>"+(josa(rep.n)=="이"?"과":"와")+" 바꿀 칸을 눌러 주세요":"📍 <b>"+(rs+1)+"번 칸</b>에 넣을 스킬을 지도에서 고르세요")+"</span>";const cb=document.createElement("button");cb.type="button";cb.className="btn";cb.textContent="취소";cb.onclick=e=>{e.stopPropagation();window._skRep=null;window._skRepS=null;renderSheet()};b.append(cb);R.append(b)}
+    if(sel&&!fm){const b=document.createElement("div");b.className="l6s-f";const ow=(S.rb||0)>=(sel.rb||0),fit=psFit(sel),w=ow&&fit&&!skElR(sel)?skWhy(sel):"",cc=[].concat(sel.cls||"all"),cl=!fit&&!cc.includes("all")?cc.map(c=>CLS[c]?CLS[c].n:c).join("·")+"만":"";
+      b.innerHTML="<i class='l6s-fi'>"+(ow?skI(sel):"🔒")+"</i><div class='l6s-fx'><b>"+sel.n+"</b>"+(cl?" <span class='c'>"+cl+"</span>":"")+(w?" <span class='w'>"+w+"</span>":"")+" · "+dsLn(psDesc(sel)).join(" · ")+(!ow?" · <span class='w'>"+sel.rb+"번째 환생 때 열려요</span>":"")+"</div>";
+      const bt=skSelBtns(sel,o,eqs,"btn",b);if(bt)b.append(bt);R.append(b)}};
+  if(!fm){const Bd=P.querySelector(".l6s-b");Bd.innerHTML="";P.querySelector(".l6s-pr").innerHTML=prH();const L=document.createElement("div");L.className="l6s-l";elb().forEach(x=>L.append(x));const q=slots();q.className="l6s-q";L.append(q);
+    const R=document.createElement("div");R.className="l6s-r";Bd.append(L,R);const w=document.createElement("div");w.innerHTML=pnRw("s");R.append(w.firstChild);skNM(R,{id:"l",o,eqs,sel});bars(R);try{pnFix(R)}catch(e){}}
+  else{const lt=P.querySelector(".l6f-lt"),R=P.querySelector(".l6f-r");lt.innerHTML=cpHd()+cpRw()+'<div class="pnh">'+pnHd("s")+'</div>'+pnRw("s");const er=elb();if(er.length){const d=document.createElement("div");d.className="l6f-er";er.forEach(x=>d.append(x));lt.append(d)}const q=slots();q.className="l6f-q";lt.append(q);try{pnFix(lt)}catch(e){}
+    R.innerHTML='<div class="l6f-rh"><b>🌳 스킬 지도</b>⭐→장착까지 빨간 길 · 🔹 원소(하나만) · 흐림 = 다른 직업·지금 꺼짐</div>';const vp=skNM(R,{id:"f",o,eqs,sel,pop:ls6Pop});bars(R);
+    /* 장착 칸을 누르면 지도가 그 스킬로 감 (한 번) */const fs=window._skSlot;if(fs!=null&&sel&&L6S.gs!==sel.id){L6S.gs=sel.id;const L=skTL();for(const k in L.KI)if(skTKid(k)===sel.id){const p=L.NP[k];requestAnimationFrame(()=>{if(vp.isConnected)vp._go(p[0],p[1],Math.max(vp._Z().s,.8))});break}}else if(fs==null)L6S.gs=null;
+    const mc=$("l6fmc");if(mc){L6S.mw=mc.clientWidth;L6S.mh=mc.clientHeight;const r=Math.min(2,devicePixelRatio||1),pw=Math.round(L6S.mw*r),ph=Math.round(L6S.mh*r);if(mc.width!==pw||mc.height!==ph){mc.width=pw;mc.height=ph}L6S.mc=mc}}}
+/* 넓은 지도: 누른 스킬 옆 작은 설명 창 (지도를 끌면 같이 따라감, 13 skNmZ) */
+function ls6Pop(sel,k){const o=psOpen(),eqs=skEqs(o),ow=(S.rb||0)>=(sel.rb||0),fit=psFit(sel),w=ow&&fit&&!skElR(sel)?skWhy(sel):"",cc=[].concat(sel.cls||"all"),si=S.psl.slice(0,o).indexOf(sel.id),lc=skTLoc(sel.id),d=document.createElement("div");d.className="l6-pop";
+  let el="";try{if(skElR(sel))el="<span class='skt-ch c'>🔹 원소 줄"+(elId()==sel.id?" · 낌":"")+"</span>"}catch(e){}
+  d.innerHTML="<button type='button' class='l6p-x' aria-label='설명 닫기'>✕</button><div class='l6p-h'><i>"+(ow?skI(sel):"🔒")+"</i><div><b>"+sel.n+"</b>"+(lc?"<span class='skt-ch'>"+lc+"</span> ":"")+(si>=0&&fit?"<span class='skt-ch' style='border-color:#e05a3a'>"+(si+1)+"번</span>":el)+(!fit&&!cc.includes("all")?"<span class='skt-ch c'>"+cc.map(c=>CLS[c]?CLS[c].n:c).join("·")+"만</span>":"")+"</div></div><div class='l6p-d'>"+(w?"<span class='w'>"+w+"</span><br>":"")+dsLn(psDesc(sel)).join("<br>")+(!ow?"<br><span class='w'>"+sel.rb+"번째 환생 때 열려요</span>":"")+"</div><div class='l6p-b'></div>";
+  d.querySelector(".l6p-x").onclick=e=>{e.stopPropagation();window._skSel=null;window._skSlot=null;window._skLT=null;renderSheet()};const bt=skSelBtns(sel,o,eqs,"btn",null);if(bt)d.querySelector(".l6p-b").append(bt);d.addEventListener("click",e=>e.stopPropagation());return d}
+/* ===== 실시간 줄 숫자 (0.25초마다 글자만) =====
+   숫자와 ▲▼는 늘 같은 기준 (QA: "DPS 146 ▼42%"처럼 큰 숫자 = 5초 창, % = 바꾼 뒤 평균이라 서로 어긋났음)
+   평소 = 07 dpsWin(5000) (상태바 💥 DPS와 같은 값) · 바꾼 순간 = 스킬·장비·직업·원소·탄·🧩가 바뀐 때 (08 setupSig + 원소·탄)
+   바꾼 뒤: 재는 중 = 숫자는 "바꾸기 전" 값 그대로 + "재는 중…" (0으로 안 떨어짐) · 3초 지나고 피해가 4묶음(0.25초씩) 이상 들어오면(늦어도 6초) → "바꾸기 전 → 바꾼 뒤 평균 ▲▼%" 7초 · 그 뒤 평소로
+   바꾸기 전 = 바꾸기 직전 10초 평균(그 전에 또 바꿨으면 그때부터) · 바꾼 뒤 = 바꾼 순간부터 지금까지 평균 (07 dpsQ 피해 기록 그대로) · 칸이 좁으면 "바꾸기 전 →"만 숨김
+   딜량 막대·위 3개 = 07 dpsQS (피해원별 기록) 최근 15초, 바꾼 뒤 2초가 지나면 바꾼 뒤 것만 */
+const L6D={sig:"",t:-1e9,base:0,k1:"",k2:"",dd:"",fz:0,lv:0,rt:0},L6DC=["#ffb03a","#e0402a","#6fd49a","#5ab0ff","#c069ff","#ffd36a"],L6WT=3000,L6SH=7000,L6HB=4,L6MX=6000;
+function l6Win(a,b){let s=0;for(const q of dpsQ)if(q[0]>=a&&q[0]<b)s+=q[1];return s/Math.max(.5,(b-a)/1000)}
+function l6Nb(a){let c=0;for(const q of dpsQ)if(q[0]>=a&&q[1]>0)c++;return c}
+function ls6Lv(){if(!S||!S.cls)return;const n=gnow(),sg=setupSig()+"|"+(S.elm||"")+"|"+(S.bolt||"")+"|"+(L6D.n||0);
+  /* 바꾼 순간 = 저번 점검 때(최대 0.25초 전) → 그 사이 피해는 "바꾼 뒤"로 (빠지는 피해 없음) */if(sg!==L6D.sig){const t1=L6D.lc&&n-L6D.lc>=0&&n-L6D.lc<1000?L6D.lc:n;if(L6D.sig){const t0=Math.max(L6D.t,t1-10000);L6D.base=t1-t0>=1500?l6Win(t0,t1):L6D.base;L6D.t=t1;L6D.fz=L6D.base>0?L6D.base:L6D.lv;L6D.rt=0}else{L6D.t=-1e9;L6D.base=0}L6D.sig=sg}L6D.lc=n;
+  if(!L6S.on&&!L6P.on&&!L6E.on)return;const el=n-L6D.t;let dd="",dc="",db="",v=-1;
+  if(el>=0&&!L6D.rt&&el<L6MX+L6SH){if(el>=L6MX||el>=L6WT&&l6Nb(L6D.t)>=L6HB)L6D.rt=n}
+  if(el>=0&&!L6D.rt&&el<L6MX){dd="재는 중…";dc="wt";v=L6D.fz}
+  else if(el>=0&&L6D.rt&&n-L6D.rt<L6SH){v=l6Win(L6D.t,n);if(L6D.base>0){const p=(v-L6D.base)/L6D.base;db=hudN(L6D.base)+" →";if(Math.abs(p)<.01){dd="= 비슷";dc="wt"}else{dd=(p>0?"▲ ":"▼ ")+Math.round(Math.abs(p)*100)+"%";dc=p>0?"up":"dn"}}}
+  if(v<0){v=dpsWin(5000);if(!(v>0)&&el>=0&&el<L6MX+L6SH*2)v=L6D.lv}/* 바꾼 직후 07 세팅 기록이 새로 시작돼 0인 동안은 앞 값 */
+  L6D.lv=v;const dv=v>0?hudN(v):dc=="wt"&&!db?"…":"0";
+  /* 피해원 비율 */const t0=el>=2000?Math.max(n-15000,L6D.t):n-15000,M={};let T=0;for(const q of dpsQS)if(q[0]>=t0){M[q[1]]=(M[q[1]]||0)+q[2];T+=q[2]}
+  const L=Object.entries(M).sort((a,b)=>b[1]-a[1]),ic=k=>k=="sbash"?"🛡️":((typeof DSRC!="undefined"&&DSRC[k])||["❔"])[0];
+  const k1=T?L.slice(0,6).map(([k,v])=>Math.round(v/T*50)).join(","):"",bh=k1===L6D.k1?null:T?L.slice(0,6).map(([k,v],i)=>'<i style="width:'+(v/T*100).toFixed(1)+'%;background:'+L6DC[i]+'" title="'+((typeof DSRC!="undefined"&&DSRC[k])||["",k])[1]+'"></i>').join(""):"";
+  const th=T?L.slice(0,3).map(([k,v])=>ic(k)+"<b>"+Math.round(v/T*100)+"%</b>").join(" "):"";
+  for(const lv of document.querySelectorAll(".l6-live")){if(!lv.offsetParent)continue;const a=lv.querySelector(".l6-dv"),d=lv.querySelector(".l6-dd"),e=lv.querySelector(".l6-db");let ch=0;if(a.textContent!==dv){a.textContent=dv;ch=1}if(d.textContent!==dd){d.textContent=dd;ch=1}if(d.className!=="l6-dd "+dc)d.className="l6-dd "+dc;if(e&&e.textContent!==db){e.textContent=db;ch=1}
+    /* 좁아서 넘치면 "바꾸기 전 →"만 숨김 (글자가 바뀔 때만 다시 잼) */if(ch&&e){lv.classList.remove("nb");if(db&&lv.scrollWidth>lv.clientWidth+1)lv.classList.add("nb")}
+    if(bh!=null)lv.querySelector(".l6-bar").innerHTML=bh;const tp=lv.querySelector(".l6-top");if(tp._h!==th){tp._h=th;tp.innerHTML=th}}
+  if(bh!=null)L6D.k1=k1;if(L6S.fm)ls6Hd()}
+/* 넓은 지도 머리줄 = 제목 + 실시간 줄 + 버튼: 제목이 잘리면 "📜 스킬 ·"을 숨기고, 빈 곳이 생기면 다시 보임 (작은 전투 크기는 안 건드림) */
+function ls6Hd(){const hd=document.querySelector("#ls6fm .l6s-h");if(!hd||!hd.offsetParent)return;const tt=hd.querySelector(".l6f-tt"),sp=hd.querySelector(".sp"),t1=hd.querySelector(".l6f-t1");if(!tt||!sp||!t1)return;
+  if(!hd.classList.contains("nt")){if(tt.scrollWidth>tt.clientWidth+1){L6Z.t1w=t1.offsetWidth;hd.classList.add("nt")}}else if(sp.offsetWidth>(L6Z.t1w||80)+6)hd.classList.remove("nt")}
+/* ===== 주인공 따라가기 (판이 열린 동안만, 계획 P3 "따라가기" 사용자 확정): 보이는 칸 = 화면 왼쪽 ~ 판 왼쪽 · 배율 그대로(08 lsFit) · 캔버스를 옆으로만 밀어 주인공을 그 칸 가운데로 (약 0.25초) · 판 끝에서 멈춤 · 닫으면 제자리로 */
+const L6C={d:0,t:0,k:"",on:0,bx:0,cw:0,kk:1,x0:0,vis:0};
+function ls6CamM(){try{const v=cv.parentNode,vr=v.getBoundingClientRect(),st=v.style,lx=parseFloat(st.getPropertyValue("--lx"))||0,cw=parseFloat(st.getPropertyValue("--lw"))||v.clientWidth,p=$("ls6sk"),pr0=p?p.getBoundingClientRect():null,pr=pr0&&pr0.width?pr0:null;
+  L6C.bx=vr.left+lx;L6C.cw=cw;L6C.kk=cw/W;L6C.x0=Math.max(vr.left,0);L6C.vis=pr?Math.max(80,pr.left-6-L6C.x0):innerWidth;
+  /* 🔄 카드(왼쪽)가 열렸으면 보이는 칸 = 카드 오른쪽 ~ 화면 오른쪽 */const q=L6P.on&&$("ls6pc"),qr=q&&q.getBoundingClientRect();if(qr&&qr.width){L6C.x0=Math.max(vr.left,qr.right+6);L6C.vis=Math.max(80,Math.min(innerWidth,vr.right)-L6C.x0)}}catch(e){}}
+function ls6CamF(){if(!ls6On()||!lsOn()){L6C.d=0;L6C.on=0;if(L6C.k){L6C.k="";try{CAM.k=""}catch(e){}}return}/* 세로로 돌리면 15n 카메라가 다시 씀 */const on=L6S.on&&!L6S.fm||!!L6P.on,n=performance.now(),dt=L6C.t?Math.min(300,Math.max(0,n-L6C.t)):16;L6C.t=n;L6C.on=on;
+  let tg=0;if(on&&L6C.cw){const lo=Math.min(0,L6C.bx-L6C.x0),hi=Math.max(0,L6C.bx+L6C.cw-(L6C.x0+L6C.vis));tg=Math.max(lo,Math.min(hi,L6C.bx+PX*L6C.kk-(L6C.x0+L6C.vis/2)))}
+  L6C.d+=(tg-L6C.d)*(1-Math.exp(-dt/250));if(Math.abs(tg-L6C.d)<.3)L6C.d=tg;const key=Math.abs(L6C.d)<.3?"":L6C.d.toFixed(1);if(key!==L6C.k){L6C.k=key;cv.style.transform=key?"translateX("+(-L6C.d).toFixed(1)+"px)":""}}
+/* 판이 열려 있을 때 큰 글(보스 경고·토벌 실패·남은 시간)은 보이는 칸 가운데에 (15n camScr와 같은 방식: 그 함수 동안만 W를 보이는 칸 폭으로) */
+function ls6Scr(fn){return function(c){if(!L6C.on||!L6C.cw)return fn.apply(this,arguments);const W0=W,fl=(L6C.x0-L6C.bx+L6C.d)/L6C.kk;c.save();c.translate(fl,0);W=Math.round(L6C.vis/L6C.kk);try{return fn.apply(this,arguments)}finally{W=W0;c.restore()}}}
+bossWarnFx=ls6Scr(bossWarnFx);bossFailFx=ls6Scr(bossFailFx);bossTimeFx=ls6Scr(bossTimeFx);
+/* 보스 착지(15 visX, 게임 동작)는 따라가기와 상관없이 예전 그대로 (밀어 둔 만큼 되돌려 잼) */
+{const _vx=visX;visX=function(){const r=_vx.apply(this,arguments);if(!L6C.d||!lsOn())return r;try{const b=$("lsbtn"),q=b&&b.getBoundingClientRect(),cr=cvBox();if(!q||!q.width||!cr.width)return r;return [0,Math.max(W*.45,Math.min(W,(q.left-(cr.left+L6C.d))/cr.width*W))]}catch(e){return r}}}
+/* 넓은 지도의 작은 전투 화면 = 진짜 전투 캔버스에서 주인공 둘레만 옮겨 그림 (그리기 한 번, 전투는 하나라 숫자·그림이 같이 바뀜) */
+/* 그리기 횟수 줄이기 (QA: 매 프레임 옮기면 진짜 캔버스를 읽느라 스크립트 시간 ×2) = 1배속 초당 약 20번 · 2배속 이상 약 12번 (L6MI, 손가락으로 확대 중엔 바로) */
+const L6MI=[50,80];
+function ls6Mini(){const mc=L6S.mc;if(!L6S.fm||!mc||!mc.isConnected||!L6S.mw)return;const n=performance.now();if(n-(L6Z.lm||0)<L6MI[SPD>=2?1:0]&&!L6Z.d0)return;L6Z.lm=n;const w=L6S.mw,h=L6S.mh,kk=Math.min(h/190,w/300)*l6mz(),sw=Math.min(W,w/kk),sh=Math.min(H,h/kk),dt=L6Z.t?Math.min(300,Math.max(0,n-L6Z.t)):16,tx=PX,ty=PY-34+Math.max(0,l6mz()-1)*5;L6Z.t=n;
+  if(L6Z.cx==null||Math.abs(tx-L6Z.cx)>W/3||Math.abs(ty-L6Z.cy)>H/3){L6Z.cx=tx;L6Z.cy=ty}else{const a=1-Math.exp(-dt/180);L6Z.cx+=(tx-L6Z.cx)*a;L6Z.cy+=(ty-L6Z.cy)*a}
+  const sx=Math.max(0,Math.min(W-sw,L6Z.cx-sw/2)),sy=Math.max(0,Math.min(H-sh,L6Z.cy-sh/2)),r=cv.width/W,c=mc.getContext("2d");
+  /* 작게 = 판 전체가 칸에 들어감 → 남는 쪽은 어두운 띠 (늘이지 않음) */const q=mc.width/w,dw=Math.min(w,sw*kk)*q,dh=Math.min(h,sh*kk)*q,dx=(mc.width-dw)/2,dy=(mc.height-dh)/2;if(dw<mc.width-1||dh<mc.height-1){c.fillStyle="#0b0806";c.fillRect(0,0,mc.width,mc.height)}
+  try{c.drawImage(cv,sx*r,sy*r,sw*r,sh*r,dx,dy,dw,dh)}catch(e){}}
+/* 🔍 작은 전투 확대 (넓은 지도 왼쪽 작은 전투만, 사용자 2026-11-09 "1"): 작게(판 전체) → 보통(예전 크기) → 크게 ×1.5 → 더 크게 ×2.2 → 작게 (사용자 2026-11-09 "보통보다 더 작게") · 두 손가락 벌리기·휠 = 작게~2.6 사이 아무 배율 · 주인공을 따라감(약 0.2초, 15n 카메라처럼) · 보던 배율 S.l6mz (없으면 보통) · 보는 것만 (큰 전투·세로 카메라·게임 규칙 그대로) */
+const L6ZL=[0,1,1.5,2.2],L6ZN=["작게","보통","크게","더 크게"],L6Z={cx:null,cy:0,t:0,bt:"",P:new Map(),d0:0,z0:1,wt:0};
+/* 배율: 1 = 보통(처음·예전 크기) · 작게 = 판 전체가 칸에 꼭 들어가는 배율(l6zf, 칸 크기마다 다름 → 저장은 0.1 = "늘 판 전체") · 저장값이 없거나 이상하면 보통 */
+function l6zf(){const w=L6S.mw,h=L6S.mh;if(!w||!h)return .5;return Math.min(.95,Math.min(w/W,h/H)/Math.min(h/190,w/300))}
+function l6mz(){const z=S&&+S.l6mz;return z>=.1&&z<=2.6?Math.max(l6zf(),z):1}
+function l6mzB(){const b=document.querySelector("#ls6fm .l6f-zb");if(!b)return;const z=l6mz(),t="🔍 "+L6ZN[z<(l6zf()+1)/2?0:z<1.25?1:z<1.85?2:3];if(L6Z.bt!==t){L6Z.bt=t;b.textContent=t}}
+function l6mzSet(z,sv){if(!S)return;{const f=l6zf();z=Math.max(f,Math.min(2.6,z));S.l6mz=z<=f+.01?.1:Math.round(z*100)/100}if(sv)save();l6mzB()}
+function l6mzStep(){const z=l6mz(),f=l6zf();l6mzSet(L6ZL.map(v=>v||f).find(v=>v>z+.01)||f,1)}
+function l6mzG(m){if(!m)return;const P=L6Z.P,d=()=>{const[a,b]=[...P.values()];return Math.hypot(a[0]-b[0],a[1]-b[1])||1};
+  m.addEventListener("pointerdown",e=>{P.set(e.pointerId,[e.clientX,e.clientY]);if(!e.target.closest("button"))try{m.setPointerCapture(e.pointerId)}catch(_){}if(P.size==2){L6Z.d0=d();L6Z.z0=l6mz()}});
+  m.addEventListener("pointermove",e=>{if(!P.has(e.pointerId))return;P.set(e.pointerId,[e.clientX,e.clientY]);if(P.size==2&&L6Z.d0)l6mzSet(L6Z.z0*d()/L6Z.d0,0)});
+  const up=e=>{if(!P.delete(e.pointerId))return;if(P.size<2&&L6Z.d0){L6Z.d0=0;save()}};m.addEventListener("pointerup",up);m.addEventListener("pointercancel",up);
+  m.addEventListener("wheel",e=>{e.preventDefault();l6mzSet(l6mz()*Math.exp(-e.deltaY*.0015),0);clearTimeout(L6Z.wt);L6Z.wt=setTimeout(save,400)},{passive:false})}
+{const _fr=frame;frame=function(){const r=_fr.apply(this,arguments);try{ls6CamF();ls6Mini()}catch(e){}return r}}
+/* 가로에선 스킬 메뉴 = 판 (세로·큰 화면은 예전 창 그대로) · 다른 창을 열면 판을 닫음 */
+{const _os=openSheet;openSheet=function(n){if(n=="ps"&&ls6On()){if(L6S.on&&!L6S.fm)ls6Sk(0);else ls6Sk(1);return}if(L6S.on)ls6Sk(0);if(L6P.on)ls6Pc(0);if(L6E.on||L6E.dp)ls6Pan(null);return _os.apply(this,arguments)}}
+{const _rs=renderSheet;renderSheet=function(){const r=_rs.apply(this,arguments);try{if(L6S.on)ls6SkR();if(L6P.on)ls6PcR()}catch(e){console.error(e)}return r}}
+addEventListener("resize",()=>setTimeout(()=>{if(L6S.on){ls6SkR(1);ls6CamM()}if(L6P.on){ls6PcR(1);ls6CamM()}},120));
+try{CUTP.push("#ls6sk","#ls6fm")}catch(e){}
+setInterval(()=>{try{if(ls6On()){ls6Lv();if(L6S.on)ls6SkR();if(L6P.on)ls6PcR()}}catch(e){}},250);
+/* ===== P3b 🔄 직업·프리셋 카드 (사용자 2026-11-09 "캐릭 및 프리셋 변경도 용이하게", "캐릭터 클릭 하거나") =====
+   가로 폰에선 직업 변경(03 chooseClass(true) = 상태바 초상화 ⇄ · 아래 🧩 · 설정 "🔄 직업 변경")이 팝업 대신 왼쪽 카드 #ls6pc (전투 안 어둡게, 계속 싸움) · 세로·큰 화면은 예전 팝업 그대로
+   카드 내용 = 15l bsClsWin이 만드는 글 그대로 (popup을 잠깐 가로채 받기만) → 직업 카드(chooseClass(true,k) = 그 직업 🧩 보기) · 🧩 줄(bsPick = 그 세팅으로 바로, 다른 직업이면 직업까지) · "(으)로만 바꾸기 (마지막 세팅)"(bsPick(c)) → 규칙은 게임 그대로
+   더한 것은 보이기만: 🧩 줄에 스킬 그림 8개(+마법사 원소) · 지금 🧩에 저장 안 한 변경(15l cpDiff)이면 "사용 중" 대신 "● 바뀜" + 아래 안내 한 줄 · 맨 위 실시간 줄(ls6Lv, 🧩를 고른 순간도 "바꾼 순간") · 아래 [🎒 장비](ls6Pan) [📜 스킬](스킬 판) [💾 저장](15l cpSaveAsk, 지금 직업을 볼 때만)
+   카드가 열린 동안 주인공 따라가기 (보이는 칸 = 카드 오른쪽 ~ 화면 오른쪽, ls6CamM) */
+function ls6Pc(on,op){const B=document.body.classList;if(on&&(!ls6On()||!S||!S.cls))on=0;
+  if(!on){if(!L6P.on)return;L6P.on=0;L6P.sig="";B.remove("l6pc");const p=$("ls6pc");if(p)p.querySelector(".l6p-b").innerHTML="";ls6On1();try{appCut()}catch(e){}return}
+  ls6PcBuild();const was=L6P.on;L6P.op=CLS[op]?op:was&&CLS[L6P.op]?L6P.op:S.cls;
+  if(!was){ls6Mn(false);ls6Pan(null);ls6Sk(0);if(sheetName)closeSheet();L6P.on=1;L6P.cls=S.cls;B.add("l6pc");ls6On1()}
+  ls6PcR(1);ls6Lv();ls6CamM();if(!was)setTimeout(()=>{if(L6P.on){ls6CamM();try{appCut()}catch(e){}}},260)}/* 들어오는 움직임(0.2초)이 끝난 뒤 재기 (움직이는 중엔 카드가 왼쪽으로 밀려 있어 구멍 여백을 못 잼) */
+function ls6PcBuild(){if($("ls6pc"))return;const e=document.createElement("div");e.id="ls6pc";
+  e.innerHTML='<div class="l6s-h"><b>🔄 직업 · 프리셋</b><span class="sp"></span><button type="button" class="l6s-x" data-a="x" aria-label="닫기">✕</button></div>'+ls6LvH()+'<div class="l6p-b"></div><div class="l6p-f"><button type="button" class="btn" data-a="eq">🎒 장비</button><button type="button" class="btn" data-a="sk">📜 스킬</button><button type="button" class="btn go" data-a="sv">💾 저장</button></div>';document.body.append(e);
+  e.addEventListener("click",ev=>{const b=ev.target.closest("[data-a]");if(b){const k=b.dataset.a;if(k=="x")ls6Pc(0);else if(k=="eq")ls6Pan("eq");else if(k=="sk")openSheet("ps");else if(k=="sv")cpSaveAsk();return}setTimeout(()=>{if(L6P.on)ls6PcR()},0)})}
+/* 🧩 줄 스킬 그림 (그 🧩의 📜 번호 = 지금 직업·지금 📜면 지금 낀 것, 아니면 저장된 📜) · 최대 8개 + 마법사 원소 줄 */
+function ls6PcIc(c,i){try{const L=S.cpr[c].list[i];if(!L)return "";const P=S.skp&&S.skp[c],ids=(c===S.cls&&P&&L.s===P.cur?S.psl:P&&P.list&&P.list[L.s])||[],a=[];
+  if(c=="mage"&&L.el){const t=psGet(L.el);if(t)a.push('<em>🔹'+skI(t)+'</em>')}let n=0;for(const id of ids){if(n>=8)break;const t=id&&psGet(id);if(t){a.push(t.img?skI(t):"<span>"+t.ic+"</span>");n++}}return a.join("")}catch(e){return ""}}
+/* 카드 다시 그리기 (바뀐 게 있을 때만) · 직업이 바뀌면 그 직업 목록으로 · 목록 스크롤 자리는 그대로 */
+function ls6PcR(force){if(!L6P.on||!ls6On()||!S||!S.cls)return;const P=$("ls6pc");if(!P)return;if(L6P.cls!==S.cls){L6P.cls=S.cls;L6P.op=S.cls}if(!CLS[L6P.op])L6P.op=S.cls;
+  let d=null;try{d=cpDiff()}catch(e){}let sg="";
+  try{sg=JSON.stringify([S.cls,L6P.op,S.cpr,S.skp,S.psl,S.elm,S.bolt,d,S.gems,Object.keys(S.eqp||{}).map(c=>{const E=S.eqp[c];return [c,E&&E.cur,E&&E.nm,E&&E.list&&E.list.map(l=>l&&l.eq?l.eq.weapon||0:0)]}),SLK.map(sl=>{const it=S.eq&&S.eq[sl];return it?it.id+":"+(it.so||[]).map(cpKey).join():""}),innerWidth,innerHeight])}catch(e){}
+  if(!force&&sg===L6P.sig)return;L6P.sig=sg;
+  const Bd=P.querySelector(".l6p-b"),g0=Bd.querySelector(".bvlg"),st=g0&&L6P.sop===L6P.op?g0.scrollTop:0;let H="";const _p=popup;popup=function(t,h){H=h};try{bsClsWin(L6P.op)}catch(e){console.error(e)}finally{popup=_p}
+  L6P.sop=L6P.op;Bd.innerHTML=H;
+  Bd.querySelectorAll(".bvbb").forEach(b=>{const m=/bsPick\('(\w+)',(\d+)\)/.exec(b.getAttribute("onclick")||"");if(!m)return;const ic=ls6PcIc(m[1],+m[2]);if(ic)b.insertAdjacentHTML("beforeend",'<span class="l6p-ic">'+ic+'</span>');
+    if(d&&b.classList.contains("on")){const s=b.querySelector("small.st");if(s){s.textContent="● 바뀜";s.className="st dt"}}});
+  const g=Bd.querySelector(".bvlg"),h=Bd.querySelector(".bvh");if(g){if(d&&L6P.op===S.cls)g.insertAdjacentHTML("beforeend",'<div class="l6p-dt">● 바뀜 = 💾 저장 안 한 변경 ('+d.join(" · ")+') · 그 줄을 누르면 저장한 세팅으로 돌아가요 · 남기려면 💾 저장</div>');if(h)g.append(h);if(st)g.scrollTop=st}
+  const sv=P.querySelector('[data-a="sv"]');if(sv)sv.disabled=L6P.op!==S.cls}
+/* 가로에선 직업 변경 = 카드 (초상화·🧩를 또 누르면 닫힘 · 직업 카드 chooseClass(true,k) = 그 직업 보기) */
+{const _cc=chooseClass;chooseClass=function(chg,op){if(chg&&ls6On()&&S&&S.cls){if(L6P.on&&op==null){ls6Pc(0);return}ls6Pc(1,op);return}return _cc.apply(this,arguments)}}
+/* 🧩를 고른 순간도 실시간 줄의 "바꾼 순간" (보석·비율만 다른 🧩도 ▲▼가 뜨게) */
+{const _cu=cpUse;cpUse=function(){L6D.n=(L6D.n||0)+1;return _cu.apply(this,arguments)}}
+try{CUTP.push("#ls6pc")}catch(e){}
+/* ===== P2 🎒 장비 카드 3장 + 💥 딜량 카드 (계획 P2 · 시안 ①②③, 사용자 "스킬을 바꿀 때마다 바뀌는 게 실시간으로 보이는 게 핵심" → 장비도 같게) =====
+   가로 폰에서 🎒 = 전투 위에 뜨는 카드 3장 #ls6eq (뒤 전투 30% 어둡게, 어두운 곳·✕로 닫힘): ① 착용 = 장비창(#eqp) 왼쪽 칸 그대로 (🧩·🎒 줄 · 인형 · 상세 능력치) | ② 비교 = 장비 설명창 #tip을 옮겨 넣음 | ③ 가방 = 장비창 오른쪽 칸(인벤토리) 그대로
+   #eqp·#tip은 노드를 옮기기만 (02 renderEq·renderTip이 그리는 글·16 #eqp/#tip 누르기 = 그대로 → 장착·판매·분해·해제·보석·강화·자동 강화·일괄 장착·프리셋·▲▼·🚫 규칙이 한 곳) · 닫거나 세로로 돌리면 제자리로
+   ② 가방 장비를 누르면(tip.k "inv") 비교 카드용 글만 따로 그림 (ls6CmpH: 지금 착용 ▶ 고른 장비 · 바꾸면 전투력 = 가방 ▲▼와 같은 08 eqGain · 줄마다 지금·고르면·차이 · 버튼은 같은 data-act) · [내 능력치] 탭 = 개발 담당 statsWith(it) (없으면 "준비 중")
+   장착 칸·보석·물약·재료를 누르면 ② = 게임 설명창 글 그대로 (해제 · 소켓 보석 · ★ 강화 · 자동 강화 …)
+   ② 맨 위 실시간 줄 = 스킬 판과 같은 ls6Lv (장착한 순간 = 08 setupSig "바꾼 순간" → 3초 재는 중 → ▲▼)
+   💥 딜량 = 오른쪽 카드 #ls6dp (어둡게 안 함) = 딜량 칸(#dpw) 그대로 옮김 */
+function ls6EqBuild(){if($("ls6eq"))return;const B=document.body,mk=(id,h)=>{const e=document.createElement("div");e.id=id;if(h)e.innerHTML=h;B.append(e);return e};
+  mk("ls6edim").onclick=()=>ls6Eq(0);
+  const q=mk("ls6eq",'<div class="l6e-c2"><div class="l6s-h"><b>⚖️ 비교</b><span class="l6e-tab"><button type="button" class="chip" data-cv="it">장비끼리</button><button type="button" class="chip" data-cv="me">내 능력치</button></span><span class="sp"></span><button type="button" class="l6s-x" data-a="x" aria-label="닫기">✕</button></div>'+ls6LvH()+'<div class="l6e-emp"><b>⚖️</b>가방에서 장비를 누르면<br>지금 장비와 <em>나란히</em> 비교해요<small>가방 칸의 ▲ = 더 좋음 · ▼ = 더 나쁨<br>착용 칸을 누르면 해제 · 보석 · 강화</small></div></div>');
+  q.querySelector(".l6e-c2").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.a=="x"){ls6Eq(0);return}if(b.dataset.cv){if(L6E.cv!==b.dataset.cv){L6E.cv=b.dataset.cv;L6E.sig="";renderTip()}}});
+  mk("ls6dp",'<div class="l6s-h"><b>💥 딜량</b><span class="sp"></span><button type="button" class="l6s-x" data-a="x" aria-label="닫기">✕</button></div>').querySelector(".l6s-x").onclick=()=>ls6Dp(0)}
+/* 노드 옮기기 (원래 자리 기억 → 되돌리기) */
+function l6Mv(e,to,before){if(!e||!to)return;if(!e._l6h)e._l6h=[e.parentNode,e.nextSibling];if(before)to.insertBefore(e,before);else to.append(e)}
+function l6Bk(e){if(!e||!e._l6h)return;const[p,n]=e._l6h;e._l6h=null;if(n&&n.parentNode===p)p.insertBefore(e,n);else p.append(e)}
+/* 🎒 카드 열기·닫기 (keep = 고른 장비(tip) 그대로 · 아니면 비교 칸은 빈 채로 시작) */
+function ls6Eq(on,keep){const B=document.body.classList;if(on&&(!ls6On()||!S||!S.cls))on=0;
+  if(!on){if(!L6E.on)return;L6E.on=0;B.remove("l6eq");l6Bk($("tip"));l6Bk($("eqp"));if(!keep)tip=null;L6E.sig="";L6E.cus=0;tipSig="";L6E.hk="";eqSig="";try{render()}catch(e){}ls6On1();return}
+  ls6EqBuild();if(L6E.on){if(keep)render();return}
+  ls6Mn(false);ls6Sk(0);ls6Pc(0);ls6Dp(0);if(sheetName)closeSheet();if(!keep)tip=null;L6E.cv="it";
+  const q=$("ls6eq"),c2=q.querySelector(".l6e-c2");l6Mv($("eqp"),q,c2);l6Mv($("tip"),c2);L6E.on=1;B.add("l6eq");L6E.sig="";L6E.cus=0;tipSig="";L6E.hk="";eqSig="";
+  try{render()}catch(e){console.error(e)}ls6On1();ls6Lv();setTimeout(()=>{if(L6E.on){try{appCut();fitDs()}catch(e){}}},260)}/* 들어오는 움직임(0.2초) 뒤에 구멍 여백·상세 능력치 칸 수 다시 */
+/* 💥 딜량 카드 (오른쪽, 어둡게 안 함) · 접혀 있으면 펴서 (예전 가로 판과 같음) */
+function ls6Dp(on){const B=document.body.classList;if(on&&(!ls6On()||!S||!S.cls))on=0;
+  if(!on){if(!L6E.dp)return;L6E.dp=0;B.remove("l6dp");l6Bk($("dpw"));try{midRows()}catch(e){}return}
+  ls6EqBuild();if(L6E.dp)return;ls6Mn(false);ls6Sk(0);ls6Pc(0);ls6Eq(0);if(sheetName)closeSheet();
+  l6Mv($("dpw"),$("ls6dp"));L6E.dp=1;B.add("l6dp");if(S.dpf){S.dpf=0;save()}try{dpsFold()}catch(e){}setTimeout(()=>{if(L6E.dp)try{appCut()}catch(e){}},260)}
+/* ② 비교 카드 글 (가방 장비를 눌렀을 때만) — 값은 게임 함수 그대로 읽기만 (istats·opNm·opV·uqOffV·isUq·eqGain·ipow·bsTipH·uqBad·inPreset) */
+function ls6CmpH(it,cur){const req=ireq(it),ok=clsOk(it),wx=wtX(it),ub=ok?uqBad(it):"",ip=inPreset(it),me=L6E.cv=="me",fN=v=>Math.round(v).toLocaleString();
+  let SW=null;if(me&&typeof statsWith=="function")try{SW=statsWith(it)}catch(e){console.error(e)}/* 개발 담당 06 statsWith (3~4ms) = 탭·고르기 때만 (ls6Cmp가 바뀐 게 있을 때만 그림) */
+  const vh=(x,lab,nw)=>x?'<div class="l6c-vh'+(nw?' nw':'')+'"><span class="es g'+x.g+'"><span class="ei">'+iic(x)+'</span>'+sockBadge(x)+'</span><div><small>'+lab+'</small><b style="color:'+GC[x.g]+'">'+x.n+'</b><span class="t">'+GN[x.g]+' · T'+((x.z||0)+1)+'</span></div></div>':'<div class="l6c-vh em"><span class="es"><span class="eph">'+SL[it.sl][1]+'</span></span><div><small>'+lab+'</small><b>'+SL[it.sl][0]+' 칸</b><span class="t">비어 있음</span></div></div>';
+  const lab=wx?(cur?"🎒 "+pnQ(window._wtRi,"e")+"의 같은 종류":"같은 종류 무기 없음"):ok?"지금 착용":CLS[it.c||"knight"].n+" 착용 중";
+  let h='<div class="l6c"><div class="l6c-vs">'+vh(cur,lab)+'<i class="l6c-ar">▶</i>'+vh(it,"고른 장비",1)+'</div>';
+  {let t,d=null;if(S.lv<req)t='<span>장착하려면</span><b class="dn">Lv.'+req+' 필요</b>';else if(ub)t='<span class="dn">🚫 '+ub+'</span>';else{d=!ok||wx?ipow(it)-(cur?ipow(cur):0):SW?SW.cpAfter-SW.cpNow:eqGain(it);d=Math.round(d);t='<span>바꾸면 전투력'+(!ok||wx?' <small>('+(wx?'같은 종류 무기끼리':CLS[it.c||"knight"].n+' 장비끼리')+')</small>':'')+'</span><b class="'+(d>0?"up":d<0?"dn":"")+'">'+(d?(d>0?"▲ ":"▼ ")+fN(Math.abs(d)):"변화 없음")+'</b>'}
+    h+='<div class="l6c-pw'+(d>0?" u":d<0||ub||S.lv<req?" d":"")+'">'+t+'</div>'}
+  h+='<div class="l6c-sc"><table class="l6c-t"><colgroup><col><col class="v"><col class="v"><col class="d"></colgroup><thead><tr><th>능력치</th><th>지금</th><th>고르면</th><th>차이</th></tr></thead><tbody>';
+  const dd=(d,f,z)=>Math.abs(d)<z?'<td class="zr">-</td>':'<td class="'+(d>0?"up":"dn")+'">'+(d>0?"▲":"▼")+f(Math.abs(d))+'</td>',zr='<span class="zr">-</span>';
+  if(!me){const a=cur?istats(cur):{},b=istats(it);["atk","def","hp","mp"].forEach(k=>{const x=a[k]||0,y=b[k]||0;if(x||y)h+='<tr><td>'+SN[k]+'</td><td>'+(x?fN(x):zr)+'</td><td>'+(y?fN(y):zr)+'</td>'+dd(y-x,fN,.5)+'</tr>'});
+    /* 옵션: 02 itemCard opDiff와 같은 값 (꺼진 고유옵션은 빼고 회색 줄) */const uo=uqOffV(it),uc=cur&&cur.op?uqOffV(cur):"",A={},Bv={},N={},U={},OF={};
+    (it.op||[]).forEach(x=>{const u=isUq(it,x);if(u)U[x.k]=1;if(x.u)N[x.k]=opNmU(x,it);if(uo&&u){OF[x.k]=(OF[x.k]||0)+x.v;return}A[x.k]=(A[x.k]||0)+x.v});
+    (cur&&cur.op||[]).forEach(x=>{const u=isUq(cur,x);if(u){U[x.k]=1;if(x.u&&!N[x.k])N[x.k]=opNmU(x,cur)}if(!(uc&&u))Bv[x.k]=(Bv[x.k]||0)+x.v});
+    const ks=[...new Set([...Object.keys(A),...Object.keys(OF),...Object.keys(Bv)])],pv=k=>v=>opV(k,v),row=k=>{const so=N[k]&&opSkOff(k);return '<tr'+(U[k]?' class="uq"':'')+'><td>'+(N[k]||opNm(k))+(so?' <small>('+so+')</small>':'')+'</td><td>'+(Bv[k]?'+'+opV(k,Bv[k]):zr)+'</td><td>'+(A[k]?'+'+opV(k,A[k]):OF[k]?'<s>+'+opV(k,OF[k])+'</s>':zr)+'</td>'+(!A[k]&&OF[k]?'<td class="zr">꺼짐</td>':dd((A[k]||0)-(Bv[k]||0),pv(k),1e-4))+'</tr>'};
+    ks.filter(k=>!U[k]).forEach(k=>h+=row(k));const uk=ks.filter(k=>U[k]);if(uk.length){h+='<tr class="hd"><td colspan="4">✦ 고유옵션'+(uo?' <span class="dn">· 꺼짐: '+uo+'</span>':'')+'</td></tr>';uk.forEach(k=>h+=row(k))}
+    /* 소켓·보석 (opDiff와 같음: 빈 소켓이 있으면 새 장비로 이동, 없으면 보석함으로) */const so=(cur&&cur.so||[]).filter(Boolean);let e=(it.so||[]).filter(x=>!x).length;
+    h+='<tr class="hd"><td colspan="4">💎 소켓 '+(cur?(cur.so||[]).length:0)+' → '+(it.so||[]).length+'</td></tr>';so.forEach(g=>{const mv=e>0;if(mv)e--;h+='<tr class="gm"><td colspan="4"><span class="otag '+(mv?'mv">이동':'rm">보석함으로')+'</span>'+GEM[g.gk].ic+' '+gemDesc(g.gk,g.gg)+'</td></tr>'})}
+  else if(!SW||!Array.isArray(SW.rows))h+='<tr><td colspan="4" class="l6c-wip">🛠️ <b>준비 중</b><br>장비 하나를 바꿨을 때 내 상세 능력치(보석·특성·스킬까지)가 어떻게 되는지 보여 줄 거예요<br>지금은 [장비끼리]로 봐 주세요</td></tr>';
+  else{/* 내 능력치: 상세 능력치 줄 순서 그대로, 바뀌는 줄만 (같은 줄은 개수만) · 피의 맹세·기세처럼 출렁이는 값은 빼고 셈(06 statsWith) */const ch=SW.rows.filter(x=>Math.abs(x.d||0)>1e-9||x.ta!==x.tb),nc=SW.rows.length-ch.length;
+    if(SW.why)h+='<tr class="hd"><td colspan="4"><span class="dn">🚫 '+SW.why+'</span> · 꼈다고 치고 셈</td></tr>';
+    ch.forEach(x=>{const d=x.d||0;h+='<tr'+(/^o_/.test(x.k)?' class="op"':'')+'><td>'+x.n+((x.of||x.ofB)?' <small>(일부 꺼짐)</small>':'')+'</td><td>'+(x.ta||zr)+'</td><td>'+(x.tb||zr)+'</td>'+(Math.abs(d)>1e-9?'<td class="'+(d>0?"up":"dn")+'">'+(d>0?"▲":"▼")+'</td>':'<td class="zr">-</td>')+'</tr>'});
+    if(!ch.length)h+='<tr><td colspan="4" class="l6c-wip">바뀌는 능력치가 없어요</td></tr>';if(nc>0)h+='<tr class="hd"><td colspan="4">그대로인 줄 '+nc+'개는 숨김</td></tr>';
+    if(SW.off&&SW.off.length)h+='<tr class="hd"><td colspan="4">🎒 가방으로 빠지는 장비: '+SW.off.map(x=>x.n).join(' · ')+'</td></tr>'}
+  h+='</tbody></table>'+bsTipH(it)+(ip?'<div class="l6c-nt">🔖 다른 🎒 장비 프리셋에서 쓰는 장비라 팔기·분해는 막혀요</div>':'')+'</div>';
+  return h+'<div class="l6c-f"><button class="btn" data-act="sell"'+(ip?' disabled':'')+'>판매</button><button class="btn" data-act="edis"'+(ip?' disabled':'')+'>분해</button><button class="btn go" data-act="equip"'+(S.lv<req||!ok||ub?" disabled":"")+'>장착</button></div></div>'}
+/* ② 칸: 가방 장비면 비교 글, 아니면 게임 설명창 글 그대로 + 비었을 때 안내 · 고른 칸 표시(①·③) */
+{const _rt=renderTip;renderTip=function(){if(L6E.on&&ls6On()&&tip&&tip.k=="inv"){try{ls6Cmp()}catch(e){console.error(e)}l6EmpU();return}if(L6E.cus){L6E.cus=0;L6E.sig="";tipSig=""}const r=_rt.apply(this,arguments);if(L6E.on)l6EmpU();return r}}
+function ls6Cmp(){const t=$("tip"),it=S.inv[tip.i];if(!it){tip=null;t.hidden=true;tipSig="";L6E.cus=0;L6E.sig="";return}const cur=cmpTarget(it);
+  const sig=JSON.stringify([tip,it,cur,L6E.cv,S.slv,S.lv,SLK.map(k=>S.eq[k]&&S.eq[k].id),S.cls,S.psl,S.eqp&&S.eqp[S.cls]&&S.eqp[S.cls].cur,typeof statsWith]);
+  if(L6E.cus&&sig===L6E.sig&&!t.hidden)return;L6E.sig=sig;L6E.cus=1;tipSig="";const sc=t.querySelector(".l6c-sc"),st=sc&&L6E.si===tip.i?sc.scrollTop:0;L6E.si=tip.i;t.innerHTML=ls6CmpH(it,cur);if(st){const n=t.querySelector(".l6c-sc");if(n)n.scrollTop=st}if(t.hidden)t.hidden=false}
+function l6EmpU(){const c=document.querySelector("#ls6eq .l6e-c2");if(!c)return;const t=$("tip"),em=!tip||t.hidden,iv=!em&&tip.k=="inv";if(c.classList.contains("emp")!=em)c.classList.toggle("emp",em);if(c.classList.contains("inv")!=iv)c.classList.toggle("inv",iv);
+  c.querySelectorAll(".l6e-tab [data-cv]").forEach(b=>{const on=b.dataset.cv==L6E.cv;if(b.classList.contains("on")!=on)b.classList.toggle("on",on)});
+  /* ① 착용 칸·③ 가방 칸에 지금 고른 것 표시 (장비창이 다시 그려지면 다시) */const p=$("eqp"),it=tip&&tip.k=="inv"?S.inv[tip.i]:null,k=tip?(tip.k=="eq"?"e"+tip.sl:it?"i"+tip.i+"|"+it.sl:""):"";if(!p||k===L6E.hk&&p.firstChild===L6E.hn)return;L6E.hk=k;L6E.hn=p.firstChild;
+  p.querySelectorAll(".l6sel,.l6vs").forEach(e=>e.classList.remove("l6sel","l6vs"));if(!k)return;const q=s=>p.querySelector(s);
+  if(tip.k=="eq"){const e=q('.es[data-es="'+tip.sl+'"]');if(e)e.classList.add("l6sel")}else if(it){const a=q('.ii[data-ii="'+tip.i+'"]'),b=q('.es[data-es="'+it.sl+'"]');if(a)a.classList.add("l6sel");if(b&&!wtX(it))b.classList.add("l6vs")}}
+/* 내 빌드(15g) → 장비 칸: 가로면 장비 카드로 */
+{const _bg=bdEqGo;bdEqGo=function(sl){if(ls6On()){closeSheet();ls6Eq(1);if(sl){invTab="eq";tip={k:"eq",sl};encMsg=null;render()}return}return _bg.apply(this,arguments)}}
+try{CUTP.push("#ls6eq","#ls6dp")}catch(e){}
+/* ===== P4 화면 전체 페이지 (계획 P4 · 시안 "화면 전체 페이지", 사용자 2026-11-08 "환생·상점·설정 같은 건 전체 화면") =====
+   가로 폰에선 메뉴 창(#sheet, 16 openSheet)이 가운데 뜬 창(사용자 2026-11-09 "화면에 꽉차지 않는 쪽으로" — 둘레로 전투가 보임, 장비 카드처럼 30% 어둡게, 바깥 누르면 ✕): 머리줄 [← 뒤로] 제목 · 지갑(💰·💎) · [✕] · 몸통은 메뉴마다 칸 나누기 (가로 폭을 씀)
+   ← = 연 곳으로 돌아감 (☰ 판 / 스킬 판·넓은 지도 / 🔄 카드 / 🎒 장비 카드 / 💥 딜량 / 앞 창(상점 → 스킨 → ← 상점) / 전투) · ✕ = 전투로
+   칸 나누기 = 16 renderSheet가 만든 줄(노드)을 칸(.l6g)으로 옮기기만 (글·버튼·누르기는 그대로 → 규칙이 한 곳) · 세로·큰 화면은 안 나눔(16 그대로)
+   환생(환생 · 영혼 각성 · 편의 특성) · 단련(목록 · 자동) · 상점(왼쪽 세로 탭 · 내용 · 지갑) · 설정(왼쪽 분류 · 내용) · 칭호(지금 칭호 · 목록) · 스킨(내 스킨 · 목록)
+   다시 그려도(처치마다 render) 칸마다 스크롤 자리는 그대로 · 폰을 돌려도 열린 창은 열린 채로(같은 #sheet, 칸만 다시) */
+const L6F={st:[],nx:null,bk:0,w:""},L6FT={shop:"🏪 상점",set:"⚙️ 설정",zone:"🗺️ 층 이동"};
+function ls6FBuild(){const h=document.querySelector("#sheet .shh");if(!h||h.querySelector(".l6-bk"))return;
+  const b=document.createElement("button");b.type="button";b.className="l6-bk";b.textContent="←";b.setAttribute("aria-label","뒤로");b.onclick=ls6FBack;h.insertBefore(b,h.firstChild);
+  const w=document.createElement("span");w.className="l6-wal";w.innerHTML='<span>💰 <b></b></span><span class="r">💎 <b></b></span>';h.insertBefore(w,$("sx"))}
+/* 연 곳 (☰ 판 타일은 판을 닫고 열어서 L6F.nx로 알려 줌) */
+function ls6FFrom(){if(L6F.nx)return {t:L6F.nx};if(L6S.on)return {t:L6S.fm?"fm":"sk"};if(L6P.on)return {t:"pc",op:L6P.op};if(L6E.on)return {t:"eq"};if(L6E.dp)return {t:"dp"};if(document.body.classList.contains("l6mn"))return {t:"mn"};return {t:"bt"}}
+function ls6FBack(){const o=L6F.st.pop()||{t:"bt"};
+  if(o.t=="sh"){L6F.bk=1;try{if(o.sh!=null)window._shT=o.sh;openSheet(o.n)}finally{L6F.bk=0}return}
+  L6F.st=[];closeSheet();if(!ls6On())return;
+  if(o.t=="mn")ls6Mn(true);else if(o.t=="sk"||o.t=="fm"){ls6Sk(1);if(o.t=="fm")ls6Fm(1)}else if(o.t=="pc")ls6Pc(1,o.op);else if(o.t=="eq")ls6Eq(1);else if(o.t=="dp")ls6Dp(1)}
+/* 머리줄 지갑 (0.25초마다 글자만) */
+function ls6FW(){if(!ls6On()||!sheetName||$("sheet").hidden||!S)return;const w=document.querySelector("#sheet .l6-wal");if(!w)return;const k=hudN(S.gold||0)+"|"+(S.ruby||0).toLocaleString();if(k===L6F.w&&w._ok)return;L6F.w=k;w._ok=1;const b=w.querySelectorAll("b");b[0].textContent=hudN(S.gold||0);b[1].textContent=(S.ruby||0).toLocaleString()}
+/* 설정 분류 (줄을 글·입력 칸으로 알아봄 · 모르는 새 줄은 "기타"에 → 안 사라짐) */
+const L6SC=[["fx","🧪 물약"],["sc","📱 화면"],["dm","💥 숫자"],["ch","🧑 캐릭터"],["sv","💾 초기화"],["dg","🔧 앱 정보"],["etc","⚙️ 기타"]];
+function l6SetK(e){const t=(e.textContent||"").trim();if(e.querySelector("#potr"))return "fx";if(e.classList.contains("fcap")||/^(📊|🎞)/.test(t))return "sc";if(e.querySelector("#dmAr,#dmSr"))return "dm";if(/^(🔄|🧩)/.test(t))return "ch";if(/^진행 초기화/.test(t))return "sv";if(e.classList.contains("appdg"))return "dg";return "etc"}
+/* 메뉴별 칸: [칸 이름(스크롤 기억 키), 노드들] */
+const L6FG={
+  rb:K=>{const s=K.map((e,i)=>e.classList.contains("sosect")?i:-1).filter(i=>i>=0),a=s[0]==null?K.length:s[0],b=s[1]==null?K.length:s[1];return [["a",K.slice(0,a)],["b",K.slice(a,b)],["c",K.slice(b)]]},
+  gu:K=>[["a",K.filter(e=>e.classList.contains("gur"))],["b",K.filter(e=>!e.classList.contains("gur"))]],
+  shop:K=>{const hd=K.find(e=>e.classList.contains("shp-hd")),t=hd&&hd.querySelector(".shp-t"),w=hd&&hd.querySelector(".shp-w");return [["t",t?[t]:[]],["c:"+(window._shT||"pot"),K],["w",w?[w]:[]]]},
+  title:K=>[["a",K.slice(0,1)],["b",K.slice(1)]],
+  wd:K=>{const g=K.find(e=>e.querySelector(".skg"));return [["a",K.filter(e=>e!==g)],["b",g?[g]:[]]]},
+  set:K=>{const M={};K.forEach(e=>{const k=l6SetK(e);(M[k]=M[k]||[]).push(e)});const L=L6SC.filter(([k])=>M[k]);let cur=window._l6sT;if(!M[cur])cur=L[0]&&L[0][0];
+    const t=document.createElement("div");t.className="l6-vt";L.forEach(([k,n])=>{const b=document.createElement("button");b.type="button";b.dataset.l6st=k;b.textContent=n;if(k==cur)b.className="on";b.onclick=()=>ls6SetT(k);t.append(b)});
+    const C=L.map(([k,n])=>{const d=document.createElement("div");d.className="l6-sc"+(k==cur?" on":"");d.dataset.l6st=k;const h=document.createElement("div");h.className="l6-sch";h.textContent=n;d.append(h,...M[k]);return d});return [["t",[t]],["c",C]]}};
+/* 🌟💪 가로 환생·단련 간소화 (사용자 2026-11-09 "환생 너무 불편 · 편의 특성 간소화 · 가장 중요한 건 가운데" / "단련도 간소화"): 16이 그린 줄·버튼은 그대로 두고 글 조각만 감싸거나(이름 → em) 옮김 · 숫자는 16이 쓴 글에서 가져옴 (새 계산 X) · 세로는 이 코드를 안 지나감 */
+function l6Em(s){if(!s)return;const t=s.firstChild;if(t&&t.nodeType==3&&t.textContent.trim()){const e=document.createElement("em");e.className="l6n";e.textContent=t.textContent.trim();t.replaceWith(e)}}
+function l6Mx(sb){sb.querySelectorAll(".srow .bw .btn:disabled").forEach(b=>{if(b.textContent=="MAX"&&b.parentNode.childElementCount==1)b.classList.add("l6-mx")})}
+const L6FX={
+  rb:sb=>{const c=sb.querySelector(".soc"),r=sb.querySelector(".sor");if(c){l6Em(c.querySelector(".soh>span"));const sm=[...c.querySelectorAll(":scope>small")];if(r&&sm.length){const d=document.createElement("div");d.className="l6-soi";d.append(...sm);r.after(d)}}
+    sb.querySelectorAll('.l6g[data-k="c"]>.srow').forEach(w=>{const s=w.querySelector(":scope>span"),b=s&&s.querySelector(":scope>b");if(b&&/^Lv\./.test(b.textContent)){w.classList.add("l6tr");l6Em(s)}});l6Mx(sb)},
+  gu:sb=>{sb.querySelectorAll(".srow.gur").forEach(w=>{const s=w.querySelector(":scope>span"),sm=w.querySelector(":scope>small");l6Em(s);if(!s||!sm)return;
+      const st=sm.querySelector(":scope>span");if(st){const q=st.cloneNode(true);q.classList.add("l6st");s.append(q)}
+      const q=document.createElement("em"),t=sm.textContent,m=/다음 \+[\d,.]+/.exec(t),cb=/다음 비용/.test(t)?[...sm.querySelectorAll(":scope>b")].pop():null;q.className="l6q";
+      if(cb){q.append((m?m[0]+" · ":""));q.append(cb.cloneNode(true))}else q.textContent=/최대 레벨/.test(t)?"최대 레벨":(m?m[0]:"");s.append(q)});l6Mx(sb)}};
+function ls6SetT(k){window._l6sT=k;document.querySelectorAll("#sbody [data-l6st]").forEach(e=>e.classList.toggle("on",e.dataset.l6st==k));const c=document.querySelector('#sbody .l6g[data-k="c"]');if(c)c.scrollTop=0}
+/* 16이 새로 그렸으면 칸으로 나누기 (16이 바뀐 게 없어 안 그렸으면 그대로) */
+function ls6FG(sv){const sb=$("sbody"),n=sheetName,f=L6FG[n];if(L6FT[n])$("stitle").textContent=L6FT[n];$("sheet").dataset.l6p=n||"";
+  if(!f){if(sb.classList.contains("l6gd"))sb.classList.remove("l6gd");return}
+  const K=[...sb.children],st=K.filter(e=>!e.classList.contains("l6g"));if(!st.length)return;
+  if(st.length<K.length){const L=sb.querySelector(":scope>.l6g:last-child");if(L)st.forEach(e=>L.append(e));return}/* 나중에 덧붙은 줄 = 마지막 칸 */
+  const C=f(K).map(([k,N])=>{const d=document.createElement("div");d.className="l6g";d.dataset.k=k.split(":")[0];d._k=k;N.forEach(e=>d.append(e));return d});
+  sb.append(...C);sb.classList.add("l6gd");try{const x=L6FX[n];if(x)x(sb)}catch(e){console.error(e)}C.forEach(d=>{const y=sv[d._k];if(y)d.scrollTop=y})}
+{const _r4=renderSheet;renderSheet=function(){const on=ls6On()&&sheetName&&sheetName!="ps",sv={};if(on)$("sbody").querySelectorAll(":scope>.l6g").forEach(c=>{sv[c._k]=c.scrollTop});
+  const r=_r4.apply(this,arguments);if(on&&sheetName)try{ls6FG(sv)}catch(e){console.error(e)}return r}}
+/* 열기: 연 곳 기억 · 창 → 창이면 앞 창을 쌓음 (같은 창을 또 열면 안 쌓음) */
+{const _o4=openSheet;openSheet=function(n){$("sbody").classList.remove("l6gd");if(!ls6On()||n=="ps")return _o4.apply(this,arguments);
+  if(!L6F.bk){const cur=sheetName&&!$("sheet").hidden?sheetName:null;if(cur){if(cur!==n)L6F.st.push({t:"sh",n:cur,sh:window._shT})}else L6F.st=[ls6FFrom()]}L6F.nx=null;
+  ls6FBuild();const r=_o4.apply(this,arguments);L6F.w="";ls6FW();setTimeout(()=>{try{appCut()}catch(e){}},0);return r}}
+{const _c4=closeSheet;closeSheet=function(){L6F.st=[];return _c4.apply(this,arguments)}}
+/* 폰을 돌리면 열린 창은 그대로 두고 칸만 다시 (세로 = 16 그대로, 가로 = 칸 나누기) · 스크롤은 맨 위부터 */
+function ls6FRe(){if(!sheetName||sheetName=="ps"||$("sheet").hidden)return;const st=L6F.st;L6F.bk=1;try{openSheet(sheetName)}finally{L6F.bk=0;L6F.st=st}}
+try{CUTP.push("#sheet .sh")}catch(e){}
+setInterval(()=>{try{ls6FW()}catch(e){}},250);
 
 </script>
 </body>
