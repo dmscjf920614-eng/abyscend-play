@@ -1239,6 +1239,14 @@ body.lyP #mid .mwt,body.lyP #mid .dsh,body.lyP #mid .ifb .btn,body.lyP #mid .pnt
 body.lyP #mid .itabs button,body.lyP #mid .ift,body.lyP #mid .pnt,body.lyP #mid .pnt>span,body.lyP #mid #eqp .dst:not(.c2),body.lyP #mid .est,body.lyP #mid .dpt2>span,body.lyP #mid .dpt2>b{font-size:var(--fs-desc)!important}
 body.lyP #mid .pnl,body.lyP #mid #eqp .dst.c2:not(.xs),body.lyP #mid .dph>div>span,body.lyP #mid .dpm button,body.lyP #mid .dpt2>b>small,body.lyP #mid .dpb>em{font-size:var(--fs-small)!important}
 /* 보스전 막대: 남은 시간 (07 rtUI) · 5초 이하 빨강 */#rtwp .rtbt.lo{color:#ff6a5a;background:#2a0604;border-radius:3px;padding:0 3px}#rtwp{white-space:nowrap}
+/* 🔒 잠긴 스킬 칸 (사용자 2026-11-09 "잠겨 있는 게 구현 안 됐다"): 코드로 그린 자물쇠 + "N환생" · 누르면 풍선 "N번째 환생 때 열려요" (13 skLkTap) · 이모지 🔒은 삼성 폰에서 크고 노랗게 나와서 안 씀 */
+.l6lk{display:inline-block;position:relative;width:9px;height:7px;margin-top:5px;background:#8a7650;border-radius:1.5px;vertical-align:-1px;flex:none}
+.l6lk::before{content:"";position:absolute;left:1.5px;top:-5px;width:6px;height:6px;box-sizing:border-box;border:1.4px solid #8a7650;border-bottom:0;border-radius:4px 4px 0 0}
+.l6s-s.lk,body.lyP #sheet .l6s-s.lk{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:9px 0 0;cursor:pointer;background:repeating-linear-gradient(135deg,#120d08 0 5px,#17110a 5px 10px)}
+.l6s-s.lk em{font-style:normal;font-size:10px;line-height:1;color:#9a8660;letter-spacing:-.5px;white-space:nowrap}
+.skq-s.lk{opacity:.8;cursor:pointer;background:repeating-linear-gradient(135deg,#120d08 0 5px,#17110a 5px 10px);border-style:solid}.skq-s.lk b{color:#9a8660}.skq-s.lk .sqi{display:grid;place-items:center}
+.skq-lk .l6lk{margin:0 3px 0 0}
+#gubub .l6lk{margin:0 4px 0 0}
 
 </style>
 </head>
@@ -3370,10 +3378,11 @@ function skTop(sb,o,eqs,rep,bl,bv){sb._sks=psSig();
     if(ok){const w=skWhy(t);c.className="skq-s on"+(w?" bad":"")+(rep?" pick":"")+((fs===i||rs===i)?" sel":"");c.innerHTML="<span class='sqi'>"+skI(t)+"</span><b>"+t.n+"</b>"+(w?"<i class='sqw'>🚫</i>":"");c.setAttribute("aria-label",(i+1)+"번 칸 "+t.n+" (누르면 설명·바꾸기·빼기)")}
     else{c.className="skq-s em"+(rep||(selOk&&rs==null)?" pick":"")+(rs===i?" sel":"");c.innerHTML="<span class='sqi'>＋</span><b>빈 칸</b>";c.setAttribute("aria-label",(i+1)+"번 빈 칸")}
     c.onclick=()=>skSlotTap(i,o,eqs);sl.append(c)}
-  if(o)sb.append(sl);
+  for(let i=o;i<PSLOTS;i++){const c=document.createElement("button");c.type="button";c.className="skq-s lk";c.innerHTML="<span class='sqi'><span class='l6lk'></span></span><b>"+(i+1)+"환생</b>";c.setAttribute("aria-label",(i+1)+"번 칸 잠김 · "+(i+1)+"번째 환생 때 열려요");c.onclick=()=>skLkTap(c,i);sl.append(c)}/* 잠긴 칸도 보이게 (사용자 2026-11-09 "잠겨 있는 게 구현 안 됐다") */
+  sb.append(sl);
   /* 🧹 지금 프리셋 스킬 전부 빼기 (사용자 2026-11-03 "하나씩 빼기 어렵다") · 확인 창 [아니요][예] */
   if(o&&eqs.size>=2){const cw=document.createElement("div");cw.className="skq-clr";const cb=document.createElement("button");cb.type="button";cb.textContent="🧹 전부 빼기 ("+eqs.size+")";cb.onclick=skClearAll;cw.append(cb);sb.append(cw)}
-  const lk=document.createElement("div");lk.className="skq-lk";if(o<PSLOTS){lk.textContent="🔒 "+(o?"다음 칸은 ":"첫 칸은 ")+(o?(o+1)+"번째":"첫")+" 환생 때 열려요 (최대 "+PSLOTS+"칸)";sb.append(lk)}}
+  const lk=document.createElement("div");lk.className="skq-lk";if(o<PSLOTS){lk.innerHTML="<span class='l6lk'></span> "+(o?"다음 칸은 ":"첫 칸은 ")+(o?(o+1)+"번째":"첫")+" 환생 때 열려요 (최대 "+PSLOTS+"칸)";sb.append(lk)}}
 /* 🌳 지도 (2026-11-04 B "12무리 시계" + 무리 안 세로 줄, 시안 docs/UI/시안/2026-11-04_스킬지도_B정리.html):
    가운데 ⭐ → 무리 12개를 시계 자리에(12시 = 공통 공격, 시계 방향 SKAXS 순서), 판끼리 안 겹칠 때까지 바퀴를 넓힘 · ⭐→무리 빗살(장착 있으면 빨강).
    무리 판 = 세로 줄 3개(SKCOL 표): 줄마다 위→아래 = 핵심 → 그 스킬을 키우는/이어지는 스킬 (☄️ 화염구 → 🌠 메테오).
@@ -3489,6 +3498,8 @@ function skNdTap(s,o,eqs){if(window._skMoved)return;window._skGest=0;const nw=Da
     else if(skRS(o)!=null){window._skLT=null;skInto(s,o);return}
     else if(!eqs.has(s.id)){window._skLT=null;skSelAct(s,o,eqs);return}}
   renderSheet()}
+/* 잠긴 칸 누르기 = 풍선 (16 guBub) */
+function skLkTap(el,i){try{guBub(el,"<span class='l6lk'></span> "+(i+1)+"번째 환생 때 열려요 (지금 환생 "+(S.rb||0)+"회)")}catch(e){}}
 /* 장착 칸 누르기 (세로 위 10칸·가로 판 10칸 같이, 예전 skTop 그대로) */
 function skSlotTap(i,o,eqs){const t=psGet(S.psl[i]),ok=t&&psFit(t),rs=skRS(o),sel=window._skSel&&psGet(window._skSel),selOk=sel&&psFit(sel)&&!eqs.has(sel.id)&&(S.rb||0)>=(sel.rb||0);
   if(window._skRep){const id=window._skRep;window._skRep=null;psEquip(id,i);return}
@@ -6102,7 +6113,7 @@ function bsClsWin(op){try{cpMigAll()}catch(e){console.error(e)}const cur=S.cls;o
   const C=S.cpr&&S.cpr[op];let li=C&&Array.isArray(C.list)?C.list.map((x,i)=>x?bsBb(op,i):"").join(""):"";
   if(!li)li='<div class="bvem">아직 저장한 🧩 캐릭터 프리셋이 없어요 · '+(op==cur?'장비창 맨 위 💾 저장으로 만들어요':CLS[op].n+'(으)로 바꾼 뒤 장비창 맨 위 💾 저장으로 만들어요')+'</div>'+(op!=cur?'<button class="btn bvgo" onclick="bsPick(\''+op+'\')">'+CLS[op].ic+' '+CLS[op].n+'(으)로 바꾸기</button>':'');
   else if(op!=cur)li+='<button class="btn bvgo" onclick="bsPick(\''+op+'\')">'+CLS[op].ic+' '+CLS[op].n+'(으)로만 바꾸기 (마지막 세팅)</button>';
-  popup("🔄 직업 변경",'<div class="bvw"><div class="bvcs">'+cards+'</div><div class="bvlb"><div class="bvlh">'+CLS[op].ic+' '+CLS[op].n+' 🧩 캐릭터 프리셋 <small>'+(op==cur?'누르면 그 세팅으로':'누르면 '+CLS[op].n+'(으)로 바뀌어요')+'</small></div><div class="bvlg">'+li+'</div></div></div><div class="bvh">카드 = 그 직업 🧩 보기 · 이름 = 그 🧩로 바로 · 레벨·단련은 그대로, 장비는 직업별로 보관돼요</div>',[["취소",closePop]])}
+  popup("🔄 직업 변경",'<div class="bvw"><div class="bvcs">'+cards+'</div><div class="bvlb"><div class="bvlh">'+CLS[op].ic+' '+CLS[op].n+' 🧩 캐릭터 프리셋 <small>'+(op==cur?'누르면 그 세팅으로':'누르면 '+CLS[op].n+'(으)로 바뀌어요')+'</small></div><div class="bvlg">'+li+'</div></div></div><div class="bvh">카드 = 그 직업 🧩 보기 · 이름 = 그 🧩로 바로 · 레벨·단련은 그대로, 장비는 직업별로 보관돼요</div>',[["취소",closePop]]);window._np=1/* 🔄 직업 창이 열려 있어도 사냥은 계속 (사용자 2026-11-09, 가로 🔄 카드와 같게 · 01 paused) */}
 function bsPick(c,i){if(!CLS[c])return;window._bsCo=null;if(c!==S.cls)pickClass(c);else closePop();if(i!=null&&S.cls===c){const C=cpG();if(C.list[i]&&(C.cur!==i||cpDiff()))cpUse(i)}}
 
 /* ===== 🔥⚡❄️ 원소 속성 1단계 (2026-11-07, 기획 docs/기획/2026-11-06_원소속성_최종본.md + 사용자 답 docs/밤작업_2026-11-06.md · 숫자 전부 임시) =====
@@ -6640,7 +6651,7 @@ function ls6SkBuild(){if($("ls6sk"))return;const B=document.body,mk=(id,h)=>{con
 function ls6LvH(){return '<div class="l6-live"><span class="l6-l1">💥 DPS<s class="l6-db"></s><b class="l6-dv">0</b><span class="l6-dd"></span></span><span class="l6-bar"></span><span class="l6-top"></span></div>'}
 /* 장착 10칸 · 원소/탄 버튼 · 📜 프리셋 · 아래 설명 줄 = 가로 스킬 판·넓은 지도·세로 스킬 창(17b) 같이 씀 */
 function l6Slots(o,eqs,sel){const q=document.createElement("div"),rep=window._skRep,rs=skRS(o),selOk=sel&&psFit(sel)&&!eqs.has(sel.id)&&(S.rb||0)>=(sel.rb||0),fs=window._skSlot;
-    for(let i=0;i<PSLOTS;i++){const c=document.createElement("button");c.type="button";if(i>=o){c.className="l6s-s lk";c.disabled=true;c.innerHTML="<b>"+(i+1)+"</b>환생";c.setAttribute("aria-label",(i+1)+"번 칸 잠김");q.append(c);continue}
+    for(let i=0;i<PSLOTS;i++){const c=document.createElement("button");c.type="button";if(i>=o){c.className="l6s-s lk";c.innerHTML="<b>"+(i+1)+"</b><span class='l6lk'></span><em>"+(i+1)+"환생</em>";c.setAttribute("aria-label",(i+1)+"번 칸 잠김 · "+(i+1)+"번째 환생 때 열려요");c.onclick=()=>skLkTap(c,i);q.append(c);continue}
       const t=psGet(S.psl[i]),ok=t&&psFit(t);if(ok){const w=skWhy(t);c.className="l6s-s"+(w?" bad":"")+(rep?" pick":"")+((fs===i||rs===i)?" sel":"");c.innerHTML="<b>"+(i+1)+"</b>"+(t.img?skI(t):"<span>"+t.ic+"</span>")+(w?"<i>🚫</i>":"");c.setAttribute("aria-label",(i+1)+"번 칸 "+t.n)}
       else{c.className="l6s-s em"+(rep||(selOk&&rs==null)?" pick":"")+(rs===i?" sel":"");c.innerHTML="<b>"+(i+1)+"</b>＋";c.setAttribute("aria-label",(i+1)+"번 빈 칸")}
       c.onclick=()=>skSlotTap(i,o,eqs);q.append(c)}return q}
