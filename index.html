@@ -1317,6 +1317,137 @@ body.lyP #pop .l6p-ic .ski{width:18px!important;height:18px!important;flex:none}
 body.lyP #pop .l6p-ic em{font-style:normal;display:flex;align-items:center;flex:none;font-size:10px;margin-right:2px;padding-right:3px;border-right:1px solid #4a3a22}
 /* 두 손 무기: 보조 칸 별 → 무기 (2026-11-09) */.es em.hdst{font-size:8px;white-space:nowrap;right:0;left:0;text-align:center}
 .bvcd .ct small.cd{word-break:keep-all;color:#ffd77a;white-space:normal!important;overflow:visible!important;text-overflow:clip!important}/* 직업 변경 카드: 직업 맛 한 줄 (2026-11-09) */
+/* ===== 📜 스킬 고르기 = 판정 탭 + ▦ 칸 / 🗺️ 지도 (2026-11-11 사용자 "우웅 괜찮아", 13 skBr · 시안 docs/UI/시안/2026-11-10_스킬창_배치.html · UI규칙 §29) ===== */
+.skbr{position:relative;display:flex;flex-direction:column;flex:1 1 auto;min-width:0;min-height:0;--fs-name:13px;--fs-desc:11.5px;--fs-small:11px;color:var(--tx);line-height:1.35;-webkit-user-select:none;user-select:none}
+body.lyP .skbr{--fs-name:11.5px;--fs-desc:10.5px;--fs-small:10px}
+.skbr button{font-family:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+/* 탭 */
+.skb-tb{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;flex:none}
+.skb-tb>button{height:40px;border:1px solid #4a3820;border-radius:7px 7px 0 0;background:#1a120b;color:#bba67c;padding:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;min-width:0;font-size:var(--fs-small)}
+.skb-tb>button i{font-style:normal;font-size:13px}
+.skb-tb>button span{font-size:var(--fs-small);white-space:nowrap;overflow:hidden;max-width:100%}
+.skb-tb>button.on{background:#3a2a16;color:#ffe08a;border-color:#c9a24f;border-bottom-color:#3a2a16;font-weight:700}
+.skb-sub{display:flex;align-items:center;gap:6px;flex:none;min-height:30px;padding:2px 2px 2px 6px;background:#3a2a16;border:1px solid #c9a24f;border-top:0;border-radius:0 0 7px 7px}
+.skb-sub .sd{flex:1 1 auto;min-width:0;font-size:var(--fs-small);color:#d8c393;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.skb-tg{flex:none;position:relative;height:26px;border:1px solid #6e5430;border-radius:13px;background:#0006;font-size:var(--fs-small);color:#bba67c;padding:0 8px;display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.skb-tg::after{content:"";position:absolute;inset:-6px -2px}
+.skb-tg .k{width:22px;height:13px;border-radius:7px;background:#4a3820;position:relative;flex:none}
+.skb-tg .k::before{content:"";position:absolute;top:1.5px;left:2px;width:10px;height:10px;border-radius:50%;background:#9a8a6a;transition:left .15s}
+.skb-tg.on{color:#ffe08a;border-color:#c9a24f}.skb-tg.on .k{background:#8a6a2a}.skb-tg.on .k::before{left:10px;background:#ffe08a}
+.skb-tg .t0{display:none}
+/* 가로 판·넓은 지도: 탭 2줄(4칸) + 8번째 칸 = 내 무기 먼저 · 넓은 지도 840↑ = 한 줄 */
+:is(.skb-l,.skb-f) .skb-tb{grid-template-columns:repeat(3,minmax(0,1fr)) minmax(0,1.25fr);gap:3px;margin-bottom:3px}
+:is(.skb-l,.skb-f) .skb-tb>button{height:36px;flex-direction:row;gap:3px;border-radius:7px}
+:is(.skb-l,.skb-f) .skb-tb>button.on{border-bottom-color:#c9a24f}
+:is(.skb-l,.skb-f) .skb-tb>.skb-tg{height:36px;border-radius:7px;justify-content:center;padding:0 4px;min-width:0;font-size:var(--fs-small);gap:0}
+:is(.skb-l,.skb-f) .skb-tg .k,:is(.skb-l,.skb-f) .skb-tg .t1{display:none}:is(.skb-l,.skb-f) .skb-tg .t0{display:inline;overflow:hidden;text-overflow:ellipsis}
+:is(.skb-l,.skb-f) .skb-tg.on .t0::before{content:"✓ "}
+@media (min-width:840px){.skb-f .skb-tb{grid-template-columns:repeat(7,minmax(0,1fr)) minmax(0,1.5fr)}}
+/* 바꿀 칸 고르는 중 띠 */
+.skb-rp{display:flex;align-items:center;gap:6px;flex:none;margin-top:3px;padding:3px 3px 3px 8px;border:1px solid #5ab0ff;border-radius:8px;background:#0a1c3cf2;color:#cfe2ff;font-size:var(--fs-desc)}
+.skb-rp>span{flex:1;min-width:0}.skb-rp .ski{display:inline-block;vertical-align:-3px}.skb-rp .btn{min-width:56px;height:36px;padding:0 6px;font-size:var(--fs-name)}
+/* ▦ 칸 */
+.skb-ct{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;padding:4px 1px 8px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.skb-sh{font-size:var(--fs-small);color:var(--gold);margin:6px 2px 3px;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.skb-sh::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,#6e5430,#0000)}
+.skb-sh.no{color:#ff9a8a}.skb-sh em{font-style:normal;color:var(--mut)}
+.skb-gr{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:4px}
+:is(.skb-l,.skb-f) .skb-gr{grid-template-columns:repeat(auto-fill,minmax(54px,1fr))}
+.skb-c{position:relative;height:60px;border:1px solid #4a3820;border-radius:8px;background:#0005;padding:4px 2px 2px;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0}
+.skb-c .skb-i{font-size:21px;line-height:1;height:24px;display:grid;place-items:center}
+.skb-c .skb-n{font-size:var(--fs-small);line-height:1.18;text-align:center;word-break:keep-all;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;max-width:100%}
+.skb-c .skb-r{font-size:var(--fs-small);line-height:1.15;color:#ff9a8a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.skb-c.g{opacity:.42}.skb-c.g .skb-n{-webkit-line-clamp:1}.skb-c.g .skb-i{filter:grayscale(1)}
+.skb-c.on{border-color:#c9a24f;background:linear-gradient(#3b2a12aa,#1f1609aa)}
+.skb-c.sel,.skb-c.sel.g{box-shadow:0 0 0 2px #ffe08a,0 0 10px #ffcf5a88;opacity:1}
+.skb-e{position:absolute;right:2px;top:2px;min-width:15px;height:15px;border-radius:8px;background:#c9a24f;color:#1a1208;font-size:10px;font-weight:800;display:grid;place-items:center;padding:0 3px;line-height:1}
+.skb-q{position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#ffb35a;color:#1a1208;font-size:10px;font-weight:800;display:grid;place-items:center;line-height:1}
+.skb-c.fl,.skb-nd.fl .mi{animation:skbFl .9s 2}@keyframes skbFl{50%{box-shadow:0 0 0 3px #fff,0 0 14px #ffe08a}}
+/* 설명판 (칸: 탭 아래 · 지도: 판 맨 위) */
+.skb-dt{position:absolute;left:0;right:0;top:0;z-index:5;background:linear-gradient(#2a1f14,#1b130b);border:1.5px solid #c9a24f;border-radius:6px 6px 10px 10px;box-shadow:0 8px 16px #000c;padding:6px 6px 6px 8px;display:flex;flex-direction:column;gap:4px;max-height:85%;box-sizing:border-box}
+.skb-r1{display:flex;align-items:flex-start;gap:7px}
+.skb-di{flex:none;width:38px;height:38px;border-radius:8px;border:1.5px solid #c9a24f;background:linear-gradient(#2b2013,#17100a);display:grid;place-items:center;font-size:22px}
+.skb-dn{flex:1 1 auto;min-width:0}
+.skb-dn b{display:block;font-size:var(--fs-name);color:#ffe08a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.skb-tgs{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px}
+.skb-tgs span{max-width:100%;overflow:hidden;text-overflow:ellipsis;font-size:var(--fs-small);padding:0 5px;border-radius:6px;background:#0006;border:1px solid #4a3820;color:#cdbb95;white-space:nowrap}
+.skb-tgs span.h{color:#ffb35a;border-color:#8a5a20}.skb-tgs span.r{color:#ff9a8a;border-color:#7a3020}.skb-tgs span.k{color:#6fd49a;border-color:#2a6a40}
+.skb-bt{flex:none;display:flex;gap:4px}.skb-bt .skbw{display:flex;gap:4px}
+.skb-bt .btn{flex:none;min-width:64px;height:36px;padding:0 6px;font-size:var(--fs-name);white-space:nowrap}.skb-bt .btn.un{color:#ffb0a0}
+.skb-x{flex:none;width:40px;height:36px;border:0;background:none;font-size:16px;color:#e9d8b0;padding:0}
+.skb-dd{font-size:var(--fs-desc);line-height:1.35;color:#d9cba8;overflow-y:auto;min-height:0;max-height:calc(2.7em + 2px);word-break:keep-all;flex:0 1 auto}.skb-dd.op{max-height:none}
+.skb-dd .w{color:#ff9a8a}
+.skb-pr{display:flex;align-items:center;gap:4px;flex:none;overflow-x:auto;scrollbar-width:none;padding-bottom:1px}.skb-pr::-webkit-scrollbar{display:none}
+.skb-pr .pl{flex:none;font-size:var(--fs-small);color:var(--mut);white-space:nowrap}
+.skb-pc{flex:none;height:36px;display:inline-flex;align-items:center;gap:3px;padding:0 8px 0 5px;border:1px solid #6e5430;border-radius:18px;background:#0007;font-size:var(--fs-small);white-space:nowrap;color:var(--tx)}
+.skb-pc i{font-style:normal;font-size:16px}.skb-pc.g{opacity:.45}.skb-pc.on{border-color:#c9a24f;color:#ffe08a}
+.skb-pc u{text-decoration:none;font-size:10px;color:#1a1208;background:#ffb35a;border-radius:5px;padding:0 3px;font-weight:700}
+.skbr.hdt .skb-hn{display:none}
+.skb-hn{font-size:var(--fs-small);color:var(--mut);text-align:center;padding:2px 0 0;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.skb-ts{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);z-index:30;background:#1d140bf0;border:1.5px solid #c9a24f;border-radius:10px;padding:8px 14px;font-size:13px;color:#ffe08a;pointer-events:none;opacity:0;transition:opacity .2s;max-width:86%;text-align:center}.skb-ts.on{opacity:1}
+/* 🗺️ 지도 */
+.skb-mp{position:relative;flex:1 1 auto;min-height:0;overflow:hidden;margin-top:4px;border:1px solid #4a3820;border-radius:8px;background:radial-gradient(ellipse at 50% 40%,#2a1d10,#120c07 75%);touch-action:none;cursor:grab}
+.skb-mw{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+.skb-zn{position:absolute;border-radius:18px;border:2px solid var(--zc);background:linear-gradient(color-mix(in srgb,var(--zc) 16%,transparent),color-mix(in srgb,var(--zc) 6%,transparent))}
+.skb-zn .zl{position:absolute;left:14px;top:8px;font-size:22px;font-weight:800;color:var(--zc);white-space:nowrap;transform-origin:0 0;text-shadow:0 2px 3px #000}
+.skb-zn .zl small{font-size:15px;opacity:.75}
+.skb-mp.far .zl{transform:scale(var(--iv,1));background:#0b0806cc;border-radius:8px;padding:0 6px}.skb-mp.tiny .zl small{display:none}.skb-mp.tiny .zl{left:6px;top:4px}
+.skb-ms{position:absolute;font-size:14px;color:#e5bf64;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.skb-ms::after{content:"";width:var(--lw,200px);height:1px;background:linear-gradient(90deg,#6e5430,#0000)}
+.skb-mp.far .skb-ms{opacity:0}
+.skb-lk{position:absolute;left:0;top:0;pointer-events:none;overflow:visible}
+.skb-nd{position:absolute;width:66px;height:78px;padding:0;border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--tx)}
+.skb-nd .mi{position:relative;width:46px;height:46px;border-radius:11px;border:2px solid #6e5430;background:linear-gradient(#2e2214,#17100a);display:grid;place-items:center;font-size:26px;box-shadow:0 2px 4px #000a}
+.skb-nd .mi .ski{width:30px;height:30px}
+.skb-nd .skb-n{font-size:14px;line-height:1.12;text-align:center;word-break:keep-all;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;max-width:68px;text-shadow:0 1px 2px #000}
+.skb-mp.far .skb-nd .skb-n{display:none}
+.skb-mp.far .skb-nd .mi{width:58px;height:58px;font-size:34px;border-width:3px}.skb-mp.far .skb-nd .mi .ski{width:40px;height:40px}
+.skb-nd.on .mi{border-color:#ffd75a;box-shadow:0 0 0 2px #c9a24f,0 0 12px #ffcf5a88}
+.skb-nd.sel .mi{box-shadow:0 0 0 3px #ffe08a,0 0 16px #ffcf5a}
+.skb-nd.g .mi{filter:grayscale(1);opacity:.4}.skb-nd.g .skb-n{opacity:.45}
+.skb-nd .skb-e{right:-7px;top:-7px;min-width:20px;height:20px;border-radius:10px;font-size:12px;padding:0 4px}
+.skb-nd .skb-q{left:-7px;top:-7px;width:18px;height:18px;font-size:12px}
+.skb-nd .no{position:absolute;left:-7px;bottom:-7px;width:20px;height:20px;border-radius:50%;background:#2a0f0a;border:1.5px solid #ff8a7a;display:grid;place-items:center;box-sizing:border-box}
+.skb-nd .no::before{content:"";width:12px;height:2px;background:#ff8a7a;transform:rotate(-45deg)}
+.skb-mp.far .skb-nd .skb-e,.skb-mp.far .skb-nd .no{transform:scale(1.6);transform-origin:center}.skb-mp.far .skb-nd .skb-q{display:none}
+/* 지도 아래 줄 = 안내 + [－][＋][전체][넓게] (지도 밖 → 칸을 안 가림, 보이는 버튼 28px · 누르는 칸은 ::after로 40×36) */
+.skb-mf{display:flex;align-items:center;gap:6px;flex:none;height:36px;padding:4px 3px;box-sizing:border-box}
+.skb-mf .hn{flex:1 1 auto;min-width:0;font-size:var(--fs-small);color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.skb-mf button{position:relative;flex:none;width:34px;height:28px;border:1px solid #6e5430;border-radius:7px;background:#1b130b;color:#ffe08a;font-size:15px;padding:0;display:grid;place-items:center}
+.skb-mf button.w{width:44px;font-size:var(--fs-small)}
+.skb-mf button::after{content:"";position:absolute;inset:-5px -4px}/* 테두리 1px 안쪽 기준 → 누르는 칸 42×36 */
+/* 보기 바꾸기 [▦|🗺️] (머리줄) */
+.skb-vt,.l6s-vt,.pv-vt{display:flex;flex:none}
+.skb-vt button{width:40px;height:34px;border:1px solid #6e543099;background:#0005;color:#e9d8b0;font-size:16px;padding:0;display:grid;place-items:center;border-radius:0;cursor:pointer}
+.skb-vt button:first-child{border-radius:7px 0 0 7px}.skb-vt button:last-child{border-radius:0 7px 7px 0;border-left:0}
+.skb-vt button.on{background:#6e4f22;border-color:#c9a24f;color:#ffe08a}
+/* 큰 화면(S) 스킬 창 */
+.sks-hd{display:flex;align-items:center;gap:6px;flex:none;margin-bottom:4px}.sks-hd .n{font-size:13px;color:#cdb98a;white-space:nowrap}.sks-hd .n b{color:#ffe08a}.sks-hd .sp{flex:1}
+.sks-hd .l6s-pr{display:flex;align-items:center;gap:2px;min-width:0}.sks-hd .cpdot{font-style:normal;color:#ffd23a}
+.sks-b{width:40px;height:36px;border:1px solid #6e543099;border-radius:8px;background:#0005;color:#e9d8b0;font-size:16px;cursor:pointer}.sks-b:disabled{opacity:.45}
+.sks-er{display:flex;gap:4px;margin-bottom:4px}.sks-er .l6s-el{flex:1}
+.sks-q{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:3px;height:44px;margin-bottom:4px}
+.sks-r{position:relative;display:flex;flex-direction:column;min-height:0;height:min(560px,calc(75vh - 160px))}.sks-r .pnrw{position:absolute;left:0;right:0;top:0;z-index:8;margin:0;padding:4px;border-radius:8px;background:#140e08f5;border:1px solid #c9a24a;box-shadow:0 6px 16px #000c}
+/* 큰 화면(S) 10칸·원소/탄 버튼 = 세로 창과 같은 모양 (17b 줄을 앞머리만 바꿔 복사) */
+.sks-er .l6s-el{flex:1;min-width:0;min-height:36px;border-radius:8px;border:1.5px dashed #7fb0ff;background:#0a1630;color:#cfe2ff;display:flex;align-items:center;justify-content:center;gap:4px;padding:0 6px;font:inherit;font-size:16px;overflow:hidden;cursor:pointer}
+.sks-er .l6s-el span{font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}.sks-er .l6s-el.on{border-style:solid;border-color:#9fd0ff;background:linear-gradient(#1a2c50,#0a1630);box-shadow:0 0 8px #5ab0ff66}
+.sks-er .l6s-el.bt{border-color:#c9a24a;background:#1a140c;color:#ffe9b0}.sks-er .l6s-el.bt.on{border-color:#ffd36a;background:linear-gradient(#3a2c14,#1a140c);box-shadow:0 0 8px #ffc94a55}
+.sks-q .l6s-s{position:relative;min-width:0;min-height:0;border:1.5px solid #c9a24a;border-radius:7px;background:linear-gradient(#2e2516,#1a140c);padding:1px;display:grid;place-items:center;font:inherit;font-size:17px;line-height:1;color:#eadfc6;cursor:pointer;touch-action:manipulation}
+.sks-q .l6s-s::after{content:"";position:absolute;inset:-6px -3px}/* 테두리 1.5px 밖으로 위아래 4.5 · 옆 1.5(칸 사이 틈 3px을 반씩) */
+.sks-q .l6s-s .ski{width:min(24px,82%)!important;height:auto!important;max-height:24px;aspect-ratio:1;object-fit:contain}
+.sks-q .l6s-s>b{position:absolute;left:2px;top:1px;font-size:10px;line-height:1;color:#c9a24a;font-weight:800}
+.sks-q .l6s-s.em{border:1.5px dashed #7a6238;color:#8a7a5a;font-size:14px}.sks-q .l6s-s.lk{border:1px solid #3a2c1a;background:#120d08;color:#5a4a30;font-size:10px;padding-top:10px;cursor:default}
+.sks-q .l6s-s.bad{border-color:#a0604a}.sks-q .l6s-s.bad .ski,.sks-q .l6s-s.bad>span{filter:grayscale(1);opacity:.6}.sks-q .l6s-s>i{position:absolute;right:1px;top:1px;font-style:normal;font-size:9px;line-height:1}
+.sks-q .l6s-s.sel{outline:2px solid #fff3c0;outline-offset:1px}.sks-q .l6s-s.pick{border-color:#5ab0ff;box-shadow:0 0 8px #5ab0ff;animation:skPk 1.2s ease-in-out infinite}
+.sks-q .l6s-s.lk{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:9px 0 0;cursor:pointer;background:repeating-linear-gradient(135deg,#120d08 0 5px,#17110a 5px 10px)}
+/* 설명판 좁을 때 (13 skDtFit): 설명 1줄·꼬리표 한 줄(c1) → 같이 쓰면 좋아요 숨김(nc) → 설명 숨김(nd) */
+.skb-dt{overflow:hidden}.skb-dt.c1{padding:4px 5px 4px 6px;gap:3px}.skb-dt.c1 .skb-di{width:32px;height:32px;font-size:19px}.skb-dt.c1 .skb-tgs{flex-wrap:nowrap;overflow:hidden}.skb-dt.c1 .skb-tgs span{flex:none}
+.skb-dt.c1 .skb-dd:not(.op){max-height:1.4em;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.skb-dt.c1 .skb-dd .w+br{display:none}.skb-dt.c1 .skb-pr .pl{display:none}.skb-dt.c1 .skb-dn{cursor:pointer}.skb-dt.c1 .skb-dn b::after{content:" ▾";color:var(--mut);font-weight:400}
+.skb-dt.nc .skb-pr{display:none}.skb-dt.nd .skb-dd{display:none}
+/* ✋ 끌어서 칸에 넣기 (13 skDg*): 끄는 동안 10칸·원소 줄 버튼 파랗게 · 놓을 칸 = 흰 테두리 */
+body.skdg .l6s-s:not(.lk),body.skdg .l6s-el:not(.bt){box-shadow:0 0 0 1.5px #5ab0ff,0 0 8px #5ab0ff88}
+body.skdg .l6s-s.hov,body.skdg .l6s-el.hov{box-shadow:0 0 0 3px #fff3c0,0 0 12px #ffe08a;transform:scale(1.08)}
+body.skdg,body.skdg *{cursor:grabbing!important}
 
 </style>
 </head>
@@ -2700,7 +2831,7 @@ function sellGrade(g){let gold=0,c=0;S.inv=S.inv.filter(it=>{if(it.g==g){retGems
 function rtFail(tf){S.dc=(S.dcF===tf?(S.dc||0):0)+1;S.dcF=tf;if(S.dc<3)return false;const fb=tf,nf=farmFloor(fb-1),q0=readyQ(fb);S.rt={f:fb,q0,qr:q0*RQ,qm:tgdOk()?1:0};effL=[];effT0=0;S.dc=0;S.climb=false;S.retry=null;S.fl=nf;S.fk=0;applyFloor();rtStep();rtFx(1,fb,nf);log("🛡️ "+fb+"층에서 3번 막혀 "+nf+"층에서 재정비 · 강해지면 한 층씩 올라가요","b");return true}
 
 function tutShow(k){const c=$("tut");if(!c)return;if(k==1){$("tutt").textContent="🌟 첫 환생 시간이에요!";$("tutb").innerHTML="10층을 돌파했어요. <b>첫 환생을 해야 더 높은 층으로 올라갈 수 있어요.</b><br>환생하면 골드·단련은 처음부터(층은 낮은 층부터)지만 <b>레벨·장비는 그대로</b>이고,<br>환생 포인트로 <b>영구 특성</b>을 올려 훨씬 빨리 강해져요.<br><small>첫 환생은 10층, 두 번째는 20층, 그 뒤로 10층씩 더 올라가요</small>";$("tutok").hidden=true;$("tutb").innerHTML+="<b style='display:block;margin-top:8px;font-size:14px;color:#fff'>아래에서 반짝이는 🌟 환생 아이콘을 눌러 주세요</b><span class='tarr'>👇</span>"}
-  else if(k==3){$("tutok").hidden=false;$("tutt").textContent="📜 스킬 칸이 열렸어요!";$("tutb").innerHTML="환생으로 <b>스킬 칸 "+psOpen()+"개</b>가 열렸어요.<br>스킬을 끌어서 칸에 놓으면 <b>바로 적용</b>돼요.<br>환생할 때마다 칸이 하나씩 더 열려요 <small>(최대 10칸)</small>";$("tutok").textContent="📜 스킬 보러 가기";$("tutok").onclick=()=>{c.hidden=true;S.tut3=1;S.tutP=0;save();psSel=0;openSheet("ps")}}
+  else if(k==3){$("tutok").hidden=false;$("tutt").textContent="📜 스킬 칸이 열렸어요!";$("tutb").innerHTML="환생으로 <b>스킬 칸 "+psOpen()+"개</b>가 열렸어요.<br>스킬을 끌어서 칸에 놓으면 <b>바로 적용</b>돼요 · 두 번 누르기도 돼요.<br>환생할 때마다 칸이 하나씩 더 열려요 <small>(최대 10칸)</small>";$("tutok").textContent="📜 스킬 보러 가기";$("tutok").onclick=()=>{c.hidden=true;S.tut3=1;S.tutP=0;save();psSel=0;openSheet("ps")}}
   else{$("tutok").hidden=false;$("tutt").textContent="✨ 환생 특성을 올려 보세요!";$("tutb").innerHTML="환생 포인트 <b>"+(S.rp||0)+"개</b>를 얻었어요.<br>환생 특성은 <b>환생해도 사라지지 않는 영구 능력</b>이에요.<br>💡 <b>♾️ 영혼 각성</b>에 포인트를 넣고, 공·방·HP·MP <b>비율</b>을 정해 보세요.";$("tutok").textContent="✨ 특성 올리러 가기";$("tutok").onclick=()=>{c.hidden=true;S.tut2=1;S.tutP=(!S.tut3&&psOpen()>0)?3:0;save();openSheet("rb");setTimeout(()=>{const r=[...document.querySelectorAll("#sbody .srow")].find(e=>/환생 특성/.test(e.textContent));if(r)r.scrollIntoView({block:"start",behavior:"smooth"})},80)}}
   c.hidden=false}
 function tutSpot(on){const sp=$("tutsp"),bk=$("tutblk"),nb=document.querySelector('.mbtn[data-m="rb"]');if(!sp||!nb)return;if(!on){if(!sp.hidden){sp.hidden=true;bk.hidden=true}return}
@@ -3443,45 +3574,16 @@ function txBlit(c,x){const v=txSpr(x);c.drawImage(v,0,0,x._sw,x._sh,-x._hw,-x._h
 function txGc(t){const L=[];for(const x of texts){if(t-x.t0<1000)L.push(x);else if(x._cv){if(TXP.length<160)TXP.push(x._cv);x._cv=null}}return L}
 
 function psFit(s){const C=(S&&S.cls)||"knight";return s&&(s.cls=="all"||!s.cls||s.cls==C||(Array.isArray(s.cls)&&s.cls.includes(C)))}
-/* 스킬 창 기본 보기 = 🌳 지도 (사용자 2026-11-02 "노드 형태가 기본으로") · ☰ 목록 버튼으로 바꿈 (창 메모리만, 저장 안 함) */
-if(!window._skView)window._skView="tree";
 const SKCATS=[["all","전체"],["atk","공격"],["pj","투사체"],["sm","소환"],["sv","생존"],["etc","기타"]],SKCAT={dbl:"atk",tri:"atk",sp:"atk",sw:"pj",pj:"pj",ch:"pj",pr:"pj",ps:"pj",sm:"sm",su:"sm",ss:"sm",au:"sv",hr:"sv",ms:"sv",mr:"sv",hu:"sv",mu:"sv",ds:"etc"},
   SKSH={dbl:"50% 추가타 1회",tri:"20% 추가타 2회",sw:"검의 사정거리 ↑",pj:"투사체 +1",ch:"투사체 튕김",pr:"꿰뚫을수록 빠르고 세게",ps:"투사체 속도 +100%",ds:"이동 속도 ×3",sp:"공격↔방어 교체",au:"전체 도발 · 피해 -80%",hr:"HP 재생 강화",ms:"받는 피해 MP가 먼저",mr:"MP 재생 강화",hu:"최대 HP +30%",mu:"최대 MP +50%",sm:"정령 2연발 (공격력 50%)",su:"소환수 +1 · 강화",ss:"소환수 공속 +100%"};
 const SKN={pj:{t:"🎯 투사체",h:175,p:{pj:[50,36],ch:[17,36],pr:[83,36],sw:[30,78],ps:[70,78]}},sm:{t:"🧚 소환",h:175,hint:"정령 구슬에도 투사체 스킬이 적용돼요",p:{sm:[50,35],su:[25,72],ss:[75,72]}},
   sv:{t:"🛡 생존",h:235,p:{au:[50,26],hr:[20,56],ms:[80,56],hu:[20,86],mu:[50,86],mr:[80,86]}},atk:{t:"⚔ 공격",h:115,p:{dbl:[20,57],tri:[45,57],sp:[78,57]}},etc:{t:"🏃 기타",h:115,p:{ds:[50,57]}}},
   SKE=[["pj","ch"],["pj","pr"],["sw","nqk"],["pj","ps"],["pr","ps"],["sw","bx"],["sm","su"],["sm","ss"],["su","ss"],["au","hr"],["au","ms"],["hr","hu"],["ms","mu"],["ms","mr"],["mr","mu"],["dbl","tri"],["ovl","anv"],["ovl","mab"],["anv","mab"],["mcv","ms"],["ovl","mr"],["trp","net"],["trp","hey"],["trp","pr"],["trp","pj"],["trp","dbl"],["trp","ha"],["trp","lr"],["trp","dc"],["net","bx"],["hey","bx"],["net","fbl"],["hey","fbl"],["net","mtr"],["hey","frz"]];
-function skNodes(box,L0,o){const eqs=new Set(S.psl.slice(0,o).filter(Boolean)),has=new Set(L0.map(x=>x.id));
-  for(const ck of ["pj","sm","sv","atk","etc"]){const G=SKN[ck],list=L0.filter(x=>skCat(x)==ck);if(!list.length)continue;const pos=Object.assign({},G.p);let ex=0;list.forEach(x=>{if(!pos[x.id]){pos[x.id]=[15+(ex%4)*23,G.h>120?92:80];ex++}});
-    const P=document.createElement("div");P.className="skn-p";P.style.height=(G.h+(ex>0&&!Object.keys(G.p).length?0:0))+"px";P.innerHTML="<div class='skn-t'>"+G.t+"</div>"+(G.hint?"<div class='skn-h'>"+G.hint+"</div>":"");
-    const ns="http://www.w3.org/2000/svg",sv=document.createElementNS(ns,"svg");sv.setAttribute("viewBox","0 0 100 100");sv.setAttribute("preserveAspectRatio","none");
-    for(const [a,b] of SKE){if(!pos[a]||!pos[b]||!has.has(a)||!has.has(b))continue;const l=document.createElementNS(ns,"line"),on=eqs.has(a)&&eqs.has(b),half=eqs.has(a)||eqs.has(b);l.setAttribute("x1",pos[a][0]);l.setAttribute("y1",pos[a][1]);l.setAttribute("x2",pos[b][0]);l.setAttribute("y2",pos[b][1]);l.setAttribute("stroke",on?"#ffc94a":half?"#7fc8ff":"#5a4828");l.setAttribute("stroke-width",on?"1.6":"1");l.setAttribute("vector-effect","non-scaling-stroke");if(!on&&!half)l.setAttribute("stroke-dasharray","3 3");sv.append(l)}
-    P.append(sv);
-    list.forEach(s=>{const own=(S.rb||0)>=(s.rb||0),eq=eqs.has(s.id),off=own&&psOff(s),syn=!eq&&own&&!off&&SKE.some(([a,b])=>(a==s.id&&eqs.has(b))||(b==s.id&&eqs.has(a)));const c=document.createElement("div");
-      c.className="skc skn"+(own?"":" lk")+(eq?" eq":"")+(off?" off":"")+(syn?" syn":"");c.dataset.sid=s.id;c.style.left=pos[s.id][0]+"%";c.style.top=pos[s.id][1]+"%";
-      c.innerHTML="<i>"+(own?skI(s):"🔒")+"</i><b>"+s.n+"</b>"+(eq?"<em"+(off?" class='ofl'":"")+">"+(off?"미적용":"장착")+"</em>":own?"":"<em>환생"+s.rb+"</em>");P.append(c)});
-    box.append(P)}
-  const lg=document.createElement("div");lg.className="skcap";lg.innerHTML="<span style='color:#ffc94a'>●</span> 장착 · <span style='color:#7fc8ff'>●</span> 장착한 스킬과 연계 · 흐림 = 지금 세팅에서 효과 없음 · 눌러서 설명/장착";box.append(lg)}
 function skWhy(s){if(psOffW(s))return "기본 공격이 이미 원거리";{const w=tpOffS(s);if(w)return w}if(s.ef&&(s.ef.sbash||s.ef.shbash)&&!gdShOk())return "방패를 착용해야 적용";if(s.ef&&s.ef.sweep&&!melBa())return "근접 일반 공격이 있어야 해요";{const b=bacOffS(s);if(b)return b}if(s.ef&&s.ef.auR&&!auOn()&&!gdOn()&&!hsOn())return "오라 스킬이 있어야 적용";const e=s.ef||{};if((e.smD||e.smS||e.smN)&&!smAny())return "소환수 없음";if((e.proj||e.chain||e.prc||e.pjS||e.homing)&&!pjSrc()&&!spOn())return S.cls=="knight"?"화염구 같은 투사체 공격이나 정령이 있어야 적용":"투사체 공격 없음";if((e.rgA||e.rgC)&&rgNo())return "HP 재생이 없어요 (장비 옵션 ◆ 초당 HP 회복이 있어야 돌아요)";return psOff(s)?"지금 세팅에서 효과 없음":""}
 function skSyn(s,eqs){const r=[];for(const [a,b] of SKE){const o=a==s.id?b:b==s.id?a:null;if(o&&eqs.has(o)){const t=psGet(o);if(t)r.push(t.n)}}const c=skCat(s);if(eqs.has("sm")&&c=="pj"&&s.id!="sw")r.push("정령 소환");if(s.id=="sm"&&[...eqs].some(x=>{const t=psGet(x);return t&&skCat(t)=="pj"}))r.push("투사체 스킬");return [...new Set(r)]}
 function skClearAll(){const o=psOpen(),n=[...Array(o).keys()].filter(i=>psGet(S.psl[i])).length;if(!n)return;popup("🧹 스킬 전부 빼기","지금 프리셋"+(()=>{try{return " "+pnQ(skp().cur,"s")}catch(e){return ""}})()+"에 낀 스킬 "+n+"개를 모두 빼요<br><small>스킬은 사라지지 않고 언제든 다시 넣을 수 있어요</small>",[["아니요",closePop],["예",()=>{for(let i=0;i<o;i++)S.psl[i]=null;window._skSel=null;window._skSlot=null;window._skRepS=null;log("🧹 스킬 "+n+"개 전부 뺐어요","o");save();closePop();render();renderSheet()}]])}
 function skUnequip(i){const s=psGet(S.psl[i]);S.psl[i]=null;if(s)log("📜 "+s.n+" 해제","o");save();render();renderSheet()}
-function skTop(sb,o,eqs,rep,bl,bv){sb._sks=psSig();
-  /* 맨 위 한 줄: 장착 수 · [🎒 프리셋 N ▾] (장비창과 같은 프리셋·접기 줄, 03 pnHd) · [🌳 지도] → 펼치면 아래에 10칸 줄 (pnRw) */
-  const pk=!!(S&&S.cls),hd=document.createElement("div");hd.className="skq-h"+(pk?" skq-hp":"");hd.innerHTML="<span class=\"ns\">"+(o?"장착 "+eqs.size+" / "+o+(pk?"":" <small>칸을 누르면 설명</small>"):"스킬 칸"+(pk?"":" <small>환생하면 열려요</small>"))+"</span>"+(pk?pnHd("s"):"");const vb=document.createElement("button");vb.className="skvt";vb.textContent=bl;vb.onclick=()=>{window._skView=bv;window._skRep=null;renderSheet()};hd.append(vb);if(pk){const cw=document.createElement("div");cw.innerHTML=cpHd()+cpRw();const cr=[...cw.children];cr.forEach(x=>sb.append(x));try{pnFix(cr[1])}catch(e){}setTimeout(()=>{try{if(cr[1].isConnected)pnFix(cr[1])}catch(e){}},0)}sb.append(hd);if(pk){const w=document.createElement("div");w.innerHTML=pnRw("s");const pr=w.firstChild;sb.append(pr);try{pnFix(pr)}catch(e){}setTimeout(()=>{try{if(pr.isConnected)pnFix(pr)}catch(e){}},0)}
-  if(rep){const rb=document.createElement("div");rb.className="skq-rep";rb.innerHTML="<span>"+rep.ic+" <b>"+rep.n+"</b>"+(josa(rep.n)=="이"?"과":"와")+" 바꿀 칸을 눌러 주세요</span>";const cb=document.createElement("button");cb.textContent="취소";cb.onclick=()=>{window._skRep=null;renderSheet()};rb.append(cb);sb.append(rb)}
-  /* 칸 먼저 고른 "바꾸기"(2026-11-02): 고른 칸에 넣을 스킬을 목록·지도에서 고름 */
-  const rs=skRS(o);if(rs!=null){const ct=psGet(S.psl[rs]),rb=document.createElement("div");rb.className="skq-rep";rb.innerHTML="<span>📍 <b>"+(rs+1)+"번 칸</b>"+(ct&&psFit(ct)?" ("+ct.n+")":"")+"에 넣을 스킬을 골라 주세요</span>";const cb=document.createElement("button");cb.textContent="취소";cb.onclick=()=>{window._skRepS=null;renderSheet()};rb.append(cb);sb.append(rb)}
-  /* 장착 칸: 누르면 설명판([빼기][바꾸기]) · 바꿀 칸 고르는 중이면 그 칸에 넣기 · 빈 칸은 고른 스킬을 넣거나, 넣을 스킬 고르기 */
-  const sl=document.createElement("div");sl.className="skq-sl";const sel=window._skSel&&psGet(window._skSel),selOk=sel&&psFit(sel)&&!eqs.has(sel.id)&&(S.rb||0)>=(sel.rb||0),fs=window._skSlot;
-  for(let i=0;i<o;i++){const t=psGet(S.psl[i]),ok=t&&psFit(t),c=document.createElement("button");c.type="button";
-    if(ok){const w=skWhy(t);c.className="skq-s on"+(w?" bad":"")+(rep?" pick":"")+((fs===i||rs===i)?" sel":"");c.innerHTML="<span class='sqi'>"+skI(t)+"</span><b>"+t.n+"</b>"+(w?"<i class='sqw'>🚫</i>":"");c.setAttribute("aria-label",(i+1)+"번 칸 "+t.n+" (누르면 설명·바꾸기·빼기)")}
-    else{c.className="skq-s em"+(rep||(selOk&&rs==null)?" pick":"")+(rs===i?" sel":"");c.innerHTML="<span class='sqi'>＋</span><b>빈 칸</b>";c.setAttribute("aria-label",(i+1)+"번 빈 칸")}
-    c.onclick=()=>skSlotTap(i,o,eqs);sl.append(c)}
-  for(let i=o;i<PSLOTS;i++){const c=document.createElement("button");c.type="button";c.className="skq-s lk";c.innerHTML="<span class='sqi'><span class='l6lk'></span></span><b>"+(i+1)+"환생</b>";c.setAttribute("aria-label",(i+1)+"번 칸 잠김 · "+(i+1)+"번째 환생 때 열려요");c.onpointerdown=()=>skLkTap(c,i);sl.append(c)}/* 잠긴 칸도 보이게 (사용자 2026-11-09 "잠겨 있는 게 구현 안 됐다") */
-  sb.append(sl);
-  /* 🧹 지금 프리셋 스킬 전부 빼기 (사용자 2026-11-03 "하나씩 빼기 어렵다") · 확인 창 [아니요][예] */
-  if(o&&eqs.size>=2){const cw=document.createElement("div");cw.className="skq-clr";const cb=document.createElement("button");cb.type="button";cb.textContent="🧹 전부 빼기 ("+eqs.size+")";cb.onclick=skClearAll;cw.append(cb);sb.append(cw)}
-  const lk=document.createElement("div");lk.className="skq-lk";if(o<PSLOTS){lk.innerHTML="<span class='l6lk'></span> "+(o?"다음 칸은 ":"첫 칸은 ")+(o?(o+1)+"번째":"첫")+" 환생 때 열려요 (최대 "+PSLOTS+"칸)";sb.append(lk)}}
+/* (아래 SKCOL·SKAXS 무리 표 = 예전 🌳 지도 무리, 지금은 🧩 내 빌드 창(15g) 스킬 고르기 무리에만 씀 · 스킬 창은 SKBR 표) */
 /* 🌳 지도 (2026-11-04 B "12무리 시계" + 무리 안 세로 줄, 시안 docs/UI/시안/2026-11-04_스킬지도_B정리.html):
    가운데 ⭐ → 무리 12개를 시계 자리에(12시 = 공통 공격, 시계 방향 SKAXS 순서), 판끼리 안 겹칠 때까지 바퀴를 넓힘 · ⭐→무리 빗살(장착 있으면 빨강).
    무리 판 = 세로 줄 3개(SKCOL 표): 줄마다 위→아래 = 핵심 → 그 스킬을 키우는/이어지는 스킬 (☄️ 화염구 → 🌠 메테오).
@@ -3520,66 +3622,184 @@ function skTags(s){const m=skDs(s).match(/^\(([^)]*)\)/);return m?m[1].split(/[�
 /* 지도 연계 = SKE + 꼬리표 자동(SKON: 그 꼬리표가 붙은 스킬과 이어짐, 예 그물 ↔ (폭발) 스킬들) — 지도에 그리는 줄만, ◆ 표시·내 빌드 연계는 그대로 SKE */
 function skMapE(L){const ids=new Set(L.map(s=>s.id)),E=[],seen=new Set(),add=(a,b,t)=>{if(a==b||!ids.has(a)||!ids.has(b))return;const q=a<b?a+"|"+b:b+"|"+a;if(seen.has(q))return;seen.add(q);E.push([a,b,t])};
   SKE.forEach(([a,b])=>add(a,b,0));L.forEach(r=>{const on=r.on||SKON[r.id];if(on)L.forEach(s=>{if(skTags(s).includes(on))add(r.id,s.id,1)})});return E}
-/* ===== 🌳 스킬 지도 = 기능별 나무 노드 (가로 6차, 사용자 2026-11-09 "빌드에 무엇을 하는지로" · 세로도 같이 "1번으로 같이 똑같이") =====
-   시안 docs/UI/시안/2026-11-08_가로_UI_6차.html TREE · 계획 docs/UI/2026-11-08_가로_UI_6차_계획.md 0-1
-   ⭐ → 큰 가지(마름모) → 작은 가지(빗살 하나) → 줄 [핵심 → 이어지는 스킬] · 빨간 길 = ⭐에서 장착한 스킬까지 · 장착 = 금·빨강 테두리 + 칸 번호
-   세로 스킬 창(skTreeView)·가로 스킬 판·🌳 넓은 지도(17)가 같이 씀 (skNM) · 넣기·빼기는 예전 함수 그대로 (psEquip·skUnequip·skInto·elSet)
-   ✏️ SKTREE = 배치 표 하나 (초안, 사용자가 "○○를 △△로" 옮기며 다시 정함): [큰 가지 그림, 이름, [[작은 가지 그림, 이름, [[줄1 위→아래 스킬 id],[줄2]…], (이 가지가 붙는 작은 가지 이름)]…]]
-   스킬 id만 다른 줄로 옮기고 python build.py → 자리는 불러올 때 저절로 다시 계산 · 스킬 규칙은 안 바뀜 (보이는 자리만)
-   "E:fbl" = 원소 칸(🔥 fbl · ⚡ lch · ❄️ ics) · "B:fbl" = 그 원소 큰 한 방 (직업마다 다른 스킬: 기사 15m EAU · 궁수 EAA · 마법사 SKTBM) · 표에 없는 스킬(새 스킬)은 맨 끝 "❔ 새 스킬" 가지에 */
-const SKTREE=[
- ["⚔️","일반 공격",[
-  ["💪","공격 강화",[["dbl","tri"],["pj"],["as","ncm"]]],
-  ["🌈","원소 🔥⚡❄️",[["E:fbl","B:fbl"],["E:lch","B:lch"],["E:ics","B:ics"]],"공격 강화"],
-  ["🔄","공격 변환",[["sw"],["shb"]]],
-  ["🎯","투사체",[["ps","hm"],["pr","ch"]]],
-  ["💥","광역 공격",[["bx"],["swp"],["nqk"]]],
-  ["🎲","치명타",[["hey","trp"],["nex"]]]]],
- ["🔥","버프",[
-  ["📈","세지는 버프",[["bth","gp"],["frz","mcv"]]],
-  ["⭕","오라",[["au","gd"],["ha","ar"]]]]],
- ["🧚","소환",[
-  ["🧚","소환수",[["sm"],["wr"],["gol"],["tur","cmd","vly"]]],
-  ["🌟","소환 강화",[["su","ss"],["nlk","nsc"],["nlr"]]],
-  ["💫","닿기",[["sat"],["wir"],["ngl"]]]]],
- ["💧","마나·주문",[
-  ["💧","마나",[["mu","mr"],["mab","bmn"],["ms","nmb","nbt"]]],
-  ["🪄","원소·주문 강화",[["ovl","anv"],["spa","bmg"],["qcs","ech"],["cmr","frn"]]]]],
- ["🛡️","방어·생존",[
-  ["🧱","버티기",[["hu","hr"],["sp"],["dc"]]],
-  ["🌋","맞으면 반격",[["nrt"],["sb"]]]]],
- ["🌀","이동",[
-  ["💨","빠르게",[["ds","ngs"],["nzc","nmo"]]],
-  ["🐂","달려들기",[["nch","nkb"],["nhs"]]],
-  ["🍖","몬스터",[["lr"]]]]],
- ["🎳","처치·상태이상",[
-  ["🎳","처치 연쇄",[["ncx"],["nhv"]]],
-  ["🧪","상태이상",[["nvn","nct"],["net"],["nrx"]]]]]];
-const SKTBM={fbl:"mtr",lch:"thd",ics:"blz"};/* 마법사 원소 큰 한 방 (지팡이 15e) */
-/* 표 칸 이름 → 이 직업의 스킬 id */
-function skTKid(k,c){c=c||(S&&S.cls);if(k[1]!==":")return k;const e=k.slice(2);if(k[0]=="E")return e;return c=="knight"?(typeof EAU!="undefined"?EAU[e]:null):c=="archer"?(typeof EAA!="undefined"?EAA[e]:null):SKTBM[e]}
-/* 자리 계산 (표 → 좌표, 한 번만): 작은 가지마다 빗살 하나 · 각도 = 줄 수 비례(큰 가지끼리 더 띄움) · 시작 반지름 = 칸 52×62가 안 겹치는 가장 작은 값 (시안과 같은 계산) */
-let _skTL=null;
-function skTL(){if(_skTL&&_skTL.n===PSK.length)return _skTL;const T=SKTREE.map(b=>[b[0],b[1],b[2].map(s=>[s[0],s[1],s[2].map(c=>c.slice()),s[3]])]),used=new Set();
-  T.forEach(b=>b[2].forEach(s=>s[2].forEach(c=>c.forEach(k=>{if(k[1]===":"){const e=k.slice(2);used.add(e);["knight","archer","mage"].forEach(cl=>{const i=skTKid("B:"+e,cl);if(i)used.add(i)})}else used.add(k)}))));
-  const lo=PSK.filter(s=>!used.has(s.id)).map(s=>s.id);if(lo.length){const cs=[[],[],[]];lo.forEach((id,i)=>cs[i%3].push(id));T[T.length-1][2].push(["❔","새 스킬",cs.filter(c=>c.length)])}
-  const BR=[],SB=[],KI={};T.forEach((b,bi)=>{BR.push({e:b[0],n:b[1],subs:[]});b[2].forEach(s=>{const k=SB.length;SB.push({e:s[0],n:s[1],b:bi,cols:s[2],k,pn:s[3],par:null});BR[bi].subs.push(k);s[2].forEach((cl,c)=>cl.forEach((n,j)=>KI[n]={b:bi,s:k,c,j}))})});
-  SB.forEach(s=>{if(s.pn){const p=SB.find(q=>q.b==s.b&&q.n==s.pn);s.par=p?p.k:null}});
-  const NP={},SH=[],BH=[],W=52,H=62,nd=(px,py)=>Math.min(Math.abs(px)>1e-6?W/Math.abs(px):1e9,Math.abs(py)>1e-6?H/Math.abs(py):1e9),bx=[],hit=(x,y,w,h)=>bx.some(b=>Math.abs(b[0]-x)<(b[2]+w)/2+4&&Math.abs(b[1]-y)<(b[3]+h)/2+4);
-  let U=0;const pos=[];SB.forEach((s,i)=>{if(i)U+=SB[i-1].b==s.b?.7:1.6;const w=Math.max(1,s.cols.length);pos.push([U,U+w]);U+=w});U+=1.6;
-  const b0=SB.filter(s=>s.b==0),a0=(pos[b0[0].k][0]+pos[b0[b0.length-1].k][1])/2,BA=BR.map(b=>{const s=b.subs;return ((pos[s[0]][0]+pos[s[s.length-1]][1])/2-a0)/U*2*Math.PI}),tw=(s,f)=>Math.max(56,[...s].length*f+f*3.2);
-  BR.forEach((b,i)=>{BH[i]=[Math.sin(BA[i])*150,-Math.cos(BA[i])*150];bx.push([BH[i][0],BH[i][1]+12,tw(b.n,13.5),66])});bx.push([0,0,70,70]);
-  SB.forEach((s,i)=>{const a=((pos[i][0]+pos[i][1])/2-a0)/U*2*Math.PI,dx=Math.sin(a),dy=-Math.cos(a),px=Math.cos(a),py=Math.sin(a),lat=nd(px,py)+2,st=nd(dx,dy)+2,n=s.cols.length;
-    const P=R=>{const o=[],hr=Math.max(240,R-92);o.push(["h",dx*hr,dy*hr+10,tw(s.n,12),54]);s.cols.forEach((cl,c)=>{const of=(c-(n-1)/2)*lat;cl.forEach((nm,j)=>{const r=R+j*st;o.push([nm,dx*r+px*of,dy*r+py*of+12,W,H])})});return o};
-    let R=300,o;for(;R<1500;R+=6){o=P(R);if(!o.some(q=>hit(q[1],q[2],q[3],q[4])))break}
-    o.forEach(q=>{bx.push([q[1],q[2],q[3],q[4]]);if(q[0]=="h")SH[i]=[q[1],q[2]-10];else NP[q[0]]=[q[1],q[2]-12]})});
-  const ext=Math.max(...bx.map(b=>Math.max(Math.abs(b[0])+b[2]/2,Math.abs(b[1])+b[3]/2)))+30,MS=Math.ceil(ext*2),MO=MS/2;
-  for(const k in NP){NP[k][0]+=MO;NP[k][1]+=MO}SH.forEach(p=>{p[0]+=MO;p[1]+=MO});BH.forEach(p=>{p[0]+=MO;p[1]+=MO});
-  return _skTL={n:PSK.length,BR,SB,KI,NP,SH,BH,MS,MO}}
-/* 원소 칸 이름: 기사·궁수 = 무기 이름(화염검·염검·불화살…, 15m eaWn) · 마법사 = 게임 이름 그대로 */
-function skNmN(s,k){try{if(k&&k[0]=="E"&&k[1]==":"&&eaCl())return eaWn(s.id)}catch(e){}return s.n}
-/* 이 스킬이 지도 어디에 있나 (설명판 꼬리표): "⚔️ 일반 공격 · 공격 강화" */
-function skTLoc(id){const L=skTL();for(const k in L.KI)if(skTKid(k)===id){const q=L.KI[k];return L.BR[q.b].e+" "+L.BR[q.b].n+" · "+L.SB[q.s].n}return ""}
+/* ===== 📜 스킬 고르기 = 판정 탭 + ▦ 칸 / 🗺️ 지도 (사용자 2026-11-10 "지도 디자인 안될거같아 절대 이렇게 쓰면 안될거같아" → 새 묶음 · "저렇게도 쓰고 지도 형식으로도 쓸수 있게 해줘" → "우웅 괜찮아")
+   시안 docs/UI/시안/2026-11-10_스킬창_배치.html (A 격자 + 지도) · UI규칙 §29 · 예전 빗살 지도(SKTREE·skNM)·☰ 목록(skRowView)은 없앰
+   세로 창(17b)·가로 판(17 #ls6sk)·넓은 지도(17 #ls6fm)·큰 화면(skSView) 모두 skBr 하나 → 넣기·빼기는 예전 함수 그대로(skSelBtns·skSelAct·skInto·elSet·skUnequip)
+   ✏️ SKBR = 묶음 표 하나: [탭 키, 그림, 이름, 한 줄 설명, 지도 구역 색, [[묶음 이름, [스킬 id…]], …]] → id만 옮기고 python build.py (칸·지도 둘 다 바뀜)
+   표에 없는 새 스킬 = ⚔️ 공통 탭 맨 끝 "❔ 새 스킬" · 보기 S.skv ("m" = 🗺️ 지도, 없으면 ▦ 칸) · 내 무기 먼저 S.sko (0 = 끔, 없으면 켬) · 탭 window._skTab (저장 X)
+   회색·'!'·'같이 쓰면 좋아요'는 게임 규칙에서: 못 씀 = psFit·skWhy(빈 빌드에 무엇을 넣어도 안 풀림) · '!' = 지금 빌드로는 꺼짐(스킬 하나·장비로 풀림) · 필요한 스킬 = 빈 빌드에 하나씩 넣어 skWhy가 풀리는 것(skNeedT) */
+const SKBR=[
+ ["mel","🗡️","근접","근접 · 근접 넓게 · 몸 한 방 (기사 근접 공격에 붙음)","#ff7a5a",[["근접 공격 바꾸기",["sw","shb"]],["넓게 · 몸 한 방",["swp","nqk","nch","nkb"]],["기사 원소 큰 한 방",["edr","eth","egl"]]]],
+ ["pj","🏹","투사체","투사체 (화살·마력탄·화염구…)에 붙음","#7fd68a",[["투사체 늘리기",["pj","ch","pr"]],["투사체 다듬기",["ps","hm"]],["원소 큰 한 방",["eav","elb","eia","mtr","blz","thd"]]]],
+ ["all","⚔️","공통","근접·투사체 어느 일반 공격에나 붙음","#e5bf64",[["추가타 · 공격 속도",["dbl","tri","as","ncm"]],["원소 속성",["fbl","ics","lch","spa","qcs","ech"]],["세지는 버프",["gp","bth","frz","nmo","nzc","mcv"]],["치명 · 마나 공격",["nex","nmb","nbt"]]]],
+ ["sm","👻","소환","소환수 · 포대 · 닿기 (내가 아닌 것이 때림)","#c08aff",[["소환수",["sm","wr","gol","sat"]],["소환 강화",["su","ss","nlr","nsc","nlk"]],["포대 (저격 석궁)",["tur","cmd","vly","wir"]],["닿기 · 잔상",["ngl","ngs"]]]],
+ ["bm","💥","폭발","폭발 · 장판 · 지속 · 상태이상","#ff9a3a",[["폭발",["bx","trp","ncx","nhv","frn","ovl","anv"]],["폭발에 걸기",["net","hey"]],["주문 강화",["bmg","cmr"]],["상태이상",["nvn","nrx","nct"]]]],
+ ["sv","🛡️","생존","공격이 아닌 것 · 버티기 · 오라 · 이동 · 마나","#7ab0ff",[["버티기",["hu","hr","sp","dc","gd"]],["맞으면 반격",["sb","nrt"]],["오라",["au","ha","ar"]],["이동",["ds","nhs","lr"]],["마나",["mu","mr","ms","mab","bmn"]]]]];
+let _skBT=null;
+function skBT(){if(_skBT&&_skBT.n===PSK.length)return _skBT;const W={},put=new Set(),T=SKBR.map(t=>({k:t[0],ic:t[1],n:t[2],sub:t[3],c:t[4],secs:t[5].map(x=>({h:x[0],ids:x[1].filter(id=>!put.has(id)&&psGet(id)&&put.add(id))}))}));
+  const lo=PSK.filter(s=>!put.has(s.id)).map(s=>s.id);if(lo.length)T.find(t=>t.k=="all").secs.push({h:"❔ 새 스킬",ids:lo});
+  T.forEach(t=>{t.secs=t.secs.filter(x=>x.ids.length);t.secs.forEach(x=>x.ids.forEach(id=>W[id]={t:t.k,h:x.h}))});return _skBT={n:PSK.length,T,W}}
+function skBV(){return S&&S.skv=="m"?"m":"g"}
+function skBO(){return !(S&&S.sko===0)}
+/* 이름: 원소 속성은 무기 이름 (기사 화염검·염검 · 궁수 불화살 · 지팡이 화염구, 15m eaWn) · 마도서는 게임 이름 그대로 */
+function skNm(s){try{if(ELK.includes(s.id)&&(eaCl()||(S.cls=="mage"&&!bkOn())))return eaWn(s.id)||s.n}catch(e){}return s.n}
+const SKB={RC:{},q:{},sv:{},pd:{},cam:{},lt:null,drg:0,op:"",fl:"",fly:0,an:0,ms:{}};
+/* 필요한 스킬 표: 빈 빌드에서 skWhy가 있으면 다른 스킬을 하나씩 넣어 보고 풀리는 것을 모음 · 마법사 원소 줄은 원소 줄에 넣어 봄
+   느린 폰: 키(직업·무기·방패·탄)마다 한 번만 기억(SKB.RC, 세션 동안) · 쉬는 틈에 4ms씩 나눠 미리 계산(skNeedBg, 1.5초마다 키 확인) · 넣어 본 상태마다 opSum은 한 번만(시험 동안만, finally로 되돌림)
+   아직 안 끝났는데 창을 그리면 꺼진 것은 잠깐 '!'로 두고, 끝나면 창을 다시 그림(skBrRe) */
+function skNeedK(){return S.cls+"|"+wtNm()+"|"+(shOn()?1:0)+"|"+(S.bolt||"")}
+function skNeedT(){return SKB.RC[skNeedK()]||null}
+function skOpM(f){const _o=opSum;let mo=null;opSum=function(){return mo||(mo=_o.apply(this,arguments))};try{return f(()=>{mo=null})}finally{opSum=_o}}
+function skNeedRun(bud){const key=skNeedK();if(SKB.RC[key])return true;let J=SKB.J;if(!J||J.key!==key)J=SKB.J={key,R:{},F:null,pd:null,i:0};
+  const k0={psl:S.psl,elm:S.elm,rb:S.rb},t0=performance.now();
+  try{skOpM(clr=>{const rs=()=>{clr();try{SM.w=null;SM.wT=0}catch(e){}};if(!(S.rb>0))S.rb=1;const er=elRow();
+      if(!J.F){J.F=PSK.filter(psFit);J.pd=[];S.psl=[];S.elm=null;rs();for(const x of J.F){const w=skWhy(x);if(w){J.R[x.id]={w,nd:[]};J.pd.push(x)}}}
+      while(J.i<J.F.length&&J.pd.length){const t=J.F[J.i++];if(er&&ELK.includes(t.id)){S.psl=[];S.elm=t.id}else{S.psl=[t.id];S.elm=null}rs();for(const x of J.pd)if(x!==t&&!skWhy(x))J.R[x.id].nd.push(t.id);if(performance.now()-t0>bud)break}})}
+  finally{S.psl=k0.psl;S.elm=k0.elm;S.rb=k0.rb;try{SM.w=null;SM.wT=0}catch(e){}}
+  if(J.i>=J.F.length||!J.pd.length){SKB.RC[key]=J.R;SKB.J=null;return true}return false}
+function skNeedBg(){if(SKB.bg||!S||!S.cls||SKB.RC[skNeedK()])return;SKB.bg=1;const nx=f=>SKB.wait?setTimeout(f,0):window.requestIdleCallback?requestIdleCallback(f,{timeout:400}):setTimeout(f,30);/* 창이 기다리면 바로바로(12ms 조각) */
+  const st=()=>{SKB.bg=0;if(!S||!S.cls)return;let d=false;try{d=skNeedRun(SKB.wait?12:4)}catch(e){console.error(e);return}if(d){if(SKB.wait){SKB.wait=0;skBrRe()}}else{SKB.bg=1;nx(st)}};nx(st)}
+setInterval(()=>{try{skNeedBg()}catch(e){}},1500);
+/* 열린 스킬 창을 지금 상태로 다시 그림 (같은 psSig여도) */
+function skBrRe(){SKB.q={};SKB.qk="";try{if(typeof L6S!="undefined"&&L6S.on)ls6SkR(1)}catch(e){}if(typeof sheetName!="undefined"&&sheetName=="ps"){window._skForce=1;try{renderSheet()}finally{window._skForce=0}}}
+const SKEQF=/HP 재생|흡혈/;/* 장비로 풀리는 이유 = 🚫 말고 '!' */
+const SKWS=[[/기본 공격이 이미 원거리/,"기사만"],[/방패/,"방패 필요"],[/저격 석궁/,"석궁만"],[/지팡이 마법사 전용|마도서는 원소가/,"지팡이만"],[/근접 일반 공격/,"근접만"]];/* 칸에 들어가는 짧은 이유 (설명판엔 전체) */
+function skWhyS(w){for(const [r,t] of SKWS)if(r.test(w))return t;return String(w).replace(/^[^가-힣0-9]+/,"")}
+/* 지금 상태: g = 못 씀(짧은 이유 · w 전체) · n = 지금 꺼짐 '!'(이유 · nd 필요한 스킬) · e = 원소 줄에 넣는 것 · {} = 씀 */
+function skSt(s){if(!s)return {};const cc=[].concat(s.cls||"all");if(!psFit(s)){const t=cc.map(c=>CLS[c]?CLS[c].n:c).join("·")+"만";return {g:t,w:t+" 쓸 수 있어요"}}
+  if((S.rb||0)<(s.rb||0))return {g:"환생 "+s.rb,w:s.rb+"번째 환생 때 열려요"};
+  if(skElR(s))return {e:(bkOn()?"소환 원소 줄":"원소 줄")+"에 넣어요"};
+  const w=skWhy(s);if(!w)return {};const RT=skNeedT();if(!RT){SKB.wait=1;skNeedBg();return {n:w,nd:[]}}const T=RT[s.id];if(!T||T.nd.length||SKEQF.test(w))return {n:w,nd:T?T.nd:[]};return {g:skWhyS(w),w}}
+function skSq(id){return SKB.q[id]||(SKB.q[id]=skSt(psGet(id)))}
+function skEqN(id,o){const i=(S.psl||[]).slice(0,o).indexOf(id);if(i>=0)return i+1;try{if(elRow()&&elId()==id)return "원"}catch(e){}return 0}
+/* 같이 쓰면 좋은 짝 = 연계 표 SKE + 꼬리표 자동(skMapE) */
+let _skPE=null;
+function skPairs(id){if(!_skPE||_skPE.n!==PSK.length){const M={};skMapE(PSK).forEach(e=>{(M[e[0]]=M[e[0]]||[]).push(e[1]);(M[e[1]]=M[e[1]]||[]).push(e[0])});_skPE={n:PSK.length,M}}return _skPE.M[id]||[]}
+function skRo(w){const c=w.charCodeAt(w.length-1)-44032;return c<0||c>11171||c%28==0||c%28==8?"로는":"으로는"}
+/* 탭의 묶음들 · 내 무기 먼저면: 씀 → '!' 순서, 못 씀은 맨 끝 한 묶음 */
+function skBrSecs(tk){const B=skBT(),t=B.T.find(x=>x.k==tk);let secs=t?t.secs.map(x=>({h:x.h,ids:x.ids.slice()})):B.T.map(T=>({h:T.ic+" "+T.n,ids:T.secs.flatMap(x=>x.ids)}));if(!skBO())return secs;
+  const bad=[];secs=secs.map(x=>{const o=[],n=[];x.ids.forEach(id=>{const q=skSq(id);(q.g?bad:q.n?n:o).push(id)});return {h:x.h,ids:o.concat(n)}}).filter(x=>x.ids.length);
+  if(bad.length){const wn=wtNm()||(CLS[S.cls]||{}).n||"";secs.push({h:"🚫 "+wn+skRo(wn)+" 못 써요",ids:bad,no:1})}return secs}
+function skBrC(id,o,sel){const s=psGet(id),q=skSq(id),n=skEqN(id,o);return '<button type="button" class="skb-c'+(q.g?" g":"")+(n?" on":"")+(sel&&sel.id==id?" sel":"")+(SKB.fl==id?" fl":"")+'" data-id="'+id+'">'+(q.n?'<span class="skb-q">!</span>':'')+(n?'<span class="skb-e">'+n+'</span>':'')+'<span class="skb-i">'+skI(s)+'</span><span class="skb-n">'+skNm(s)+'</span>'+(q.g?'<span class="skb-r">'+q.g+'</span>':'')+'</button>'}
+/* 보기 바꾸기 [▦|🗺️] (머리줄에 둠: 세로 17b pvHx · 가로 17 #ls6sk · 큰 화면 skSView) */
+function skVtH(){const m=skBV()=="m";return '<span class="skb-vt"><button type="button" data-a="vg" class="'+(m?"":"on")+'" aria-label="칸으로 보기">▦</button><button type="button" data-a="vm" class="'+(m?"on":"")+'" aria-label="지도로 보기">🗺️</button></span>'}
+function skVtSet(v){if(!S)return;const m=v=="vm"||v=="m";if((skBV()=="m")===m)return;S.skv=m?"m":"g";SKB.cam={};save();renderSheet();try{if(L6S.on)ls6SkR(1)}catch(e){}}
+function skBrToast(t){const r=document.querySelector(".skbr");if(!r)return;let e=r.querySelector(".skb-ts");if(!e){e=document.createElement("div");e.className="skb-ts";r.append(e)}e.textContent=t;e.classList.add("on");clearTimeout(SKB.tt);SKB.tt=setTimeout(()=>{if(e.isConnected)e.classList.remove("on")},1600)}
+/* 설명판: 그림·이름·꼬리표(탭·묶음 / 🚫·! 이유 / N번 칸) + 버튼(게임 skSelBtns, 못 쓰면 흐린 [끼우기]) + ✕ · 설명(2줄, 누르면 전부) · 같이 쓰면 좋아요(누르면 그 스킬로) */
+function skBrDt(s,o,eqs){const q=skSq(s.id),n=skEqN(s.id,o),B=skBT(),W=B.W[s.id],T=W&&B.T.find(t=>t.k==W.t),d=document.createElement("div");d.className="skb-dt";const tg=[];
+  if(T)tg.push('<span>'+T.ic+" "+T.n+" · "+W.h+'</span>');if(q.g)tg.push('<span class="r">🚫 '+q.g+'</span>');else if(q.n)tg.push('<span class="h">! '+q.n+'</span>');else if(q.e)tg.push('<span class="h">🔹 '+q.e+'</span>');if(n)tg.push('<span class="k">'+(n=="원"?"원소 줄":n+"번 칸")+'</span>');
+  const nd=q.nd||[];let ps=[...new Set(nd.concat(skPairs(s.id)))].filter(x=>x!=s.id&&psGet(x));ps.sort((a,b)=>(skSq(a).g?1:0)-(skSq(b).g?1:0));ps=ps.slice(0,5);
+  const pr=ps.length?'<div class="skb-pr"><span class="pl">같이 쓰면 좋아요</span>'+ps.map(x=>{const t=psGet(x);return '<button type="button" class="skb-pc'+(skSq(x).g?" g":"")+(skEqN(x,o)?" on":"")+'" data-j="'+x+'"><i>'+skI(t)+'</i>'+skNm(t)+(q.n&&nd.includes(x)?'<u>필요</u>':'')+'</button>'}).join("")+'</div>':'';
+  d.innerHTML='<div class="skb-r1"><span class="skb-di">'+skI(s)+'</span><span class="skb-dn"><b>'+skNm(s)+'</b><span class="skb-tgs">'+tg.join("")+'</span></span><span class="skb-bt"></span><button type="button" class="skb-x" data-a="dx" aria-label="설명 닫기">✕</button></div><div class="skb-dd'+(SKB.op==s.id?" op":"")+'" data-a="more">'+(q.g||q.n?'<span class="w">'+(q.w||q.n)+'</span><br>':'')+dsLn(psDesc(s)).join(" · ")+'</div>'+pr;
+  let b=null;if(!q.g||n)b=skSelBtns(s,o,eqs,"btn",null);if(!b){b=document.createElement("button");b.type="button";b.className="btn";b.textContent="끼우기";b.disabled=true}d.querySelector(".skb-bt").append(b);return d}
+/* 그리기: host 안에 탭·(묶음 설명)·칸 또는 지도·설명판·안내 한 줄 · opt = {id: p 세로 · l 가로 판 · f 넓은 지도 · s 큰 화면, o, eqs, sel, map} */
+function skBr(host,opt){const id=opt.id,o=opt.o,eqs=opt.eqs,sel=opt.sel,B=skBT(),MAP=!!opt.map,L=id=="l"||id=="f";{const qk=setupSig()+"|"+wtNm()+"|"+(S.elm||"")+"|"+(S.bolt||"")+"|"+(S.rb||0);if(SKB.qk!==qk){SKB.qk=qk;SKB.q={};skOpM(()=>{for(const x of PSK)SKB.q[x.id]=skSt(x)})}}/* 86개를 한 번에 (opSum 한 번) *//* 상태는 빌드가 바뀔 때만 다시 (누를 때마다 skWhy 86번 X) */
+  let tab=window._skTab||"all0";if(tab!="all0"&&!B.T.some(t=>t.k==tab))tab="all0";
+  const R=document.createElement("div");R.className="skbr skb-"+id+(MAP?" map":" grid");R.dataset.id=id;
+  const tg='<button type="button" class="skb-tg'+(skBO()?" on":"")+'" data-a="sort" aria-label="내 무기로 쓸 수 있는 것 먼저"><span class="k"></span><span class="t1">내 무기 먼저</span><span class="t0">무기 먼저</span></button>';
+  let h='<div class="skb-tb">'+[{k:"all0",ic:"📚",n:"전체"}].concat(B.T).map(t=>'<button type="button" data-t="'+t.k+'"'+(tab==t.k?' class="on"':'')+'><i>'+t.ic+'</i><span>'+t.n+'</span></button>').join("")+(L?tg:"")+'</div>';
+  const T=B.T.find(t=>t.k==tab);if(!L)h+='<div class="skb-sub"><span class="sd">'+(T?T.sub:"모든 스킬 "+PSK.length+"개 · 판정별 묶음")+'</span>'+tg+'</div>';
+  const rep=window._skRep&&psGet(window._skRep),rs=skRS(o);
+  if(rep||rs!=null)h+='<div class="skb-rp"><span>'+(rep?skI(rep)+" <b>"+skNm(rep)+"</b>"+(josa(skNm(rep))=="이"?"과":"와")+" 바꿀 칸을 눌러 주세요":"📍 <b>"+(rs+1)+"번 칸</b>에 넣을 스킬을 고르세요")+'</span><button type="button" class="btn" data-a="rpx">취소</button></div>';
+  if(!MAP){let c="";skBrSecs(tab).forEach(x=>{c+='<div class="skb-sh'+(x.no?" no":"")+'">'+x.h+' <em>'+x.ids.length+'</em></div><div class="skb-gr">'+x.ids.map(i=>skBrC(i,o,sel)).join("")+'</div>'});h+='<div class="skb-ct">'+c+'</div>'}
+  else h+=skBrMap(id,o,sel);
+  h+=MAP?'<div class="skb-mf"><span class="hn">끌기 · 두 손가락 = 크기 · 두 번 = 끼우기</span><button type="button" data-mz="-" aria-label="작게">－</button><button type="button" data-mz="+" aria-label="크게">＋</button><button type="button" data-mz="fit" class="w">전체</button>'+(id=="l"?'<button type="button" data-mz="wd" class="w">넓게</button>':id=="f"?'<button type="button" data-mz="wd" class="w">좁게</button>':'')+'</div>':'<div class="skb-hn">누르면 설명 · 두 번 누르면 끼우기/빼기</div>';
+  R.innerHTML=h;if(sel){R.classList.add("hdt");R.append(skBrDt(sel,o,eqs))}host.append(R);SKB.fl="";
+  R.addEventListener("click",e=>skBrClick(e,R,id,o,eqs));
+  if(MAP)skBrMapEv(R,id,sel);else skBrGrid(R,id,sel&&sel.id);return R}
+/* 설명판 자리 (칸·지도 같이): 탭 줄·묶음 설명 줄은 절대 안 가림 = 내용 칸(.skb-ct / .skb-mp) 안에서만 뜸
+   칸 보기: 누른 칸을 안 가리는 쪽(위 먼저, 안 되면 아래)에, 높이는 그 빈 곳만큼 → 누른 칸이 손가락 밑에서 안 움직임 · 위에 놓을 땐 칸 목록에 같은 높이 위 여백 + 스크롤 보정(SKB.sv = 여백 뺀 스크롤)
+   빈 곳이 좁으면 설명 1줄(c1) → 설명 숨김(nd) → 같이 쓰면 좋아요 숨김(nc) · 이름 줄을 누르면 전부 펼침(칸을 가려도 됨) · 그래도 안 되면 위에 놓고 칸을 그 아래로 스크롤 */
+function skDtFit(d,mx){d.classList.remove("c1","nc","nd");d.style.maxHeight="";for(const c of ["c1","nd","nc"]){if(d.offsetHeight<=mx)break;d.classList.add(c)}d.style.maxHeight=Math.max(44,Math.floor(mx))+"px";return d.offsetHeight}
+function skBrGrid(R,id,sid){const c=R.querySelector(".skb-ct");if(!c)return;const d=R.querySelector(".skb-dt"),P0=SKB.pd[id]||{t:0,b:0},sv=SKB.sv[id]||0;
+  c.style.paddingTop=P0.t+"px";c.style.paddingBottom=(8+P0.b)+"px";c.scrollTop=sv+P0.t;let pt=0,pb=0,mv=0;
+  if(d){const ch=c.clientHeight,cr=c.getBoundingClientRect(),el=sid&&c.querySelector('[data-id="'+sid+'"]'),r=el&&el.getBoundingClientRect(),H=d.offsetHeight,MN=46;let top=1,mx=Math.max(MN,ch-68);
+    if(r&&r.bottom>cr.top&&r.top<cr.bottom){const a=r.top-cr.top-4,b=cr.bottom-r.bottom-4;if(a>=H){mx=a}else if(b>=H){top=0;mx=b}else if(Math.max(a,b)>=MN){if(b>a){top=0;mx=b}else mx=a}else mv=1}else mv=!!el;
+    const h=skDtFit(d,mx);d.style.top=(top?c.offsetTop:c.offsetTop+ch-h)+"px";if(top)pt=Math.max(h+4,-sv);else pb=h+4}
+  c.style.paddingTop=pt+"px";c.style.paddingBottom=(8+pb)+"px";{const ex=sv+pt+c.clientHeight-c.scrollHeight;if(ex>0)c.style.paddingBottom=(8+pb+ex)+"px"}/* 칸이 적어 스크롤할 길이가 모자라면 아래 여백을 더해 칸이 안 움직이게 */c.scrollTop=Math.max(0,sv+pt);SKB.pd[id]={t:pt,b:pb};SKB.sv[id]=c.scrollTop-pt;
+  if(mv)skBrVis(R,sid,true);
+  c.addEventListener("scroll",()=>{SKB.sv[id]=c.scrollTop-(SKB.pd[id]||{t:0}).t},{passive:true})}
+/* 고른 칸이 안 보이면 설명판 옆 빈 곳으로 (같이 쓰면 좋아요로 간 스킬 · 빈 곳이 아주 좁을 때) */
+function skBrVis(R,sid,jump){const c=R&&R.querySelector(".skb-ct"),el=c&&c.querySelector('[data-id="'+sid+'"]');if(!el)return;const r=el.getBoundingClientRect(),cr=c.getBoundingClientRect(),d=R.querySelector(".skb-dt"),dr=d&&d.getBoundingClientRect(),dt=dr&&dr.top<=cr.top+c.clientTop+2,lo=dt?dr.bottom:cr.top,hi=d&&!dt?dr.top:cr.bottom;
+  if(jump||r.top<lo||r.bottom>hi)c.scrollTop+=r.top-lo-4;SKB.sv[R.dataset.id]=c.scrollTop-(SKB.pd[R.dataset.id]||{t:0}).t}
+function skBrHost(id){return document.querySelector(".skbr.skb-"+id)}
+/* 누르기 (칸·지도 같이): 한 번 = 설명 · 같은 자리 0.45초 안 두 번 = 끼우기/빼기 (두 번째가 설명판에 떨어져도) */
+function skBrClick(e,R,id,o,eqs){const nw=Date.now(),lt=SKB.lt;
+  /* 두 번 누르기 = 같은 칸(또는 그 칸 위에 방금 뜬 설명판) · 같은 자리 24px · 0.45초 · 지도는 같은 배율 */
+  if(lt&&nw-lt.t<450&&Math.hypot(e.clientX-lt.x,e.clientY-lt.y)<24&&!e.target.closest("[data-t],.skb-tg,[data-mz],.skb-rp")){const hn=e.target.closest("[data-id]"),hd=e.target.closest(".skb-dt");
+    if(((hn&&hn.dataset.id==lt.id)||(hd&&!hn))&&(!R._m||Math.abs(R._m.s()-lt.s)<1e-3)){SKB.lt=null;const s=psGet(lt.id);if(s)skBrDbl(s,o,eqs);return}}
+  if(SKB.drg&&nw-SKB.drg<350&&e.target.closest(".skb-mp")){SKB.drg=0;return}/* 지도를 끈 뒤 손 뗀 자리 누름만 무시 (탭·버튼은 그대로) */
+  const dd=e.target.closest(".skb-dd");if(dd){dd.classList.toggle("op");SKB.op=dd.classList.contains("op")?window._skSel:"";return}
+  const dn=e.target.closest(".skb-dn,.skb-di");if(dn){const d=dn.closest(".skb-dt"),c=R.querySelector(".skb-ct,.skb-mp");if(d&&c&&d.classList.contains("c1")){d.classList.remove("c1","nd","nc");d.style.maxHeight=Math.max(46,c.clientHeight-4)+"px";d.style.top=c.offsetTop+"px"}return}/* 좁아서 줄인 설명판 = 이름을 누르면 전부 */
+  const b=e.target.closest("button");if(!b)return;const a=b.dataset.a;
+  if(b.dataset.t){if(window._skTab==b.dataset.t&&!R.classList.contains("map")&&!window._skSel)return;window._skTab=b.dataset.t;window._skSel=null;window._skSlot=null;SKB.lt=null;SKB.sv[id]=0;SKB.pd[id]=null;SKB.fly=1;renderSheet();/* 탭 = 설명판 닫고 그 탭으로 */try{if(L6S.on)ls6SkR()}catch(x){}
+    const N=skBrHost(id);if(N&&N._m&&SKB.fly){SKB.fly=0;N._m.go(N._m.tab())}return}
+  if(a=="sort"){S.sko=skBO()?0:1;if(S.sko)delete S.sko;save();renderSheet();return}
+  if(a=="dx"){window._skSel=null;window._skSlot=null;window._skLT=null;SKB.lt=null;renderSheet();return}
+  if(a=="rpx"){window._skRep=null;window._skRepS=null;renderSheet();return}
+  if(b.dataset.mz){const z=b.dataset.mz,m=R._m;if(z=="wd"){try{ls6Fm(id=="l"?1:0)}catch(x){}return}if(!m)return;if(z=="fit")m.go(m.fit());else m.zoomBy(z=="+"?1.35:1/1.35);return}
+  if(b.dataset.j){skBrJump(b.dataset.j,id);return}
+  const sid=b.dataset.id,s=sid&&psGet(sid);if(!s)return;
+  if(R._m&&R._m.far()){SKB.lt=null;R._m.go(R._m.node(sid));return}/* 멀리 보기 = 그 칸으로 확대만 (칸이 작아 고르기 어려움) */
+  const L0={id:sid,t:nw,x:e.clientX,y:e.clientY,s:R._m?R._m.s():0};SKB.lt=L0;window._skSel=sid;window._skSlot=null;window._skLT=null;renderSheet();
+  /* 지도: 설명판이 칸을 가리면 두 번 누르기 시간이 지난 뒤에만 지도를 옮김 (그 사이엔 손가락 밑 그대로) */
+  if(R._m)setTimeout(()=>{if(SKB.lt!==L0&&SKB.lt!=null)return;if(window._skSel!==sid)return;const N=skBrHost(id);if(N&&N._m)N._m.show(sid,false)},460)}
+function skBrDbl(s,o,eqs){const q=skSt(s);if(q.g){skBrToast("🚫 "+(q.w||q.g));return}
+  if(skElR(s)){elSet(elId()==s.id?"":s.id);return}if(o<1){skBrToast("🔒 환생하면 스킬 칸이 열려요");return}
+  if(skRS(o)!=null){skInto(s,o);return}if(eqs.has(s.id)){window._skSlot=null;skUnequip(S.psl.indexOf(s.id));return}skSelAct(s,o,eqs)}
+/* 같이 쓰면 좋아요 → 그 스킬로 (칸: 다른 탭이면 그 탭으로 · 지도: 그 칸으로 날아감) + 반짝 */
+function skBrJump(sid,id){const W=skBT().W[sid],N0=skBrHost(id),map=N0&&N0.classList.contains("map");if(!map&&(window._skTab||"all0")!="all0"&&W&&window._skTab!=W.t){window._skTab=W.t;SKB.sv[id]=0;SKB.pd[id]=null}
+  window._skSel=sid;window._skSlot=null;window._skLT=null;SKB.lt=null;SKB.fl=sid;renderSheet();const N=skBrHost(id);if(!N)return;if(N._m)N._m.show(sid,true);else skBrVis(N,sid,true)}
+/* ===== 🗺️ 지도 = 탭 6개가 구역 6개(3×2, 구역 색) · 구역 안 = 묶음마다 반듯한 줄(한 줄 6칸) · 선 없음 (고른 스킬의 '필요'(주황)·'같이 쓰면 좋아요'(점선)만 옅게)
+   끌기 · 두 손가락 · 휠 · ＋－ · 전체 · 멀리(배율 < 0.72 세로 / 0.8 가로)는 이름 숨김 + 누르면 그 칸으로 확대 · 탭 = 그 구역으로 날아감 · 보던 자리 SKB.cam[id] (저장 X) */
+const SKMW=74,SKMH=86,SKMP=6,SKMZ=SKMP*SKMW+28;let _skML=null;
+function skMLay(){const B=skBT();if(_skML&&_skML.B===B)return _skML;const zs=[];
+  B.T.forEach(T=>{let y=50;const secs=[];T.secs.forEach(x=>{secs.push({h:x.h,y,ids:x.ids});y+=24+Math.ceil(x.ids.length/SKMP)*SKMH+6});zs.push({T,secs,h:y+6})});
+  const G=44,nr=Math.ceil(zs.length/3),rh=[...Array(nr).keys()].map(r=>Math.max(0,...zs.slice(r*3,r*3+3).map(z=>z.h))),N={};let yy=0;const ry=rh.map(v=>{const y=yy;yy+=v+G;return y});
+  zs.forEach((z,i)=>{const c=i%3,r=i/3|0;z.x=c*(SKMZ+G);z.y=ry[r];z.w=SKMZ;z.h=rh[r];z.secs.forEach(x=>x.ids.forEach((sid,j)=>{N[sid]={x:z.x+14+(j%SKMP)*SKMW+SKMW/2,y:z.y+x.y+24+Math.floor(j/SKMP)*SKMH,z:i}}))});
+  return _skML={B,zs,N,W:3*SKMZ+2*G,H:yy-G}}
+function skBrMap(id,o,sel){const M=skMLay(),srt=skBO();let h='<div class="skb-mp"><div class="skb-mw" style="width:'+M.W+'px;height:'+M.H+'px">';
+  M.zs.forEach(z=>{h+='<div class="skb-zn" style="--zc:'+z.T.c+';left:'+z.x+'px;top:'+z.y+'px;width:'+z.w+'px;height:'+z.h+'px"><div class="zl">'+z.T.ic+" "+z.T.n+' <small>'+z.secs.reduce((a,x)=>a+x.ids.length,0)+'</small></div></div>';
+    z.secs.forEach(x=>{h+='<div class="skb-ms" style="left:'+(z.x+16)+'px;top:'+(z.y+x.y)+'px;--lw:'+Math.max(20,z.w-40-x.h.length*14)+'px">'+x.h+'</div>'})});
+  if(sel&&M.N[sel.id]){const a=M.N[sel.id],q=skSq(sel.id),nd=(q.nd||[]).filter(x=>M.N[x]);let ln="";
+    [...new Set(nd.concat(skPairs(sel.id)))].filter(x=>M.N[x]&&x!=sel.id).slice(0,5).forEach(x=>{const b=M.N[x],n=nd.includes(x);ln+='<line x1="'+a.x+'" y1="'+(a.y+24)+'" x2="'+b.x+'" y2="'+(b.y+24)+'" stroke="'+(n?"#ffb35a":"#e5bf64")+'" stroke-width="'+(n?3:2)+'" stroke-opacity="'+(n?.75:.45)+'"'+(n?"":' stroke-dasharray="8 7"')+'/>'});
+    h+='<svg class="skb-lk" width="'+M.W+'" height="'+M.H+'">'+ln+'</svg>'}
+  for(const sid in M.N){const s=psGet(sid),p=M.N[sid],q=skSq(sid),e=skEqN(sid,o);
+    h+='<button type="button" class="skb-nd'+(q.g&&srt?" g":"")+(e?" on":"")+(sel&&sel.id==sid?" sel":"")+(SKB.fl==sid?" fl":"")+'" data-id="'+sid+'" style="left:'+(p.x-33)+'px;top:'+p.y+'px"><span class="mi">'+skI(s)+(e?'<span class="skb-e">'+e+'</span>':'')+(q.n?'<span class="skb-q">!</span>':'')+(q.g?'<span class="no"></span>':'')+'</span><span class="skb-n">'+skNm(s)+'</span></button>'}
+  return h+'</div></div>'}
+function skBrMapEv(R,id,sel){const mp=R.querySelector(".skb-mp"),mw=mp.querySelector(".skb-mw"),M=skMLay(),MN=.12,MX=1.3,thr=()=>id=="l"||id=="f"?.8:.72;
+  {const d=R.querySelector(".skb-dt");if(d){skDtFit(d,Math.max(46,mp.clientHeight*.55));d.style.top=mp.offsetTop+"px"}}
+  const vis=()=>{const d=R.querySelector(".skb-dt");let top=0;if(d)top=Math.max(0,d.getBoundingClientRect().bottom-mp.getBoundingClientRect().top);return {w:mp.clientWidth,h:mp.clientHeight,top:Math.min(top,mp.clientHeight*.6)}};
+  const clamp=c=>{const v=vis(),m=36,ww=M.W*c.s,wh=M.H*c.s,vh=v.h-v.top;c.x=ww+2*m<v.w?(v.w-ww)/2:Math.min(m,Math.max(v.w-ww-m,c.x));c.y=wh+2*m<vh?v.top+(vh-wh)/2:Math.min(v.top+m,Math.max(v.h-wh-m,c.y));return c};
+  const fit=()=>{const v=vis(),s=Math.max(MN,Math.min(v.w/M.W,(v.h-v.top)/M.H)*.96);return {s,x:(v.w-M.W*s)/2,y:v.top+(v.h-v.top-M.H*s)/2}};
+  const zone=i=>{const z=M.zs[i],v=vis(),s=Math.max(thr()+.03,Math.min(1.1,(v.w-14)/z.w));return {s,x:7-z.x*s,y:v.top+6-z.y*s}};
+  const node=sid=>{const n=M.N[sid],v=vis(),s=Math.max(C.s,thr()+.06);return {s,x:v.w/2-n.x*s,y:v.top+(v.h-v.top)/2-(n.y+39)*s}};
+  const tab=()=>{const i=M.B.T.findIndex(t=>t.k==window._skTab);return i<0?fit():zone(i)};
+  const ap=()=>{mw.style.transform="translate("+C.x.toFixed(1)+"px,"+C.y.toFixed(1)+"px) scale("+C.s.toFixed(4)+")";mp.classList.toggle("far",C.s<thr());mp.style.setProperty("--iv",Math.max(1,12.5/(22*C.s)).toFixed(3));mp.classList.toggle("tiny",SKMZ*C.s<110)};
+  const go=(t,ms)=>{t=clamp(Object.assign({},t));const f={s:C.s,x:C.x,y:C.y},t0=performance.now(),k=++SKB.an;ms=ms||300;const st=n=>{if(k!=SKB.an||!mw.isConnected)return;const p=Math.min(1,(n-t0)/ms),e=1-Math.pow(1-p,3);C.s=f.s+(t.s-f.s)*e;C.x=f.x+(t.x-f.x)*e;C.y=f.y+(t.y-f.y)*e;ap();if(p<1)requestAnimationFrame(st)};requestAnimationFrame(st)};
+  const zoomAt=(f,px,py)=>{const ns=Math.max(MN,Math.min(MX,C.s*f)),wx=(px-C.x)/C.s,wy=(py-C.y)/C.s;C.s=ns;C.x=px-wx*ns;C.y=py-wy*ns;clamp(C);ap()};
+  const zoomBy=f=>{const v=vis(),ns=Math.max(MN,Math.min(MX,C.s*f)),px=v.w/2,py=v.top+(v.h-v.top)/2,wx=(px-C.x)/C.s,wy=(py-C.y)/C.s;go({s:ns,x:px-wx*ns,y:py-wy*ns},220)};
+  /* 고른 칸이 설명판·칸 밖에 가리면 그쪽으로 (안 가리면 그대로 = 손가락 밑에서 안 움직임) */
+  const show=(sid,force)=>{const n=M.N[sid];if(!n)return;const v=vis(),sx=C.x+n.x*C.s,sy=C.y+n.y*C.s,sw=33*C.s,sh=78*C.s;if(force||C.s<thr()||sy<v.top+2||sy+sh>v.h-2||sx-sw<0||sx+sw>v.w)go(node(sid))};
+  const key=M.W+"|"+mp.clientWidth+"x"+mp.clientHeight;let C=SKB.cam[id];if(!C||C.key!==key){C=SKB.cam[id]=Object.assign(clamp(tab()),{key});SKB.fly=0}
+  R._m={go,fit,tab,node,show,zoomBy,far:()=>C.s<thr(),s:()=>C.s};ap();
+  if(SKB.fly){SKB.fly=0;go(tab())}else if(sel&&window._skSlot!=null&&SKB.ms[id]!==sel.id)requestAnimationFrame(()=>show(sel.id,false));SKB.ms[id]=sel&&window._skSlot!=null?sel.id:"";
+  const PT=new Map(),loc=e=>{const r=mp.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top}};let pan=null,pin=null,mv=false;
+  mp.addEventListener("pointerdown",e=>{PT.set(e.pointerId,loc(e));SKB.an++;window._skGest=1;if(PT.size==1){pan={p:loc(e),x:C.x,y:C.y};mv=false;pin=null}
+    else if(PT.size==2){const [a,b]=[...PT.values()];pin={d:Math.hypot(a.x-b.x,a.y-b.y)||1,s:C.s,m:{x:(a.x+b.x)/2,y:(a.y+b.y)/2},x:C.x,y:C.y};mv=true;for(const q of PT.keys())try{mp.setPointerCapture(q)}catch(_){}}});
+  mp.addEventListener("pointermove",e=>{if(!PT.has(e.pointerId)||(skDrag&&skDrag.mv))return;PT.set(e.pointerId,loc(e));
+    if(PT.size>=2&&pin){const [a,b]=[...PT.values()],d=Math.hypot(a.x-b.x,a.y-b.y),ns=Math.max(MN,Math.min(MX,pin.s*d/pin.d)),m={x:(a.x+b.x)/2,y:(a.y+b.y)/2},wx=(pin.m.x-pin.x)/pin.s,wy=(pin.m.y-pin.y)/pin.s;C.s=ns;C.x=m.x-wx*ns;C.y=m.y-wy*ns;clamp(C);ap();return}
+    if(pan){const p=loc(e),dx=p.x-pan.p.x,dy=p.y-pan.p.y;if(!mv&&Math.hypot(dx,dy)>6){mv=true;try{mp.setPointerCapture(e.pointerId)}catch(_){}}if(mv){C.x=pan.x+dx;C.y=pan.y+dy;clamp(C);ap()}}});
+  const up=e=>{if(!PT.has(e.pointerId))return;PT.delete(e.pointerId);if(mv)SKB.drg=Date.now();if(PT.size==1){pan={p:[...PT.values()][0],x:C.x,y:C.y};pin=null}else if(!PT.size){pan=null;pin=null;window._skGest=0}};
+  mp.addEventListener("pointerup",up);mp.addEventListener("pointercancel",up);
+  mp.addEventListener("wheel",e=>{e.preventDefault();SKB.an++;const p=loc(e);zoomAt(Math.exp(-e.deltaY*.0015),p.x,p.y)},{passive:false})}
+/* 큰 화면(S: 폴드 안쪽·태블릿·PC) 스킬 창 = 세로 창과 같은 모양 (머리줄 · 원소/탄 · 10칸 한 줄 · 탭+칸/지도) */
+function skSView(sb,o){sb._sks=psSig();const eqs=skEqs(o),sel=window._skSel&&psGet(window._skSel),hd=document.createElement("div");hd.className="sks-hd";
+  hd.innerHTML='<span class="n">'+(o?"장착 <b>"+eqs.size+"</b>/"+o:"🔒 환생하면 열려요")+'</span><span class="l6s-pr">'+l6PrH()+'</span><span class="sp"></span>'+skVtH()+'<button type="button" class="sks-b" data-a="clr" aria-label="스킬 전부 빼기"'+(eqs.size<1?" disabled":"")+'>🧹</button>';
+  hd.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b)return;if(b.dataset.a=="clr")skClearAll();else if(b.dataset.a=="vg"||b.dataset.a=="vm")skVtSet(b.dataset.a)});sb.append(hd);
+  const er=l6ElB();if(er.length){const d=document.createElement("div");d.className="sks-er";er.forEach(b=>d.append(b));sb.append(d)}
+  const q=l6Slots(o,eqs,sel);q.className="sks-q";sb.append(q);const R=document.createElement("div");R.className="l6s-r sks-r";sb.append(R);const w=document.createElement("div");w.innerHTML=pnRw("s");R.append(w.firstChild);
+  skBr(R,{id:"s",o,eqs,sel,map:skBV()=="m"});try{pnFix(R)}catch(e){}}
 /* 🪄 마법사 원소 = 10칸 밖 원소 줄 (15h·15m, 지팡이·마도서) · 기사·궁수 원소 = 10칸 중 한 칸 (게임 규칙 그대로) */
 function skElR(s){try{return !!(s&&elRow()&&ELK.includes(s.id))}catch(e){return false}}
 function skFree(o){for(let i=0;i<o;i++){const t=psGet(S.psl[i]);if(!t||!psFit(t))return i}return -1}
@@ -3589,7 +3809,7 @@ function skSelAct(sel,o,eqs){if(skInto(sel,o))return;if(eqs.has(sel.id)){skUnequ
 function skSelBtns(sel,o,eqs,bc,p){if(!psFit(sel))return null;const ow=(S.rb||0)>=(sel.rb||0),eq=eqs.has(sel.id),fs=window._skSlot,rs=skRS(o);
   if(skElR(sel)){const on=elId()==sel.id,b=document.createElement("button");b.type="button";b.className=bc+(on?" un":"");b.textContent=on?"빼기":"🔹 원소 줄에";b.onclick=e=>{e.stopPropagation();elSet(on?"":sel.id)};return b}
   if(eq&&fs!=null&&fs<o&&S.psl[fs]==sel.id){if(p)p.classList.add("two");return skSlotBtns(fs,bc,"un")}
-  const bt=document.createElement("button");bt.type="button";bt.className=bc+(eq&&rs==null?" un":"");const fi=skFree(o);bt.textContent=!ow?"환생"+sel.rb:rs!=null?skIntoT(sel,o,eqs):eq?"빼기":fi>=0?"넣기":"바꾸기";bt.disabled=!ow||o<1||(rs!=null&&S.psl[rs]==sel.id);
+  const bt=document.createElement("button");bt.type="button";bt.className=bc+(eq&&rs==null?" un":"");const fi=skFree(o);bt.textContent=!ow?"환생"+sel.rb:rs!=null?skIntoT(sel,o,eqs):eq?"빼기":fi>=0?"끼우기":"바꾸기";bt.disabled=!ow||o<1||(rs!=null&&S.psl[rs]==sel.id);
   bt.onclick=e=>{e.stopPropagation();skSelAct(sel,o,eqs)};if(rs!=null){if(p)p.classList.add("two");const w2=document.createElement("span");w2.className="skbw";w2.append(bt);return w2}return bt}
 /* 지도 칸 누르기: 한 번 = 설명 · 두 번 = 넣기 (원소 줄이면 그 원소로 · 칸 고르는 중이면 그 칸에) */
 function skNdTap(s,o,eqs){if(window._skMoved)return;window._skGest=0;const nw=Date.now(),dbl=window._skLT&&window._skLT.id==s.id&&nw-window._skLT.t<450,ow=(S.rb||0)>=(s.rb||0);window._skLT={id:s.id,t:nw};window._skSel=s.id;window._skSlot=null;
@@ -3607,79 +3827,12 @@ function skSlotTap(i,o,eqs){const t=psGet(S.psl[i]),ok=t&&psFit(t),rs=skRS(o),se
   if(selOk){window._skSlot=null;psEquip(sel.id,i);return}
   skPickFor(i)}
 function skEqs(o){return new Set(S.psl.slice(0,o).filter(x=>{const t=psGet(x);return t&&psFit(t)}))}
-function skTreeView(sb,o){const eqs=skEqs(o),rep=window._skRep&&psGet(window._skRep);skTop(sb,o,eqs,rep,"☰ 목록","row");
-  const own=x=>(S.rb||0)>=(x.rb||0),rs=skRS(o),sel=window._skSel&&psGet(window._skSel);
-  /* 설명판 (지도 위) */
-  const p=document.createElement("div");p.className="skt-sel top";
-  if(!sel){p.innerHTML="<span class='sqx'><small>"+(rs!=null?"넣을 스킬을 눌러 고르기 · 두 번 = 바로 넣기":"누르면 설명 · 두 번 = 바로 장착")+" · 끌어서 이동 · <span style='color:#e04a35'>━</span> ⭐→장착까지 길 · 🔹 원소(하나만)</small></span>"}
-  else{const eq=eqs.has(sel.id),ow=own(sel),fit=psFit(sel),w=ow&&fit&&!skElR(sel)?skWhy(sel):"",syn=ow&&fit&&!eq?skSyn(sel,eqs):[],cc=[].concat(sel.cls||"all"),lc=skTLoc(sel.id);p.innerHTML="<span class='sqi'>"+(ow?skI(sel):"🔒")+"</span><span class='sqx'><b>"+sel.n+"</b> "+(lc?"<span class='skt-ch'>"+lc+"</span>":"")+(cc.includes("all")?"":"<span class='skt-ch c'>"+cc.map(c=>CLS[c]?CLS[c].n:c).join("·")+" 전용</span>")+(w?" <span style='color:#ff9a8a;font-size:11px'>"+w+"</span>":syn.length?" <span style='color:#7fc8ff;font-size:11px'>"+syn.slice(0,2).join("·")+" 연계</span>":"")+"<small>"+dsLn(psDesc(sel)).join("<br>")+"</small></span>";{const cx=document.createElement("button");cx.className="skt-x";cx.textContent="✕";cx.setAttribute("aria-label","설명 닫기");cx.onclick=e=>{e.stopPropagation();window._skSel=null;window._skSlot=null;window._skLT=null;renderSheet()};p.append(cx)}
-    const b=skSelBtns(sel,o,eqs,"bt",p);if(b)p.append(b)}
-  sb.append(p);skNM(sb,{id:"p",o,eqs,sel})}
-/* 지도 그리기 (host 안에 칸 하나): opt = {id: "p" 세로 · "l" 가로 판 · "f" 넓은 지도, o, eqs, sel, pop: 누른 스킬 옆 설명 창 만들기(넓은 지도)} · 보던 자리는 id마다 기억 (_skZs, 저장 안 함) */
-function skNM(host,opt){const L=skTL(),o=opt.o,eqs=opt.eqs,sel=opt.sel,c=S.cls,own=s=>(S.rb||0)>=(s.rb||0);let elR=false,eI="";try{elR=elRow();eI=elR?elId():""}catch(e){}
-  const K2={},onK=[];for(const k in L.KI){const id=skTKid(k,c);if(id&&psGet(id))K2[k]=id}
-  for(const k in K2){const id=K2[k];if(k[0]=="E"&&k[1]==":"&&elR){if(eI==id)onK.push(k)}else if(eqs.has(id))onK.push(k)}
-  /* 빨간 길: ⭐ → 큰 가지 → 작은 가지(위 가지 포함) → 줄을 따라 가장 깊이 낀 스킬까지 */
-  const S2=[],lit=[],bon=L.BR.map(()=>0),son=L.SB.map(()=>0),onP={},deep={},f1=v=>v.toFixed(1),ln=(a,b,on)=>(on?lit:S2).push('<line x1="'+f1(a[0])+'" y1="'+f1(a[1])+'" x2="'+f1(b[0])+'" y2="'+f1(b[1])+'"/>');
-  onK.forEach(k=>{const q=L.KI[k];bon[q.b]++;son[q.s]++;const d=q.s+"_"+q.c;deep[d]=Math.max(deep[d]==null?-1:deep[d],q.j)});
-  L.BR.forEach((b,i)=>ln([L.MO,L.MO],L.BH[i],bon[i]));L.SB.forEach(s=>{if(s.par!=null)son[s.par]+=son[s.k]});
-  L.SB.forEach((s,i)=>{ln(s.par!=null?L.SH[s.par]:L.BH[s.b],L.SH[i],son[i]);s.cols.forEach((cl,ci)=>{const d=deep[i+"_"+ci];cl.forEach((n,j)=>{const on=d!=null&&j<=d;if(on)onP[n]=1;ln(j?L.NP[cl[j-1]]:L.SH[i],L.NP[n],on)})})});
-  let h='<div class="skm-in" style="width:'+L.MS+'px;height:'+L.MS+'px"><svg width="'+L.MS+'" height="'+L.MS+'"><g stroke="#3a2e1e" stroke-width="5" stroke-linecap="round">'+S2.join("")+'</g><g stroke="#6e5430" stroke-width="1.6">'+S2.join("")+'</g><g stroke="#ff3a1a" stroke-width="14" stroke-linecap="round" opacity=".22">'+lit.join("")+'</g><g stroke="#c8321e" stroke-width="5" stroke-linecap="round">'+lit.join("")+'</g><g stroke="#ffd36a" stroke-width="1.4" stroke-linecap="round" opacity=".9">'+lit.join("")+'</g></svg>';
-  h+='<div class="skm-hub" style="left:'+L.MO+'px;top:'+L.MO+'px"><i><s>⭐</s></i></div>';
-  const cnt=a=>a.filter(n=>K2[n]).length;
-  L.BR.forEach((b,i)=>{const n=b.subs.reduce((a,k)=>a+cnt(L.SB[k].cols.flat()),0);h+='<button type="button" class="skm-gh big'+(bon[i]?" on":"")+'" data-gh="b'+i+'" style="left:'+f1(L.BH[i][0])+'px;top:'+f1(L.BH[i][1])+'px"><i><s>'+b.e+'</s></i><span>'+b.n+'<small>'+bon[i]+'/'+n+'</small></span></button>'});
-  L.SB.forEach((s,i)=>{h+='<button type="button" class="skm-gh'+(son[i]?" on":"")+'" data-gh="s'+i+'" style="left:'+f1(L.SH[i][0])+'px;top:'+f1(L.SH[i][1])+'px"><i><s>'+s.e+'</s></i><span>'+s.n+'<small>'+son[i]+'/'+cnt(s.cols.flat())+'</small></span></button>'});
-  const sk=sel&&sel.id;let selK=null;
-  for(const k in K2){const id=K2[k],s=psGet(id),p=L.NP[k],e=k[0]=="E"&&k[1]==":",fit=psFit(s),ow=own(s),on=onK.includes(k),si=on&&!(e&&elR)?S.psl.indexOf(id)+1:0,w=fit&&ow&&!on&&!(e&&elR)?skWhy(s):"",cc=[].concat(s.cls||"all"),bE=k[0]=="B"&&k[1]==":"&&typeof EAN!="undefined"?EAN[k.slice(2)]:null;if(sk==id&&!selK)selK=k;
-    const bd=e?'<u title="원소 · 하나만">🔹</u>':!fit&&!cc.includes("all")?'<u title="'+cc.map(x=>CLS[x]?CLS[x].n:x).join("·")+'만">'+(CLS[cc[0]]?CLS[cc[0]].ic:"")+'</u>':bE&&w?'<u title="'+bE.s+' 원소 필요">'+bE.e+'</u>':'';
-    h+='<button type="button" class="skm-nd'+(on?" on":onP[k]?" pa":"")+(e?" el":"")+(!fit?" cl":w?" off":"")+(ow?"":" lk")+(sk==id?" sel":"")+'" data-k="'+k+'" style="left:'+f1(p[0])+'px;top:'+f1(p[1])+'px" aria-label="'+s.n+'"><i>'+(ow?skI(s):"🔒")+'</i><span>'+skNmN(s,k)+'</span>'+bd+(on?'<em>'+(si||"원")+'</em>':'')+'</button>'}
-  const vp=document.createElement("div");vp.className="skt-vp skm-vp";vp.innerHTML=h+'</div><div class="skt-zc skm-z"><button type="button" data-z="1" aria-label="확대">＋</button><button type="button" data-z="-1" aria-label="축소">－</button><button type="button" data-z="0" aria-label="장착한 곳으로">⟲</button></div><div class="skm-h">끌기 · 두 손가락 = 크기 · 두 번 = 넣기</div>';
-  host.append(vp);const inr=vp.firstChild;let pop=null;if(opt.pop&&sel&&selK){pop=opt.pop(sel,selK);if(pop){pop.classList.add("skm-pop");vp.append(pop)}}
-  inr.addEventListener("click",e=>{const n=e.target.closest("[data-k]");if(n){e.stopPropagation();const id=K2[n.dataset.k],s=id&&psGet(id);if(s)skNdTap(s,o,eqs);return}const g=e.target.closest("[data-gh]");if(g){e.stopPropagation();if(window._skMoved)return;const v=g.dataset.gh,q=v[0]=="b"?L.BH[+v.slice(1)]:L.SH[+v.slice(1)];if(q)vp._go(q[0],q[1],Math.max(vp._Z().s,.8))}});
-  skNmZ(vp,inr,L,opt,onK,selK,pop);return vp}
-/* 지도 끌기·확대 (예전 skMapZoom과 같은 손동작): 한 손가락 끌기 · 두 손가락 벌리기 · 휠 · ＋－⟲ · 가지 마름모 누르기 = 그쪽으로
-   처음 = 장착한 스킬이 있는 가지들이 보이게 (배율 0.42~0.95, 없으면 ⭐ 가운데 0.6) · 멀리(0.62 미만) = 스킬 이름 숨기고 가지 이름만 조금 크게
-   끄는 동안엔 창을 다시 그리지 않음(_skGest) · 6px 넘게 움직였으면 칸 누름 무시(_skMoved) · 세로 창은 위 설명판 높이가 바뀌어도 지도 내용이 화면에서 안 움직임 */
-window._skZs=window._skZs||{};
-function skNmZ(vp,inr,L,opt,onK,selK,pop){const id=opt.id,sh=id=="p"?vp.closest(".sh"):null,MN=.38,MX=1.6;
-  const SKLQ="(orientation:landscape) and (max-height:600px)",fitH=()=>{if(!sh||!vp.isConnected)return 0;const R=sh.getBoundingClientRect(),vt=vp.getBoundingClientRect().top;if(matchMedia(SKLQ).matches){const h=Math.round(sh.clientHeight-(vt-R.top-sh.clientTop+sh.scrollTop)-10);vp.style.height=Math.max(130,Math.min(h,640))+"px"}else{vp.style.height="";const h=Math.round(R.bottom-vt-16);if(h>=200)vp.style.height=Math.min(h,640)+"px"}return 1};fitH();
-  const vw=()=>vp.clientWidth,vh=()=>vp.clientHeight,SKPZ=.7,hm0=()=>{const pts=[];onK.forEach(k=>{pts.push(L.NP[k]);pts.push(L.SH[L.KI[k].s])});if(!pts.length)return {s:.6,x:vw()/2-L.MO*.6,y:vh()/2-L.MO*.6};
-    const xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]),x0=Math.min(...xs)-40,x1=Math.max(...xs)+40,y0=Math.min(...ys)-40,y1=Math.max(...ys)+50,s=Math.max(.42,Math.min(.95,vw()/(x1-x0),vh()/(y1-y0)));return {s,x:vw()/2-(x0+x1)/2*s,y:vh()/2-(y0+y1)/2*s}},
-    /* 세로 창(id p)은 처음·⟲ 배율을 늘 읽을 수 있게 (QA: 360×800에서 장착이 넓게 퍼지면 0.42배 = 그림 14px·이름 숨김) = 그림 34×0.7 = 24px · 이름 보임 · 장착 칸이 가장 많이 보이는 곳 · 손으로 줄이면 "멀리 = 그림만"은 그대로 */
-    home=()=>{const h=hm0();if(id!="p"||h.s>=SKPZ)return h;const s=SKPZ,W2=vw(),H2=vh(),m=34,ins=(q,x,y)=>{const a=x+q[0]*s,b=y+q[1]*s;return a>=m&&a<=W2-m&&b>=m&&b<=H2-m},eq=onK.map(k=>L.NP[k]),hb=[L.MO,L.MO],C=[[(W2/2-h.x)/h.s,(H2/2-h.y)/h.s],hb,...eq];let best=null;
-      /* 가운데 후보(장착 묶음 가운데·⭐·장착 칸들) 중 장착 칸이 가장 많이 보이는 곳 (같으면 ⭐도 보이는 곳) */for(const c of C){const x=W2/2-c[0]*s,y=H2/2-c[1]*s,sc=eq.filter(q=>ins(q,x,y)).length*2+(ins(hb,x,y)?1:0);if(!best||sc>best.sc)best={sc,x,y}}return {s,x:best.x,y:best.y}};
-  const key=S.cls+"|"+L.MS+"|"+vw()+(id=="p"?"":"x"+vh()),top=sh?vp.getBoundingClientRect().top-sh.getBoundingClientRect().top+sh.scrollTop:0;
-  let Z=window._skZs[id];if(!Z||Z.key!==key){Z=window._skZs[id]=Object.assign(home(),{key,top})}else if(sh){Z.y-=top-Z.top;Z.top=top}
-  const clamp=()=>{Z.s=Math.max(MN,Math.min(MX,Z.s));const M=L.MS*Z.s,mx=vw()/2,my=vh()/2;Z.x=Math.max(vw()-M-mx,Math.min(mx,Z.x));Z.y=Math.max(vh()-M-my,Math.min(my,Z.y))},
-    pp=()=>{if(!pop||!selK)return;const q=L.NP[selK],x=Z.x+q[0]*Z.s,y=Z.y+q[1]*Z.s,W2=vw(),H2=vh(),pw=pop.offsetWidth,ph=pop.offsetHeight,g=30*Z.s+8;let l,t;if(x+g+pw<=W2-4){l=x+g;t=y-ph/2}else if(x-g-pw>=4){l=x-g-pw;t=y-ph/2}else{l=x-pw/2;t=y+g+4+ph<=H2-4?y+g+4:y-g-12-ph}pop.style.left=Math.round(Math.max(4,Math.min(W2-pw-4,l)))+"px";pop.style.top=Math.round(Math.max(4,Math.min(H2-ph-4,t)))+"px"},
-    ap=()=>{clamp();inr.style.transform="translate("+Z.x.toFixed(1)+"px,"+Z.y.toFixed(1)+"px) scale("+Z.s.toFixed(4)+")";const far=Z.s<.62;if(inr.classList.contains("far")!=far)inr.classList.toggle("far",far);inr.style.setProperty("--iv",Math.max(1,Math.min(1.3,.62/Z.s)).toFixed(2));pp()},
-    zoomAt=(f,cx,cy)=>{const k0=Z.s,k1=Math.max(MN,Math.min(MX,k0*f));Z.x=cx-(cx-Z.x)*k1/k0;Z.y=cy-(cy-Z.y)*k1/k0;Z.s=k1;ap()},
-    go=(cx,cy,s)=>{Z.s=s;Z.x=vw()/2-cx*s;Z.y=vh()/2-cy*s;inr.classList.add("anim");setTimeout(()=>inr.classList.remove("anim"),380);ap()};
-  vp._Z=()=>Z;vp._go=go;
-  /* 넓은 지도 설명 창이 누른 칸을 가릴 수밖에 없으면 지도를 옆으로 조금 밀어 자리를 만듦 (누른 직후 한 번) */
-  if(pop&&selK&&Z.pk!==selK){Z.pk=selK;requestAnimationFrame(()=>{const q=L.NP[selK],x=Z.x+q[0]*Z.s,W2=vw(),pw=pop.offsetWidth,g0=30*Z.s+8;if(x+g0+pw>W2-4&&x-g0-pw<4){Z.x+=x<W2/2?(W2-4)-(x+g0+pw):4-(x-g0-pw);inr.classList.add("anim");setTimeout(()=>inr.classList.remove("anim"),380);ap()}})}else if(!pop)Z.pk=null;
-  vp.querySelector(".skm-z").addEventListener("click",e=>{const b=e.target.closest("[data-z]");if(!b)return;e.stopPropagation();const z=+b.dataset.z;if(z)zoomAt(z>0?1.25:.8,vw()/2,vh()/2);else{Object.assign(Z,home());inr.classList.add("anim");setTimeout(()=>inr.classList.remove("anim"),380);ap()}});
-  vp.querySelector(".skm-z").addEventListener("pointerdown",e=>e.stopPropagation());if(pop)pop.addEventListener("pointerdown",e=>e.stopPropagation());
-  const PT=new Map();let st=null;const rect=()=>vp.getBoundingClientRect();
-  vp.addEventListener("pointerdown",e=>{if(e.target.closest(".skm-z,.skm-pop"))return;PT.set(e.pointerId,{x:e.clientX,y:e.clientY});window._skGest=1;window._skMoved=0;const r=rect(),pts=[...PT.values()];
-    if(pts.length==1)st={m:1,x0:pts[0].x,y0:pts[0].y,zx:Z.x,zy:Z.y};else if(pts.length==2){st={m:2,d0:Math.max(1,Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y)),k0:Z.s,zx:Z.x,zy:Z.y,cx:(pts[0].x+pts[1].x)/2-r.left,cy:(pts[0].y+pts[1].y)/2-r.top}}});
-  vp.addEventListener("pointermove",e=>{if(!PT.has(e.pointerId)||!st)return;PT.set(e.pointerId,{x:e.clientX,y:e.clientY});const pts=[...PT.values()];
-    if(st.m==1&&pts.length==1){const dx=pts[0].x-st.x0,dy=pts[0].y-st.y0;if(!window._skMoved&&Math.hypot(dx,dy)>6){window._skMoved=1;try{vp.setPointerCapture(e.pointerId)}catch(_){}}if(window._skMoved){Z.x=st.zx+dx;Z.y=st.zy+dy;ap()}}
-    else if(st.m==2&&pts.length==2){if(!window._skMoved){window._skMoved=1;for(const q of PT.keys())try{vp.setPointerCapture(q)}catch(_){}}const d=Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y),k1=Math.max(MN,Math.min(MX,st.k0*d/st.d0));Z.x=st.cx-(st.cx-st.zx)*k1/st.k0;Z.y=st.cy-(st.cy-st.zy)*k1/st.k0;Z.s=k1;ap()}});
-  const up=e=>{PT.delete(e.pointerId);if(PT.size==1){const q=[...PT.values()][0];st={m:1,x0:q.x,y0:q.y,zx:Z.x,zy:Z.y}}else if(!PT.size){st=null;window._skGest=0;setTimeout(()=>{window._skMoved=0},30)}};
-  vp.addEventListener("pointerup",up);vp.addEventListener("pointercancel",up);
-  vp.addEventListener("click",e=>{if(window._skMoved||e.target.closest(".skm-nd,.skm-gh,.skm-z,.skm-pop"))return;if(window._skSel||window._skSlot!=null){window._skSel=null;window._skSlot=null;window._skLT=null;renderSheet()}});/* 사용자 2026-11-04: 지도 빈 곳을 눌러도 설명 닫기 */
-  vp.addEventListener("wheel",e=>{e.preventDefault();const r=rect();zoomAt(e.deltaY<0?1.12:.89,e.clientX-r.left,e.clientY-r.top)},{passive:false});
-  ap();requestAnimationFrame(ap);if(id=="p")window._skFit=()=>{if(fitH())ap()}}
-addEventListener("resize",()=>setTimeout(()=>{const f=window._skFit;if(f)f()},60));
-/* ===== 스킬 목록 (2026-11-02 정리): 무리별 칸 + 카드 ＋/해제 버튼 한 번에 장착 · 카드 누르면 아래 설명판 =====
-   무리 = skGrp(s): 주문(spl·주문 돕는 스킬) → 직업 전용 → 공격·투사체·소환·오라·생존·기타. 새 스킬은 cls·cat·ef만 있으면 자동으로 들어감 (s.grp로 직접 지정도 가능) */
 const SKG=SKAXS.map(a=>[a[0],a[1]+" "+a[2]]);
 function skGrp(s){return skAx(s)}
 function skGN(k){return (SKG.find(g=>g[0]==k)||[k,k])[1]}
 /* 창을 다시 그릴지: 바뀐 게 없으면 그대로 둠 (누르는 도중 칸이 다시 만들어져 눌림이 사라지는 것 막기) */
-function psSig(){let P=null,nm=null;try{const q=skp();P=[q.cur,q.list.map(x=>(x||[]).filter(Boolean).length)];nm=[eqpG().nm,eqpG().list.map(x=>!!x),eqpG().ms,bsLkS(),cpSig()]}catch(e){}return JSON.stringify([S.cls,S.rb,psOpen(),(S.psl||[]).slice(0,PSLOTS),window._skSel||"",window._skRep||"",window._skSlot??"",window._skRepS??"",window._skTab2||"",window._skView||"",psPlace||"",S.bolt||"",S.eq,P,nm])}
-function skSame(){const sb=$("sbody");return !!(sb&&sb.querySelector(".skq-h")&&sb._sks===psSig())}
+function psSig(){let P=null,nm=null;try{const q=skp();P=[q.cur,q.list.map(x=>(x||[]).filter(Boolean).length)];nm=[eqpG().nm,eqpG().list.map(x=>!!x),eqpG().ms,bsLkS(),cpSig()]}catch(e){}return JSON.stringify([S.cls,S.rb,psOpen(),(S.psl||[]).slice(0,PSLOTS),window._skSel||"",window._skRep||"",window._skSlot??"",window._skRepS??"",window._skTab||"",(S.skv||"")+(S.sko===0?"0":""),psPlace||"",S.bolt||"",S.eq,P,nm])}
+function skSame(){const sb=$("sbody");return !!(sb&&sb.querySelector(".sks-hd")&&sb._sks===psSig())}
 /* 칸 먼저 고르기: skRS = 지금 고른 칸 (없으면 null) · skPickFor = 그 칸에 넣을 스킬 고르기 시작 · skSlotBtns = 칸 누른 설명판의 [빼기][바꾸기] */
 function skRS(o){const r=window._skRepS;return r!=null&&r<o?r:null}
 function skPickFor(i){window._skRepS=i;window._skRep=null;window._skSlot=null;window._skSel=null;renderSheet();const g=document.querySelector("#sbody .sktab2");if(g)g.scrollIntoView({block:"start",behavior:"smooth"})}
@@ -3688,30 +3841,6 @@ function skInto(s,o){const si=skRS(o);if(si==null)return false;window._skRepS=nu
 function skIntoT(s,o,eqs){const si=skRS(o);return S.psl[si]==s.id?"지금 이 칸":eqs.has(s.id)?(si+1)+"번 칸과 맞바꾸기":(si+1)+"번 칸에 넣기"}
 function skEqTap(s,o,eqs){if(skInto(s,o))return;if(eqs.has(s.id)){skUnequip(S.psl.indexOf(s.id));return}let f=-1;for(let i=0;i<o;i++){const t=psGet(S.psl[i]);if(!t||!psFit(t)){f=i;break}}
   if(f>=0){window._skRep=null;psEquip(s.id,f);return}window._skRep=s.id;window._skSel=s.id;renderSheet();const q=document.querySelector("#sbody .skq-rep");if(q)q.scrollIntoView({block:"center",behavior:"smooth"})}
-function skRowView(sb,o){const eqs=new Set(S.psl.slice(0,o).filter(x=>{const t=psGet(x);return t&&psFit(t)})),rep=window._skRep&&psGet(window._skRep);
-  skTop(sb,o,eqs,rep,"🌳 지도","tree");
-  const L0=PSK.filter(psFit),own=x=>(S.rb||0)>=(x.rb||0),G=SKG.map(([k])=>[k,skGN(k),L0.filter(s=>skGrp(s)==k)]).filter(g=>g[2].length);
-  let tab=window._skTab2||"all";if(tab!="all"&&!G.some(g=>g[0]==tab))tab="all";
-  const tb=document.createElement("div");tb.className="sktab2";
-  [["all","전체",L0]].concat(G).forEach(([k,n,arr])=>{const b=document.createElement("button");b.type="button";const ne=arr.filter(s=>eqs.has(s.id)).length;b.className=(k==tab?"on":"")+(ne?" has":"");b.innerHTML=n+" <b>"+arr.length+"</b>";b.onclick=()=>{window._skTab2=k;renderSheet();const t=document.querySelector("#sbody .sktab2");if(t)t.scrollIntoView({block:"start"})};tb.append(b)});sb.append(tb);
-  const sel=window._skSel&&psGet(window._skSel);
-  const card=s=>{const eq=eqs.has(s.id),ow=own(s),w=ow?skWhy(s):"",c=document.createElement("div");c.className="skc2"+(eq?" eq":"")+(w?" off":"")+(ow?"":" lk")+(sel&&sel.id==s.id?" sel":"")+(rep&&rep.id==s.id?" rp":"");c.dataset.id=s.id;
-    c.innerHTML="<span class='ci'>"+(ow?skI(s):"🔒")+"</span><span class='cx'><b>"+s.n+"</b><small>"+(!ow?s.rb+"번째 환생 때 열려요":w?"🚫 "+w:skShort(s))+"</small></span>";
-    const bt=document.createElement("button");bt.type="button";bt.className="cb"+(eq?" un":"");const rs=skRS(o);bt.textContent=!ow?"🔒":rs!=null?(S.psl[rs]==s.id?"이 칸":eq?"맞바꾸기":"넣기"):eq?"빼기":o<1?"＋":psFree2(o)?"＋ 넣기":"바꾸기";if(rs!=null&&ow)bt.className="cb"+(S.psl[rs]==s.id?" un":"");bt.disabled=!ow||o<1||(rs!=null&&S.psl[rs]==s.id);bt.setAttribute("aria-label",s.n+(eq?" 빼기":" 장착"));
-    bt.onclick=e=>{e.stopPropagation();skEqTap(s,o,eqs)};c.append(bt);
-    c.onclick=()=>{window._skSlot=null;window._skSel=sel&&sel.id==s.id?null:s.id;renderSheet()};return c};
-  const ord=x=>eqs.has(x.id)?0:!own(x)?3:skWhy(x)?2:1;
-  for(const [k,n,arr] of G){if(tab!="all"&&tab!=k)continue;const h=document.createElement("div");h.className="skg-h";const ne=arr.filter(s=>eqs.has(s.id)).length;h.innerHTML="<b>"+n+"</b><small>"+(ne?"장착 "+ne+" · ":"")+arr.length+"개</small>";sb.append(h);
-    const g=document.createElement("div");g.className="skg2";arr.map((x,i)=>[x,i]).sort((a,b)=>ord(a[0])-ord(b[0])||a[1]-b[1]).forEach(([x])=>g.append(card(x)));sb.append(g)}
-  /* 설명판 (아래 고정): 이름·이유·연계·전체 설명(넘치면 판 안에서 스크롤) + 큰 버튼 */
-  const p=document.createElement("div");p.className="skd2"+(sel?"":" hint");
-  const rsP=skRS(o);if(!sel&&rsP!=null){const ct=psGet(S.psl[rsP]);p.className="skd2 pk";p.innerHTML="<span class='di'>📍</span><span class='dx'><b>"+(rsP+1)+"번 칸"+(ct&&psFit(ct)?" ("+ct.n+")":"")+"</b><small>넣을 스킬 카드의 버튼을 누르세요</small></span>";const cb=document.createElement("button");cb.type="button";cb.className="dbt un";cb.textContent="취소";cb.onclick=()=>{window._skRepS=null;renderSheet()};p.append(cb)}
-  else if(!sel){p.innerHTML="<span class='dx'><small>카드를 누르면 설명 · <b>＋ 넣기</b>로 바로 장착 · 위 칸을 누르면 빼기·바꾸기</small></span>"}
-  else{const eq=eqs.has(sel.id),ow=own(sel),w=ow?skWhy(sel):"",sy=ow&&!eq?skSyn(sel,eqs):[];
-    p.innerHTML="<span class='di'>"+(ow?skI(sel):"🔒")+"</span><span class='dx'><b>"+sel.n+"</b>"+(eq?"<em class='ok'>장착 중</em>":"")+(w?"<em class='bad'>🚫 "+w+"</em>":sy.length?"<em class='sy'>"+sy.slice(0,3).join("·")+"와 연계</em>":"")+"<small>"+dsLn(psDesc(sel)).join("<br>")+(sel.rb&&!ow?"<br><span style='color:#ffe08a'>"+sel.rb+"번째 환생 때 열려요</span>":"")+"</small></span>";
-    const cx=document.createElement("button");cx.type="button";cx.className="dcl";cx.textContent="✕";cx.setAttribute("aria-label","설명 닫기");cx.onclick=e=>{e.stopPropagation();window._skSel=null;window._skSlot=null;if(window._skRep==sel.id)window._skRep=null;renderSheet()};p.append(cx);
-    const fs=window._skSlot,rs=skRS(o);if(eq&&fs!=null&&fs<o&&S.psl[fs]==sel.id){p.classList.add("two");p.append(skSlotBtns(fs,"dbt","un"))}else{const bt=document.createElement("button");bt.type="button";bt.className="dbt"+(eq&&rs==null?" un":"");bt.textContent=!ow?"🔒 잠김":rs!=null?skIntoT(sel,o,eqs):eq?"빼기":psFree2(o)?"넣기":"바꾸기";bt.disabled=!ow||o<1||(rs!=null&&S.psl[rs]==sel.id);if(rs!=null)bt.classList.add("w");bt.onclick=()=>skEqTap(sel,o,eqs);p.append(bt)}}
-  sb.append(p)}
 function psFree2(o){for(let i=0;i<o;i++){const t=psGet(S.psl[i]);if(!t||!psFit(t))return true}return false}
 const SKARM={sm:"N",su:"N",ss:"N",dbl:"S",tri:"S",pj:"S",ch:"S",pr:"S",ps:"S",sw:"S",ds:"W",au:"W",sp:"W",hu:"E",mu:"E",hr:"E",mr:"E",ms:"E"};
 function skArm(s){if(s.arm)return s.arm;if(SKARM[s.id])return SKARM[s.id];const c=skCat(s);return c=="sm"?"N":c=="pj"||c=="atk"?"S":c=="sv"?"E":"W"}
@@ -3733,25 +3862,34 @@ function skPop(id){const s=psGet(id);if(!s)return;const o=psOpen();S.psl=S.psl||
   const cl=[].concat(s.cls||"all").map(k=>({all:"공용",knight:"기사",archer:"궁수",mage:"마법사"})[k]).join("·");
   const h="<div style='text-align:center'><div style='font-size:42px;line-height:1.2;display:flex;justify-content:center'>"+skI(s,'width:72px;height:72px')+"</div><b style='font-size:16px;color:var(--gold)'>"+s.n+"</b><div style='font-size:11px;color:var(--mut);margin:2px 0 8px'>"+cl+" · "+(s.rb?s.rb+"번째 환생 시 해금":"처음부터 사용 가능")+"</div><div style='font-size:13px;line-height:1.6'>"+psDesc(s)+"</div>"+(!own?"<div style='margin-top:8px;color:#ffb0a0;font-size:12px'>🔒 "+s.rb+"번째 환생 후 사용할 수 있어요</div>":si>=0?"<div style='margin-top:8px;color:#9ff0b8;font-size:12px'>"+(si+1)+"번 칸에 장착 중</div>":o==0?"<div style='margin-top:8px;color:var(--mut);font-size:12px'>첫 환생 시 첫 칸이 열려요</div>":"")+(()=>{if(!own)return "";const w=skWhy(s)||(psOff(s)?"지금 세팅에서 효과 없음":"");return w?"<div style='margin-top:8px;color:#ffcf6a;font-size:12px;line-height:1.5'>⚠️ "+w+"</div>":""})()/* 회색 이유 = skWhy 한 곳 (예전엔 여기 고정 글이 따로 있어 새 이유가 안 보였음) */+"</div>";
   const B=[["닫기",closePop]];if(own&&si>=0)B.push(["빼기",()=>{S.psl[si]=null;log("📜 "+s.n+" 해제","o");save();closePop();render();renderSheet()}]);else if(own&&o>0)B.push(["넣기",()=>{closePop();psPlace=s.id;skGlow(true);const h=$("skhint");if(h){h.hidden=false;h.textContent="✨ "+(s.img?"":s.ic+" ")+s.n+" · 장착할 칸을 눌러 주세요"}}]);popup("📜 스킬",h,B)}
-let skDrag=null,psPlace=null;
+/* ===== ✋ 끌어서 칸에 넣기 (사용자 2026-11-11 "끌어서 칸에 넣는거 편한 기능인데!!") — 새 스킬 창(skBr) · 예전 .skc 끌기와 같은 느낌(그림이 손가락을 따라옴)
+   ▦ 칸: 0.25초 꾹 누른 뒤 끌기 (그냥 밀면 스크롤) · 🗺️ 지도: 0.3초 꾹 (그냥 끌면 지도 이동, 멀리 보기에선 안 집힘) · 위 10칸: 바로 끌기 (칸끼리 자리 바꿈 · 칸 밖에 놓으면 빼기 = 예전과 같음)
+   놓은 곳: 칸 = 그 칸에 (예전 psEquip: 이미 낀 스킬이면 자리 바꿈, 다른 스킬이 있으면 그 자리에) · 마법사 원소 줄 버튼(.l6s-el) = 원소 줄에 · 원소는 칸에 놓아도 원소 줄로 · 그 밖 = 취소
+   🚫 못 쓰는 스킬은 안 집힘 (이유 알림) · 끄는 동안 창을 다시 그리지 않음(skDrag·_skGest) · 놓은 뒤 0.4초 click은 무시(칸 누르기·설명판이 따라 열리지 않게) */
+let skDrag=null,psPlace=null;const SKDG={p:null,end:0,tm:0};
 function skGhost(){let g=document.getElementById("skghost");if(!g){g=document.createElement("div");g.id="skghost";g.className="skghost";document.body.append(g)}return g}
-function skGlow(on){document.querySelectorAll(".skrow").forEach(r=>r.classList.toggle("glow",!!on))}
-function skEnd(){skDrag=null;const g=document.getElementById("skghost");if(g)g.style.display="none";document.querySelectorAll(".sks.hov").forEach(x=>x.classList.remove("hov"));if(!psPlace)skGlow(false)}
-function slotAt(x,y){const row=document.querySelector(".skrow");if(!row)return null;const R=row.getBoundingClientRect();if(y<R.top-60||y>R.bottom+60||x<R.left-20||x>R.right+20)return null;let best=null,bd=1e9;row.querySelectorAll(".sks").forEach(s=>{if(s.classList.contains("lk"))return;const r=s.getBoundingClientRect(),d=Math.abs(x-(r.left+r.width/2));if(d<bd){bd=d;best=s}});return bd<60?best:null}
+function skDgAt(x,y){const h=document.elementFromPoint(x,y),t=h&&h.closest(".l6s-s[data-si],.l6s-el:not(.bt)");if(t&&t.getBoundingClientRect().width)return t;let b=null,bd=22;
+  for(const e of document.querySelectorAll(".l6s-s[data-si]")){const r=e.getBoundingClientRect();if(!r.width)continue;const d=Math.hypot(Math.max(r.left-x,0,x-r.right),Math.max(r.top-y,0,y-r.bottom));if(d<bd){bd=d;b=e}}return b}
+function skDgEnd(){if(skDrag&&skDrag.mv){SKDG.end=Date.now();window._skGest=0}clearTimeout(SKDG.tm);SKDG.p=null;skDrag=null;const g=document.getElementById("skghost");if(g)g.style.display="none";document.body.classList.remove("skdg");document.querySelectorAll(".l6s-s.hov,.l6s-el.hov").forEach(x=>x.classList.remove("hov"))}
+function skDgGo(p){const s=psGet(p.id);if(!s){skDgEnd();return}if(p.from<0){const q=skSt(s);if(q.g||(psOpen()<1&&!skElR(s))){skBrToast(q.g?"🚫 "+(q.w||q.g):"🔒 환생하면 스킬 칸이 열려요");skDgEnd();SKDG.end=Date.now();return}}
+  p.mv=true;skDrag=p;window._skGest=1;SKB.lt=null;document.body.classList.add("skdg");const g=skGhost();g.innerHTML=skI(s,"width:44px;height:44px");g.style.left=p.lx+"px";g.style.top=p.ly+"px";g.style.display="block";try{if(navigator.vibrate)navigator.vibrate(12)}catch(e){}}
+function skDgUp(x,y){const d=skDrag;if(!d||!d.mv){skDgEnd();return}const t=skDgAt(x,y),s=psGet(d.id);skDgEnd();if(!s){renderSheet();return}
+  if(t&&(t.classList.contains("l6s-el")||skElR(s))){if(skElR(s))elSet(s.id);else{skBrToast("🔹 원소 줄엔 원소만 넣어요");renderSheet()}return}
+  if(t){const ti=+t.dataset.si;if(d.from>=0){if(ti!==d.from){const prev=S.psl[ti];S.psl[ti]=d.id;S.psl[d.from]=prev||null;log("📜 "+skNm(s)+" "+(ti+1)+"번 칸으로 이동","o");save();render()}renderSheet()}else psEquip(d.id,ti);return}
+  if(d.from>=0){window._skSlot=null;window._skSel=null;skUnequip(d.from)}else renderSheet()}
+document.addEventListener("pointerdown",e=>{if(SKDG.p||skDrag){skDgEnd();return}/* 두 번째 손가락 = 취소 */
+  const t=e.target.closest&&e.target.closest(".skbr .skb-c[data-id],.skbr .skb-nd[data-id],.l6s-s[data-si]");if(!t)return;let id,from=-1,hold=250;
+  if(t.classList.contains("l6s-s")){from=+t.dataset.si;id=(S.psl||[])[from];if(!id||!psGet(id))return;hold=0}else{id=t.dataset.id;if(t.classList.contains("skb-nd")){const R=t.closest(".skbr");if(R&&R._m&&R._m.far())return;hold=300}}
+  const p=SKDG.p={id,from,x:e.clientX,y:e.clientY,lx:e.clientX,ly:e.clientY,mv:false,pid:e.pointerId};if(hold)SKDG.tm=setTimeout(()=>{if(SKDG.p===p&&!p.mv)skDgGo(p)},hold)},true);
+document.addEventListener("pointermove",e=>{const p=SKDG.p;if(!p||e.pointerId!==p.pid)return;p.lx=e.clientX;p.ly=e.clientY;
+  if(!p.mv){if(Math.hypot(e.clientX-p.x,e.clientY-p.y)>8){if(p.from>=0)skDgGo(p);else{clearTimeout(SKDG.tm);SKDG.p=null}}if(!p.mv)return}
+  const g=skGhost();g.style.left=e.clientX+"px";g.style.top=e.clientY+"px";document.querySelectorAll(".l6s-s.hov,.l6s-el.hov").forEach(x=>x.classList.remove("hov"));const h=skDgAt(e.clientX,e.clientY);if(h)h.classList.add("hov")},true);
+document.addEventListener("pointerup",e=>{const p=SKDG.p;if(!p||e.pointerId!==p.pid)return;if(p.mv)skDgUp(e.clientX,e.clientY);else{clearTimeout(SKDG.tm);SKDG.p=null}},true);
+document.addEventListener("pointercancel",e=>{const p=SKDG.p;if(p&&e.pointerId===p.pid){if(p.mv)skDgUp(p.lx,p.ly);else skDgEnd()}},true);
+window.addEventListener("touchmove",e=>{if(skDrag&&skDrag.mv&&e.cancelable)e.preventDefault()},{passive:false,capture:true});/* 집은 뒤엔 스크롤 막기 */
+document.addEventListener("click",e=>{if(Date.now()-SKDG.end<400){e.stopPropagation();e.preventDefault()}},true);
+window.addEventListener("blur",skDgEnd);document.addEventListener("visibilitychange",skDgEnd);
 function psEquip(id,ti){const o=psOpen();S.psl=S.psl||[];const s=psGet(id);if(!s||ti>=o)return;const cur=S.psl.slice(0,o).indexOf(id),prev=S.psl[ti];if(cur>=0)S.psl[cur]=null;if(cur>=0&&prev&&prev!==id)S.psl[cur]=prev;S.psl[ti]=id;log("📜 "+s.n+" 장착 ("+(ti+1)+"번 칸)","o");save();render();renderSheet()}
-document.addEventListener("pointerdown",e=>{skEnd();if(sheetName!="ps"||!e.target.closest)return;
-  if(psPlace){const sl=e.target.closest(".sks");if(sl&&!sl.classList.contains("lk")){psEquip(psPlace,+sl.dataset.si)}else if(sl)log("🔒 "+(+sl.dataset.si?(+sl.dataset.si+1)+"번째":"첫")+" 환생 시 열리는 칸이에요","o");psPlace=null;skGlow(false);const h=$("skhint");if(h)h.hidden=true;if(sl)return}
-  const c=e.target.closest(".skc,.sks.on");if(!c||!c.dataset.sid)return;skDrag={id:c.dataset.sid,from:c.classList.contains("sks")?+c.dataset.si:-1,x:e.clientX,y:e.clientY,lx:e.clientX,ly:e.clientY,mv:false};});
-document.addEventListener("pointermove",e=>{const d=skDrag;if(!d)return;if(!d.mv&&Math.hypot(e.clientX-d.x,e.clientY-d.y)>7){const s=psGet(d.id);if(!s||(S.rb||0)<(s.rb||0)||psOpen()==0){skEnd();return}d.mv=true;const g=skGhost();g.innerHTML=skI(s,"width:44px;height:44px");g.style.display="block";skGlow(true)}
-  d.lx=e.clientX;d.ly=e.clientY;if(d.mv){e.preventDefault();const g=skGhost();g.style.left=e.clientX+"px";g.style.top=e.clientY+"px";document.querySelectorAll(".sks.hov").forEach(x=>x.classList.remove("hov"));const sl=slotAt(e.clientX,e.clientY);if(sl)sl.classList.add("hov")}},{passive:false});
-function skDrop(x,y){const d=skDrag;if(!d){skEnd();return}const mv=d.mv;const sl=mv?slotAt(x,y):null;skEnd();if(!mv){skPop(d.id);return}const o=psOpen();S.psl=S.psl||[];const s=psGet(d.id);
-  if(sl){const ti=+sl.dataset.si;if(d.from>=0&&ti!==d.from){const prev=S.psl[ti];S.psl[ti]=d.id;S.psl[d.from]=prev||null;log("📜 "+s.n+" "+(ti+1)+"번 칸으로 이동","o");save();render();renderSheet()}else if(d.from<0)psEquip(d.id,ti)}
-  else if(d.from>=0){S.psl[d.from]=null;log("📜 "+s.n+" 해제","o");save();render();renderSheet()}}
-window.addEventListener("pointerup",e=>skDrop(e.clientX,e.clientY),true);
-window.addEventListener("touchmove",e=>{const d=skDrag;if(!d)return;const tc=e.touches&&e.touches[0];if(!tc)return;if(d.mv)e.preventDefault();d.lx=tc.clientX;d.ly=tc.clientY;if(!d.mv&&Math.hypot(tc.clientX-d.x,tc.clientY-d.y)>7){const s=psGet(d.id);if(!s||(S.rb||0)<(s.rb||0)||psOpen()==0){skEnd();return}d.mv=true;const g=skGhost();g.innerHTML=skI(s,"width:44px;height:44px");g.style.display="block";skGlow(true)}if(d.mv){const g=skGhost();g.style.left=tc.clientX+"px";g.style.top=tc.clientY+"px";document.querySelectorAll(".sks.hov").forEach(x=>x.classList.remove("hov"));const sl=slotAt(tc.clientX,tc.clientY);if(sl)sl.classList.add("hov")}},{passive:false,capture:true});
-window.addEventListener("touchend",e=>{if(skDrag){const tc=e.changedTouches&&e.changedTouches[0];skDrop(tc?tc.clientX:skDrag.lx,tc?tc.clientY:skDrag.ly)}},true);
-window.addEventListener("touchcancel",skEnd,true);window.addEventListener("pointercancel",skEnd,true);window.addEventListener("blur",skEnd);document.addEventListener("visibilitychange",skEnd);
-setInterval(()=>{const g=document.getElementById("skghost");if(g&&g.style.display!="none"&&(!skDrag||!skDrag.mv||sheetName!="ps"))skEnd()},500);
 
 
 /* 상세 능력치용 합계: 꺼진 스킬(psOff, 회색)의 ef는 빼고 (예: 소환수 없는 기사의 🌟 소환수 강화 "소환수 피해 +100%"가 보이던 것, 2026-11-04) · 게임 계산은 그대로 opSum */
@@ -5064,7 +5202,7 @@ function btMig(){if(!S||S.btV)return 0;S.btV=1;let n=0;if(S.bolt&&BTOLD[S.bolt])
 function btRow(){const w=document.createElement("div"),cur=btId();w.className="btw";
   w.innerHTML="<div class='btrow"+(cur?"":" none")+"'><span>🎯 탄</span>"+Object.keys(BOLT).map(k=>{const o=BOLT[k];return "<button class='"+(k==cur?"on":"")+"' style='--bc:rgb("+o.c+")' onclick=\"btTap('"+k+"')\" title='"+o.n+" · "+o.sh+"'><i>"+o.ic+"</i>"+o.s+"</button>"}).join("")+"</div>"+
     (cur?"<div class='bthint on'>"+BOLT[cur].ic+" <b>"+BOLT[cur].n+"</b> · "+BOLT[cur].sh+" <small>(다시 누르면 설명)</small></div>":"<div class='bthint'>탄을 골라 보세요 · 저격 석궁 일반 공격·포대 볼트를 쏘는 법이 바뀌어요</div>");return w}
-{const _st=skTop;skTop=function(sb,o,eqs,rep,bl,bv){_st(sb,o,eqs,rep,bl,bv);try{if(!cbOn())return;const sl=sb.querySelector(".skq-sl"),w=btRow();if(sl)sb.insertBefore(w,sl);else sb.append(w)}catch(e){console.error(e)}}}
+/* (예전 스킬 창 skTop에 줄을 끼우던 것 → 2026-11-11 새 스킬 창은 17 l6ElB 버튼으로) */
 {const _re=renderEq;renderEq=function(){const r=_re.apply(this,arguments);try{if(cbOn()&&!S.eq.shield){const b=$("eqp")&&$("eqp").querySelector('[data-es="shield"]');if(b){const B=btCur();delete b.dataset.es;b.classList.add("btsl");if(!B)b.classList.add("none");b.setAttribute("onclick","btPick()");b.title=B?B.n+" · 눌러서 탄 바꾸기":"탄을 골라 보세요";
   b.innerHTML=(B?'<span class="ei">'+B.ic+'</span><small style="color:rgb('+B.c+')">'+B.s+'</small>':'<span class="eph" style="opacity:.55;filter:none">🎯</span><small style="color:#ffd77a">탄 고르기</small>')+hdStar()}}}catch(e){console.error(e)}return r}}
 /* ===== 그리기 ===== */
@@ -5319,7 +5457,7 @@ function elShot(k){try{if(bkOn())return smAny()?"":" · <b style='color:#ffb0a0'
 function elRowEl(){const w=document.createElement("div"),cur=elId(),off=!!(cur&&bkOn()&&!smAny());w.className="btw elw";
   w.innerHTML="<div class='btrow"+(cur&&!off?"":" none")+"'><span>🪄 원소</span>"+ELK.map(k=>{const s=psGet(k),o=ELD[k];return "<button class='"+(k==cur?"on":"")+"' style='--bc:rgb("+o.c+")' onclick=\"elTap('"+k+"')\" title='"+s.n+" · "+s.sh+"'><i>"+s.ic+"</i>"+o.s+"</button>"}).join("")+"</div>"+
     "<div class='bthint"+(cur&&!off?" on":"")+"'>"+(cur?psGet(cur).ic+" <b>"+psGet(cur).n+"</b> · "+psGet(cur).sh+elShot(cur)+" <small>(다시 누르면 설명·끄기)</small>":"원소를 골라 보세요")+"<br><small>"+ELTX+"</small></div>";return w}
-{const _st=skTop;skTop=function(sb,o,eqs,rep,bl,bv){_st(sb,o,eqs,rep,bl,bv);try{if(!elRow())return;const sl=sb.querySelector(".skq-sl"),w=elRowEl();if(sl)sb.insertBefore(w,sl);else sb.append(w)}catch(e){console.error(e)}}}
+/* (예전 스킬 창 skTop에 줄을 끼우던 것 → 2026-11-11 새 스킬 창은 17 l6ElB 버튼으로) */
 
 /* ===== 🧚 소환수 공용 규칙 (2026-11-03 마도서 소환 빌드 1단계, 기획 docs/기획/2026-11-03_마도서_소환빌드.md, 숫자 전부 임시) =====
    소환수 표 SMT: 새 소환수 = 표 한 줄 + (근접이면 smMelee 그대로 / 다른 모양이면 행동 함수 하나) + PSK 스킬 한 줄(ef 키 = SMT 키)
@@ -6690,7 +6828,7 @@ function renderSheet(){if(!sheetName)return;if(sheetName=="rb"&&(window._soDrag|
     srow("🎰 스킨 뽑기","루비로 새 스킨을 뽑아요","뽑기",false,gcOpen)}
   if(sheetName=="title"){const t0=curT();rbRow("<span>현재 칭호<br><b style='color:"+(t0?t0.c:"#fff")+";font-size:16px'>《"+(t0?t0.n:"-")+"》</b></span><span style='text-align:right;font-size:12px;color:var(--mut)'>장착한 칭호 1개의<br>효과만 적용돼요</span>");
     TT.forEach(t=>{const on=S.title==t.id,got=(S.titles||[]).includes(t.id),[v,n]=t.p();srow("<b style='color:"+(got?t.c:"#777")+"'>《"+t.n+"》</b>"+(on?" <small>장착 중</small>":""),t.d+(got?"":" ("+Math.min(v,n)+"/"+n+")")+" · "+tbTxt(t.b),on?"장착 중":got?"장착":"🔒",on||!got,()=>{S.title=t.id;log("🏅 칭호 장착: 《"+t.n+"》","o");save();render()})})}
-  if(sheetName=="ps"){const o=psOpen();S.psl=S.psl||[];const sb=$("sbody");if(window._skView=="tree")skTreeView(sb,o);else skRowView(sb,o)}
+  if(sheetName=="ps"){const o=psOpen();S.psl=S.psl||[];const sb=$("sbody");skSView(sb,o)}
   if(sheetName=="rb"){rbRow("<span>🌟 환생 <b style='color:var(--gold)'>"+(S.rb||0)+"회</b><br><small>최고 기록 "+(S.best||0)+"층 · "+((S.rb||0)+1)+"번째 환생은 "+rbReq()+"층 클리어 시 가능</small></span><span class='rbrt'>보유 포인트<br><b style='color:var(--gold);font-size:20px'>"+(S.rp||0)+"</b></span>");
     srow("🌟 환생하기",canRb()?"지금 환생하면 포인트 <b style='color:var(--gold)'>+"+rbGain()+"</b>":((S.rb||0)+1)+"번째 환생은 "+rbReq()+"층 클리어 시 가능해요 (현재 최고 "+(S.best||0)+"층 · "+Math.max(0,rbReq()-(S.best||0))+"층 남음)","환생",!canRb(),()=>{popup("🌟 환생","최고 "+S.best+"층 기준 환생 포인트 <b style='color:var(--gold)'>+"+rbGain()+"</b><br><small style='color:var(--mut)'>포인트는 "+rbCap()+"층까지만 셈"+((S.best||0)>rbCap()?" (그 위는 안 셈)":"")+"</small><br>환생 뒤 <b>"+rbStart()+"층</b>부터 다시 시작<br><br><b>초기화</b> : 층, 골드, 능력치 단련<br><b>유지</b> : 레벨, 장비, 인벤토리, 직업, 환생 특성<br><small style='color:var(--mut)'>레벨 상한 Lv."+lvCap()+" → Lv."+(lvCap()+10)+"</small>",[["취소",closePop],["환생하기",rebirthFx]]);const pb=$("popf").querySelectorAll("button"),b=pb[pb.length-1];if(b){b.classList.add("rbgo");b.textContent="🌟 환생하기";b.style.animationDelay=-(performance.now()%1200)+"ms"}});if(canRb()){const rs=$("sbody").querySelectorAll(".srow"),b=rs[rs.length-1].querySelector("button");if(b){b.classList.add("rbgo");b.textContent="🌟 환생";b.style.animationDelay=-(performance.now()%1200)+"ms"}}
     {const g=rbPts,d=document.createElement("div");d.className="srow rbinfo"+(window._rbiOpen?"":" fold");d.innerHTML="<button type='button'><span>💡 환생 포인트는 이렇게 받아요</span><em>"+(window._rbiOpen?"▲ 접기":"▼ 펼치기")+"</em></button><div>첫 환생은 <b>10층</b>에서 ("+g(10)+"포인트) · 20층 <b>6포인트</b>, 그 뒤 <b>1층마다 0.8포인트</b> (최고 기록 기준)<br><small>예) 20층 → "+g(20)+" · 30층 → "+g(30)+" · 50층 → "+g(50)+" · 80층 → "+g(80)+" · 100층 → "+g(100)+"</small><br>이번 판 조건 <b>"+rbReq()+"층</b> <small>(판 시작 때 정해짐 · 그때 기준 층 − 20층, 최소 10+10×환생 층)</small><br>포인트는 <b>조건 층의 1.5배</b>까지만 세요 · 지금 <b>"+rbCap()+"층</b>까지<br>환생하면 <b>기준 층의 40%</b>부터 다시 시작해요 · 지금 <b>"+rbStart()+"층</b><br><small style='color:var(--mut)'>다음 판 조건에 쓰일 기준 층 <b>"+(S.rbM||0)+"층</b> (깬 가장 높은 층 · 이번 개편 전 기록은 70%로 셈)</small></div>";d.querySelector("button").onclick=()=>{window._rbiOpen=!window._rbiOpen;renderSheet()};$("sbody").append(d)}
@@ -6801,7 +6939,7 @@ function ls6Rot(on,sel){if(on!=ls6On())return;if(on){if(typeof sheetName!="undef
 try{CUTP.push("#ls6mn")}catch(e){}
 setTimeout(ls6Sync,0);setInterval(()=>{if(ls6On()){ls6R();ls6On1()}},250);if(window.ArcadiaApp&&window.ArcadiaApp.cut){setInterval(ls6Cut,3000);addEventListener("resize",()=>setTimeout(ls6Cut,170))}
 /* ===== P3 📜 스킬 판 + 실시간 줄 + 🌳 넓은 지도 (사용자 "스킬을 바꿀 때마다 바뀌는 게 실시간으로 보이는 게 핵심") =====
-   가로 폰에선 스킬 메뉴(openSheet "ps")가 창 대신 오른쪽 판 #ls6sk (전투 안 어둡게) · 판 = 실시간 줄 + 장착 10칸(그림+번호) + 노드 지도(13 skNM) + 떠 있는 설명 줄
+   가로 폰에선 스킬 메뉴(openSheet "ps")가 창 대신 오른쪽 판 #ls6sk (전투 안 어둡게) · 판 = 실시간 줄 + 장착 10칸(그림+번호) + 스킬 고르기(13 skBr: 판정 탭 + ▦ 칸/🗺️ 지도, 2026-11-11) · 머리줄 [▦|🗺️] · 지도 [넓게] = 🗺️ 넓은 지도 #ls6fm
    넣기·빼기·바꾸기·칸 고르기 = 세로 스킬 창과 같은 함수 (13 skSlotTap·skSelBtns·skNdTap·psEquip·skUnequip·skClearAll · 15h elPick · 15f btPick) → 규칙 그대로
    다시 그리기: renderSheet를 감싸 판이 열려 있을 때만, 바뀐 게 있을 때만(psSig) · 실시간 숫자는 0.25초마다 글자만 (판을 다시 그리지 않음)
    판이 열린 동안만 주인공 따라가기 (캔버스 CSS translateX, 보는 것만 · 보스 착지 visX·큰 글은 그대로/보이는 칸 가운데) */
@@ -6812,9 +6950,9 @@ function ls6Sk(on){const B=document.body.classList;if(on&&!ls6On())on=0;if(!on){
   L6S.on=1;L6S.fm=0;B.add("l6sk");B.remove("l6fm");ls6On1();ls6SkR(1);ls6Lv();ls6CamM();try{appCut()}catch(e){}}
 function ls6Fm(on){if(!L6S.on&&on)return;L6S.fm=on?1:0;document.body.classList.toggle("l6fm",!!on);if(on){window._skSel=null;window._skSlot=null;L6Z.cx=null;l6mzB()}ls6SkR(1);ls6Lv();try{appCut()}catch(e){}}
 function ls6SkBuild(){if($("ls6sk"))return;const B=document.body,mk=(id,h)=>{const e=document.createElement("div");e.id=id;e.innerHTML=h;B.append(e);return e};
-  const a=mk("ls6sk",'<div class="l6s-h"><b>📜 스킬</b><span class="l6s-n"></span><span class="l6s-pr"></span><span class="sp"></span><button type="button" class="l6s-c" data-a="clr" aria-label="스킬 전부 빼기">🧹<span class="lb">빼기</span></button><button type="button" class="l6s-c" data-a="fm">🌳<span class="lb">넓은 지도</span></button><button type="button" class="l6s-x" data-a="x" aria-label="닫기">✕</button></div>'+ls6LvH()+'<div class="l6s-b"></div>');
-  const f=mk("ls6fm",'<div class="l6s-h"><button type="button" class="l6s-x" data-a="back" aria-label="뒤로" style="margin:-8px 0 -8px -6px">←</button><b class="l6f-tt"><span class="l6f-t1">📜 스킬 · </span>🌳 넓은 지도</b><span class="l6s-n"></span>'+ls6LvH()+'<span class="sp"></span><button type="button" class="l6s-c" data-a="clr">🧹<span class="lb">전부 빼기</span></button><button type="button" class="l6s-x" data-a="x" aria-label="닫기">✕</button></div><div class="l6f-b"><div class="l6f-l"><div class="l6f-lt"></div><div class="l6f-mini"><canvas id="l6fmc"></canvas><button type="button" class="l6f-zb" data-a="mz" aria-label="작은 전투 확대">🔍 보통</button><span class="l6f-mt">지금 전투 (넣고 빼면 바로 바뀜)</span></div></div><div class="l6f-r"></div></div>');
-  const act=e=>{const b=e.target.closest("[data-a]");if(!b)return;const k=b.dataset.a;if(k=="x")ls6Sk(0);else if(k=="fm")ls6Fm(1);else if(k=="back")ls6Fm(0);else if(k=="clr")skClearAll();else if(k=="mz")l6mzStep()};a.addEventListener("click",act);f.addEventListener("click",act);l6mzG(f.querySelector(".l6f-mini"));l6mzB()}
+  const a=mk("ls6sk",'<div class="l6s-h"><b>📜 스킬</b><span class="l6s-n"></span><span class="l6s-pr"></span><span class="sp"></span><button type="button" class="l6s-c" data-a="clr" aria-label="스킬 전부 빼기">🧹<span class="lb">빼기</span></button><span class="l6s-vt"></span><button type="button" class="l6s-x" data-a="x" aria-label="닫기">✕</button></div>'+ls6LvH()+'<div class="l6s-b"></div>');
+  const f=mk("ls6fm",'<div class="l6s-h"><button type="button" class="l6s-x" data-a="back" aria-label="뒤로" style="margin:-8px 0 -8px -6px">←</button><b class="l6f-tt"><span class="l6f-t1">📜 스킬 · </span>🗺️ 넓게</b><span class="l6s-n"></span>'+ls6LvH()+'<span class="sp"></span><button type="button" class="l6s-c" data-a="clr">🧹<span class="lb">전부 빼기</span></button><button type="button" class="l6s-x" data-a="x" aria-label="닫기">✕</button></div><div class="l6f-b"><div class="l6f-l"><div class="l6f-lt"></div><div class="l6f-mini"><canvas id="l6fmc"></canvas><button type="button" class="l6f-zb" data-a="mz" aria-label="작은 전투 확대">🔍 보통</button><span class="l6f-mt">지금 전투 (넣고 빼면 바로 바뀜)</span></div></div><div class="l6f-r"></div></div>');
+  const act=e=>{const b=e.target.closest("[data-a]");if(!b)return;const k=b.dataset.a;if(k=="x")ls6Sk(0);else if(k=="fm")ls6Fm(1);else if(k=="back")ls6Fm(0);else if(k=="clr")skClearAll();else if(k=="mz")l6mzStep();else if(k=="vg"||k=="vm")skVtSet(k)};a.addEventListener("click",act);f.addEventListener("click",act);l6mzG(f.querySelector(".l6f-mini"));l6mzB()}
 /* 실시간 줄 틀 (판·넓은 지도 같이, 숫자는 ls6Lv가 글자만) · ⚡ 공속은 뺌 (사용자 2026-11-09 "이속 빌드엔 공속 표기 무의미" → 상세 능력치에만) · 누르면 설명 풍선 (l6LvTip) */
 function ls6LvH(){return '<div class="l6-live"><span class="l6-l1">💥 DPS<s class="l6-db"></s><b class="l6-dv">0</b><span class="l6-dd"></span></span><span class="l6-bar"></span><span class="l6-top"></span></div>'}
 /* 장착 10칸 · 원소/탄 버튼 · 📜 프리셋 · 아래 설명 줄 = 가로 스킬 판·넓은 지도·세로 스킬 창(17b) 같이 씀 */
@@ -6822,36 +6960,23 @@ function l6Slots(o,eqs,sel){const q=document.createElement("div"),rep=window._sk
     for(let i=0;i<PSLOTS;i++){const c=document.createElement("button");c.type="button";if(i>=o){c.className="l6s-s lk";c.innerHTML="<b>"+(i+1)+"</b><span class='l6lk'></span><em>"+(i+1)+"환생</em>";c.setAttribute("aria-label",(i+1)+"번 칸 잠김 · "+(i+1)+"번째 환생 때 열려요");c.onpointerdown=()=>skLkTap(c,i);q.append(c);continue}
       const t=psGet(S.psl[i]),ok=t&&psFit(t);if(ok){const w=skWhy(t);c.className="l6s-s"+(w?" bad":"")+(rep?" pick":"")+((fs===i||rs===i)?" sel":"");c.innerHTML="<b>"+(i+1)+"</b>"+(t.img?skI(t):"<span>"+t.ic+"</span>")+(w?"<i>🚫</i>":"");c.setAttribute("aria-label",(i+1)+"번 칸 "+t.n)}
       else{c.className="l6s-s em"+(rep||(selOk&&rs==null)?" pick":"")+(rs===i?" sel":"");c.innerHTML="<b>"+(i+1)+"</b>＋";c.setAttribute("aria-label",(i+1)+"번 빈 칸")}
-      c.onclick=()=>skSlotTap(i,o,eqs);q.append(c)}return q}
+      c.dataset.si=i;c.onclick=()=>skSlotTap(i,o,eqs);q.append(c)}return q}
 /* 원소 줄(마법사, 10칸 밖) · 탄(저격 석궁) = 버튼 하나 → 게임 고르기 창 */
 function l6ElB(){const r=[];try{if(elRow()){const id=elId(),s=id&&psGet(id),b=document.createElement("button");b.type="button";const off=!!(id&&bkOn()&&!smAny());/* 📖 소환수 없으면 원소가 안 붙음 → 회색 (2026-11-10 A2) */b.className="l6s-el"+(id&&!off?" on":"");if(off)b.style.opacity=".5";b.innerHTML=s?s.ic+"<span>"+s.n+"</span>":"<small>🔹</small><span>"+(bkOn()?"소환 원소":"원소 줄")+"</span>";b.title=off?"⚠️ 소환 스킬이 없어요 (원소가 붙을 소환수가 없어요)":"원소 줄 (10칸 밖 · 하나만)";b.onclick=()=>elPick(id);r.push(b)}}catch(e){}
     try{if(cbOn()){const B=btCur(),b=document.createElement("button");b.type="button";b.className="l6s-el bt"+(B?" on":"");b.innerHTML=B?B.ic+"<span>"+B.n+"</span>":"🎯<span>탄 고르기</span>";b.onclick=()=>btPick(btId());r.push(b)}}catch(e){}return r}
 /* 📜 스킬 프리셋 (장비창·세로 스킬 창과 같은 접기 줄 03 pnTb·pnRw) · 🧩에 저장 안 한 변경 = ● (15l cpDiff) */
 function l6PrH(){let d=null;try{d=cpDiff()}catch(e){}return pnTb("s",1)+(d&&d.length?'<i class="cpdot" title="🧩 저장 안 한 변경: '+d.join(" · ")+'">●</i>':"")}
-function l6Bars(R,o,eqs,sel,fm){const rep=window._skRep&&psGet(window._skRep),rs=skRS(o);
-    if(rep||rs!=null){const b=document.createElement("div");b.className="l6s-f rp";const ct=rs!=null&&psGet(S.psl[rs]);b.innerHTML="<span>"+(rep?skI(rep)+" <b>"+rep.n+"</b>"+(josa(rep.n)=="이"?"과":"와")+" 바꿀 칸을 눌러 주세요":"📍 <b>"+(rs+1)+"번 칸</b>에 넣을 스킬을 지도에서 고르세요")+"</span>";const cb=document.createElement("button");cb.type="button";cb.className="btn";cb.textContent="취소";cb.onclick=e=>{e.stopPropagation();window._skRep=null;window._skRepS=null;renderSheet()};b.append(cb);R.append(b)}
-    /* 고른 스킬 설명 = 위로 자라는 판 (사용자 2026-11-09 "설명이 잘려"): 머리(그림·이름·가지·✕) / 설명 전부 / 버튼 줄 · 판 높이의 55%까지, 넘치면 설명만 스크롤 */
-    if(sel&&!fm){const b=document.createElement("div");b.className="l6s-f fx2";const ow=(S.rb||0)>=(sel.rb||0),fit=psFit(sel),w=ow&&fit&&!skElR(sel)?skWhy(sel):"",cc=[].concat(sel.cls||"all"),cl=!fit&&!cc.includes("all")?cc.map(c=>CLS[c]?CLS[c].n:c).join("·")+"만":"",lc=skTLoc(sel.id);
-      b.innerHTML="<div class='l6f-hd'><i class='l6s-fi'>"+(ow?skI(sel):"<span class='l6lk'></span>")+"</i><div class='l6f-nm'><b>"+sel.n+"</b>"+(lc?"<span class='skt-ch'>"+lc+"</span>":"")+(cl?"<span class='skt-ch c'>"+cl+"</span>":"")+"</div><button type='button' class='l6f-x' aria-label='설명 닫기'>✕</button></div><div class='l6s-fx'>"+(w?"<span class='w'>"+w+"</span><br>":"")+dsLn(psDesc(sel)).join("<br>")+(!ow?"<br><span class='w'>"+sel.rb+"번째 환생 때 열려요</span>":"")+"</div>";
-      b.querySelector(".l6f-x").onclick=e=>{e.stopPropagation();window._skSel=null;window._skSlot=null;window._skLT=null;renderSheet();try{ls6SkR(1)}catch(x){}};
-      const bt=skSelBtns(sel,o,eqs,"btn",b);if(bt){const f=document.createElement("div");f.className="l6f-bt";f.append(bt);b.append(f)}b.addEventListener("click",e=>e.stopPropagation());R.append(b)}}
 /* 판 다시 그리기 (바뀐 게 있을 때만) */
 function ls6SkR(force){if(!L6S.on||!ls6On())return;if(window._skGest&&!force)return;const sg=psSig()+"|"+L6S.fm+"|"+innerWidth+"x"+innerHeight+"|"+(S&&S.elm||"");if(!force&&sg===L6S.sig)return;L6S.sig=sg;
   const o=psOpen();S.psl=S.psl||[];const eqs=skEqs(o),sel=window._skSel&&psGet(window._skSel),fm=L6S.fm,P=$(fm?"ls6fm":"ls6sk");if(!P)return;
   P.querySelector(".l6s-n").innerHTML=o?(fm?"장착 ":"")+"<b>"+eqs.size+"</b>/"+o:"🔒";
   {const cb=P.querySelector('[data-a="clr"]');if(cb)cb.disabled=eqs.size<1}
-  const slots=()=>l6Slots(o,eqs,sel),elb=l6ElB,prH=l6PrH,bars=R=>l6Bars(R,o,eqs,sel,fm);
+  const slots=()=>l6Slots(o,eqs,sel),elb=l6ElB,prH=l6PrH;{const v=P.querySelector(".l6s-vt");if(v)v.innerHTML=skVtH()}
   if(!fm){const Bd=P.querySelector(".l6s-b");Bd.innerHTML="";P.querySelector(".l6s-pr").innerHTML=prH();const L=document.createElement("div");L.className="l6s-l";elb().forEach(x=>L.append(x));const q=slots();q.className="l6s-q";L.append(q);
-    const R=document.createElement("div");R.className="l6s-r";Bd.append(L,R);const w=document.createElement("div");w.innerHTML=pnRw("s");R.append(w.firstChild);skNM(R,{id:"l",o,eqs,sel});bars(R);try{pnFix(R)}catch(e){}}
+    const R=document.createElement("div");R.className="l6s-r";Bd.append(L,R);const w=document.createElement("div");w.innerHTML=pnRw("s");R.append(w.firstChild);skBr(R,{id:"l",o,eqs,sel,map:skBV()=="m"});try{pnFix(R)}catch(e){}}
   else{const lt=P.querySelector(".l6f-lt"),R=P.querySelector(".l6f-r");lt.innerHTML=cpHd()+cpRw()+'<div class="pnh">'+pnHd("s")+'</div>'+pnRw("s");const er=elb();if(er.length){const d=document.createElement("div");d.className="l6f-er";er.forEach(x=>d.append(x));lt.append(d)}const q=slots();q.className="l6f-q";lt.append(q);try{pnFix(lt)}catch(e){}
-    R.innerHTML='<div class="l6f-rh"><b>🌳 스킬 지도</b>⭐→장착까지 빨간 길 · 🔹 원소(하나만) · 흐림 = 다른 직업·지금 꺼짐</div>';const vp=skNM(R,{id:"f",o,eqs,sel,pop:ls6Pop});bars(R);
-    /* 장착 칸을 누르면 지도가 그 스킬로 감 (한 번) */const fs=window._skSlot;if(fs!=null&&sel&&L6S.gs!==sel.id){L6S.gs=sel.id;const L=skTL();for(const k in L.KI)if(skTKid(k)===sel.id){const p=L.NP[k];requestAnimationFrame(()=>{if(vp.isConnected)vp._go(p[0],p[1],Math.max(vp._Z().s,.8))});break}}else if(fs==null)L6S.gs=null;
+    R.innerHTML="";skBr(R,{id:"f",o,eqs,sel,map:true});
     const mc=$("l6fmc");if(mc){L6S.mw=mc.clientWidth;L6S.mh=mc.clientHeight;const r=Math.min(2,devicePixelRatio||1),pw=Math.round(L6S.mw*r),ph=Math.round(L6S.mh*r);if(mc.width!==pw||mc.height!==ph){mc.width=pw;mc.height=ph}L6S.mc=mc}}}
-/* 넓은 지도: 누른 스킬 옆 작은 설명 창 (지도를 끌면 같이 따라감, 13 skNmZ) */
-function ls6Pop(sel,k){const o=psOpen(),eqs=skEqs(o),ow=(S.rb||0)>=(sel.rb||0),fit=psFit(sel),w=ow&&fit&&!skElR(sel)?skWhy(sel):"",cc=[].concat(sel.cls||"all"),si=S.psl.slice(0,o).indexOf(sel.id),lc=skTLoc(sel.id),d=document.createElement("div");d.className="l6-pop";
-  let el="";try{if(skElR(sel))el="<span class='skt-ch c'>🔹 원소 줄"+(elId()==sel.id?" · 낌":"")+"</span>"}catch(e){}
-  d.innerHTML="<button type='button' class='l6p-x' aria-label='설명 닫기'>✕</button><div class='l6p-h'><i>"+(ow?skI(sel):"🔒")+"</i><div><b>"+sel.n+"</b>"+(lc?"<span class='skt-ch'>"+lc+"</span> ":"")+(si>=0&&fit?"<span class='skt-ch' style='border-color:#e05a3a'>"+(si+1)+"번</span>":el)+(!fit&&!cc.includes("all")?"<span class='skt-ch c'>"+cc.map(c=>CLS[c]?CLS[c].n:c).join("·")+"만</span>":"")+"</div></div><div class='l6p-d'>"+(w?"<span class='w'>"+w+"</span><br>":"")+dsLn(psDesc(sel)).join("<br>")+(!ow?"<br><span class='w'>"+sel.rb+"번째 환생 때 열려요</span>":"")+"</div><div class='l6p-b'></div>";
-  d.querySelector(".l6p-x").onclick=e=>{e.stopPropagation();window._skSel=null;window._skSlot=null;window._skLT=null;renderSheet()};const bt=skSelBtns(sel,o,eqs,"btn",null);if(bt)d.querySelector(".l6p-b").append(bt);d.addEventListener("click",e=>e.stopPropagation());return d}
 /* ===== 실시간 줄 숫자 (0.25초마다 글자만) =====
    숫자와 ▲▼는 늘 같은 기준 (QA: "DPS 146 ▼42%"처럼 큰 숫자 = 5초 창, % = 바꾼 뒤 평균이라 서로 어긋났음)
    평소 = 07 dpsWin(5000) (상태바 💥 DPS와 같은 값) · 바꾼 순간 = 스킬·장비·직업·원소·탄·🧩가 바뀐 때 (08 setupSig + 원소·탄)
@@ -7098,9 +7223,8 @@ setInterval(()=>{try{ls6FW()}catch(e){}},250);
    시안 docs/UI/시안/2026-11-09_세로_창_전투아래.html · 계획 docs/UI/2026-11-09_세로_창_전투아래_계획.md · UI규칙 §25
    세로 폰(P = body.lyP, 08 scrCls)만: 메뉴 창(#sheet, 16 openSheet)이 장비 칸(#mid) 자리에서만 열림 → 전투는 안 어둡고 안 가려짐 · 아래 메뉴 늘 보임(같은 메뉴를 또 누르면 닫힘) · ✕ = 장비 칸이 다시 보임
    큰 화면(S)·가로 폰(L)은 이 코드를 안 지나감 (CSS도 body.lyP에서만)
-   📜 스킬(지도 보기) = 머리줄 [📜 스킬 · 장착 수 · 📜 프리셋 ● · ☰ 목록 · 🧹 · ✕] → 실시간 줄(17 ls6LvH·ls6Lv 그대로) → 장착 10칸 한 줄 → 노드 지도(13 skNM "p") + 아래 설명 줄
-     칸·원소/탄 버튼·프리셋·설명 줄 = 가로 스킬 판과 같은 함수(17 l6Slots·l6ElB·l6PrH·l6Bars → 13 skSlotTap·skSelBtns·skNdTap) → 넣기·빼기·바꾸기 규칙이 한 곳
-     ☰ 목록 보기 = 예전 목록(16·13 skRowView) 그대로 + 맨 위 실시간 줄
+   📜 스킬 = 머리줄 [📜 스킬 · 장착 수 · 📜 프리셋 ● · ▦|🗺️ · 🧹 · ✕] → 실시간 줄(17 ls6LvH·ls6Lv 그대로) → 장착 10칸 한 줄 → 스킬 고르기(13 skBr "p": 판정 탭 + ▦ 칸/🗺️ 지도 + 설명판, 2026-11-11)
+     칸·원소/탄 버튼·프리셋·설명 줄 = 가로 스킬 판과 같은 함수(17 l6Slots·l6ElB·l6PrH → 13 skSlotTap·skSelBtns·skBr) → 넣기·빼기·바꾸기 규칙이 한 곳
    🌟 환생 · 💪 단련 = 가로처럼 한 항목 한 줄 (17 L6FX: 16이 그린 줄의 글 조각만 감쌈, 버튼·누르기 그대로) · 칭호·상점·설정·층 이동 = 내용 그대로, 칸 안 스크롤 */
 const PV={sig:"",lv:null,hx:null,f:null};
 function pvOn(){return document.body.classList.contains("lyP")}
@@ -7113,27 +7237,27 @@ function pvPos(){const st=$("sheet").style;if(!pvOn()){if(st.getPropertyValue("-
   if(st.getPropertyValue("--pvt")!==a)st.setProperty("--pvt",a);{const bs=document.body.style;if(bs.getPropertyValue("--pvt")!==a)bs.setProperty("--pvt",a)}if(st.getPropertyValue("--pvh")!==b)st.setProperty("--pvh",b)}
 /* 머리줄에 더하는 칸 (세로에서 처음 열 때 한 번 만듦 · 지도 보기일 때만 보임) */
 function pvHx(){if(PV.hx&&PV.hx.isConnected)return PV.hx;const h=document.querySelector("#sheet .shh"),x=document.createElement("span");x.className="pv-hx";
-  x.innerHTML='<span class="l6s-n"></span><span class="l6s-pr"></span><span class="sp"></span><button type="button" class="l6s-c pv-hb" data-a="ls" aria-label="목록으로 보기">☰<span class="lb">목록</span></button><button type="button" class="l6s-c pv-hb" data-a="clr" aria-label="스킬 전부 빼기">🧹<span class="lb">빼기</span></button>';
-  h.insertBefore(x,$("sx"));x.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b)return;if(b.dataset.a=="ls"){window._skView="row";window._skRep=null;renderSheet()}else if(b.dataset.a=="clr")skClearAll()});PV.hx=x;return x}
+  x.innerHTML='<span class="l6s-n"></span><span class="l6s-pr"></span><span class="sp"></span><span class="pv-vt"></span><button type="button" class="l6s-c pv-hb" data-a="clr" aria-label="스킬 전부 빼기">🧹<span class="lb">빼기</span></button>';
+  h.insertBefore(x,$("sx"));x.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b)return;if(b.dataset.a=="vg"||b.dataset.a=="vm")skVtSet(b.dataset.a);else if(b.dataset.a=="clr")skClearAll()});PV.hx=x;return x}
 /* 실시간 줄 (한 번 만들고 머리줄 아래에 둠 → 창을 다시 그려도 숫자가 0으로 깜빡이지 않음) */
 function pvLvN(){const sh=document.querySelector("#sheet .sh");if(!PV.lv){const d=document.createElement("div");d.innerHTML=ls6LvH();PV.lv=d.firstChild;PV.lv.classList.add("pv-lv")}if(PV.lv.parentNode!==sh)sh.insertBefore(PV.lv,$("sbody"));return PV.lv}
 /* 창 표시 상태: 아래 메뉴 켜짐 · 창 종류(data-pv: sk 지도 / skl 목록) · 메뉴 이름(data-l6p, 환생·단련 한 줄 CSS) */
 function pvSync(){const sh=$("sheet"),P=pvOn(),on=pvOpen(),k=on?sheetName:"",B=document.body.classList;if(B.contains("pvo")!=on)B.toggle("pvo",on);
   document.querySelectorAll(".bnav .mbtn[data-m]").forEach(b=>{if(!P&&b.dataset.m=="ps")return;/* 가로 📜 켜짐은 17 ls6On1 */const v=on&&b.dataset.m==k;if(b.classList.contains("on")!=v)b.classList.toggle("on",v)});
   if(!P){if(sh.dataset.pv)delete sh.dataset.pv;return}
-  const pv=k=="ps"?(window._skView=="tree"?"sk":"skl"):"";if((sh.dataset.pv||"")!==pv){if(pv)sh.dataset.pv=pv;else delete sh.dataset.pv}
+  const pv=k=="ps"?"sk":"";if((sh.dataset.pv||"")!==pv){if(pv)sh.dataset.pv=pv;else delete sh.dataset.pv}
   if(on){if(sh.dataset.l6p!==k)sh.dataset.l6p=k;if(k=="ps"){pvLvN();if(pv=="sk")pvHx()}}}
 /* 📜 지도 보기 그리기 (바뀐 게 있을 때만 = 가로 판 ls6SkR과 같은 psSig) */
 function pvSkR(force){if(window._skGest&&!force)return;const sb=$("sbody"),sg=psSig()+"|"+innerWidth+"x"+innerHeight+"|"+(S&&S.elm||"");if(!force&&sg===PV.sig&&sb.querySelector(":scope>.pv-q"))return;PV.sig=sg;
   const o=psOpen();S.psl=S.psl||[];const eqs=skEqs(o),sel=window._skSel&&psGet(window._skSel),x=pvHx();
-  $("stitle").textContent="📜 스킬";x.querySelector(".l6s-n").innerHTML=o?"장착 <b>"+eqs.size+"</b>/"+o:"🔒 환생하면 열려요";x.querySelector(".l6s-pr").innerHTML=l6PrH();x.querySelector('[data-a="clr"]').disabled=eqs.size<1;x.classList.remove("nl");if(x.scrollWidth>x.clientWidth+1||[...x.querySelectorAll(".l6s-n,.pnt")].some(e=>e.scrollWidth>e.clientWidth+1))x.classList.add("nl");/* 머리줄이 좁으면 ☰·🧹 글자만 숨김 */
+  $("stitle").textContent="📜 스킬";x.querySelector(".l6s-n").innerHTML=o?"장착 <b>"+eqs.size+"</b>/"+o:"🔒 환생하면 열려요";x.querySelector(".l6s-pr").innerHTML=l6PrH();x.querySelector('[data-a="clr"]').disabled=eqs.size<1;x.querySelector(".pv-vt").innerHTML=skVtH();x.classList.remove("nl");if(x.scrollWidth>x.clientWidth+1||[...x.querySelectorAll(".l6s-n,.pnt")].some(e=>e.scrollWidth>e.clientWidth+1))x.classList.add("nl");/* 머리줄이 좁으면 ☰·🧹 글자만 숨김 */
   sb.innerHTML="";const er=l6ElB();if(er.length){const d=document.createElement("div");d.className="pv-er";er.forEach(b=>d.append(b));sb.append(d)}
   const q=l6Slots(o,eqs,sel);q.className="pv-q";sb.append(q);
-  const R=document.createElement("div");R.className="l6s-r pv-r";sb.append(R);const w=document.createElement("div");w.innerHTML=pnRw("s");R.append(w.firstChild);skNM(R,{id:"p",o,eqs,sel});l6Bars(R,o,eqs,sel,0);try{pnFix(R)}catch(e){}}
+  const R=document.createElement("div");R.className="l6s-r pv-r";sb.append(R);const w=document.createElement("div");w.innerHTML=pnRw("s");R.append(w.firstChild);skBr(R,{id:"p",o,eqs,sel,map:skBV()=="m"});try{pnFix(R)}catch(e){}}
 /* 16이 그린 뒤: 환생·단련은 새로 그렸을 때만 한 줄로 (16이 "같다"며 안 그렸으면 그대로) */
 function pvPost(){const sb=$("sbody"),k=sheetName;if(k!="rb"&&k!="gu")return;const f=sb.firstElementChild;if(!f||PV.f===f)return;PV.f=f;try{if(k=="rb")L6FX.rb(sb,"#sbody>.srow");else L6FX.gu(sb)}catch(e){console.error(e)}}
 {const _rp=renderSheet;renderSheet=function(){if(!pvOn()||!sheetName||$("sheet").hidden)return _rp.apply(this,arguments);pvSync();
-  if(sheetName=="ps"&&window._skView=="tree"){if((window._skGest||skDrag)&&!window._skForce)return;try{pvSkR(window._skForce)}catch(e){console.error(e)}return}
+  if(sheetName=="ps"){if((window._skGest||skDrag)&&!window._skForce)return;try{pvSkR(window._skForce)}catch(e){console.error(e)}return}
   const r=_rp.apply(this,arguments);try{pvPost()}catch(e){console.error(e)}return r}}
 {const _op=openSheet;openSheet=function(n){if(pvOn())pvPos();PV.sig="";const r=_op.apply(this,arguments);pvSync();if(pvOn()&&n=="ps")try{ls6Lv()}catch(e){}return r}}
 /* 같은 메뉴를 또 누르면 닫힘 (시안 그대로 · 가로 📜·🎒와 같음) — 16의 [data-m] 누르기보다 먼저 받음 */
@@ -7145,7 +7269,7 @@ try{if(window.ResizeObserver)new ResizeObserver(()=>{if(pvOn())pvPos()}).observe
 {const _sw=setWorld;setWorld=function(){const c0=_scr,r=_sw.apply(this,arguments);try{pvPos();pvSync();const c1=_scr;if(c0!==c1&&(c0+c1=="PS"||c0+c1=="SP")&&sheetName&&!$("sheet").hidden)setTimeout(()=>{if(sheetName&&!$("sheet").hidden)openSheet(sheetName)},0)}catch(e){console.error(e)}return r}}
 addEventListener("resize",()=>setTimeout(()=>{try{pvPos()}catch(e){}},120));
 /* 실시간 줄 (0.25초마다 글자만) · 세로에선 창이 닫혀 있어도 "바꾼 순간"만 따라감 (가로 17 setInterval과 같음) */
-setInterval(()=>{try{if(pvOn()){ls6Lv();if(pvOpen()&&sheetName=="ps"&&window._skView=="tree")pvSkR()}}catch(e){}},250);/* 지도를 끄는 동안 못 그린 변화도 따라잡음 (가로 판과 같음) */
+setInterval(()=>{try{if(pvOn()){ls6Lv();if(pvOpen()&&sheetName=="ps")pvSkR()}}catch(e){}},250);/* 지도를 끄는 동안 못 그린 변화도 따라잡음 (가로 판과 같음) */
 /* 🌫️ 창이 열린 동안 위 전투(상태바 포함)를 살짝 어둡게 + 누르면 창 닫힘 (사용자 2026-11-09 "게임화면은 살짝 어둡게만, 화면을 클릭하면 창들이 닫혔으면") · 세로 폰만(body.lyP.pvo) · 덮개가 누르기를 받아서 뒤 전투·버튼으로 안 넘어감 · 창이 닫혀 있으면 덮개 없음 = 예전 그대로 */
 {const d=document.createElement("div");d.id="pvdim";d.setAttribute("aria-label","창 닫기");d.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();if(pvOpen())closeSheet()});d.addEventListener("pointerdown",e=>e.stopPropagation());document.body.append(d)}
 
