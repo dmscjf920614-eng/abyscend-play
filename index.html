@@ -1362,6 +1362,7 @@ body.lyP .skbr{--fs-name:11.5px;--fs-desc:10.5px;--fs-small:10px}
 .skb-c.sel,.skb-c.sel.g{box-shadow:0 0 0 2px #ffe08a,0 0 10px #ffcf5a88;opacity:1}
 .skb-e{position:absolute;right:2px;top:2px;min-width:15px;height:15px;border-radius:8px;background:#c9a24f;color:#1a1208;font-size:10px;font-weight:800;display:grid;place-items:center;padding:0 3px;line-height:1}
 .skb-q{position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#ffb35a;color:#1a1208;font-size:10px;font-weight:800;display:grid;place-items:center;line-height:1}
+.skb-xo{position:absolute;right:4px;top:21px;font-size:10px;line-height:1;opacity:.9;pointer-events:none;filter:drop-shadow(0 0 1px #000)}.skb-nd .mi .skb-xo{left:-5px;right:auto;top:auto;bottom:-5px;font-size:13px}
 .skb-c.fl,.skb-nd.fl .mi{animation:skbFl .9s 2}@keyframes skbFl{50%{box-shadow:0 0 0 3px #fff,0 0 14px #ffe08a}}
 /* 설명판 (칸: 탭 아래 · 지도: 판 맨 위) */
 .skb-dt{position:absolute;left:0;right:0;top:0;z-index:5;background:linear-gradient(#2a1f14,#1b130b);border:1.5px solid #c9a24f;border-radius:6px 6px 10px 10px;box-shadow:0 8px 16px #000c;padding:6px 6px 6px 8px;display:flex;flex-direction:column;gap:4px;max-height:85%;box-sizing:border-box}
@@ -3703,7 +3704,7 @@ function skRo(w){const c=w.charCodeAt(w.length-1)-44032;return c<0||c>11171||c%2
 function skBrSecs(tk){const B=skBT(),t=B.T.find(x=>x.k==tk);let secs=t?t.secs.map(x=>({h:x.h,ids:x.ids.slice()})):B.T.map(T=>({h:T.ic+" "+T.n,ids:T.secs.flatMap(x=>x.ids)}));if(!skBO())return secs;
   const bad=[];secs=secs.map(x=>{const o=[],n=[];x.ids.forEach(id=>{const q=skSq(id);(q.g?bad:q.n?n:o).push(id)});return {h:x.h,ids:o.concat(n)}}).filter(x=>x.ids.length);
   if(bad.length){const wn=wtNm()||(CLS[S.cls]||{}).n||"";secs.push({h:"🚫 "+wn+skRo(wn)+" 못 써요",ids:bad,no:1})}return secs}
-function skBrC(id,o,sel){const s=psGet(id),q=skSq(id),n=skEqN(id,o);return '<button type="button" class="skb-c'+(q.g?" g":"")+(n?" on":"")+(sel&&sel.id==id?" sel":"")+(SKB.fl==id?" fl":"")+'" data-id="'+id+'">'+(q.n?'<span class="skb-q">!</span>':'')+(n?'<span class="skb-e">'+n+'</span>':'')+'<span class="skb-i">'+skI(s)+'</span><span class="skb-n">'+skNm(s)+'</span>'+(q.g?'<span class="skb-r">'+q.g+'</span>':'')+'</button>'}
+function skBrC(id,o,sel){const s=psGet(id),q=skSq(id),n=skEqN(id,o);return '<button type="button" class="skb-c'+(q.g?" g":"")+(n?" on":"")+(sel&&sel.id==id?" sel":"")+(SKB.fl==id?" fl":"")+'" data-id="'+id+'">'+(q.n?'<span class="skb-q">!</span>':'')+(n?'<span class="skb-e">'+n+'</span>':'')+skXm(s)+'<span class="skb-i">'+skI(s)+'</span><span class="skb-n">'+skNm(s)+'</span>'+(q.g?'<span class="skb-r">'+q.g+'</span>':'')+'</button>'}
 /* 보기 바꾸기 [▦|🗺️] (머리줄에 둠: 세로 17b pvHx · 가로 17 #ls6sk · 큰 화면 skSView) */
 function skVtH(){const m=skBV()=="m";return '<span class="skb-vt"><button type="button" data-a="vg" class="'+(m?"":"on")+'" aria-label="칸으로 보기">▦</button><button type="button" data-a="vm" class="'+(m?"on":"")+'" aria-label="지도로 보기">🗺️</button></span>'}
 function skVtSet(v){if(!S)return;const m=v=="vm"||v=="m";if((skBV()=="m")===m)return;S.skv=m?"m":"g";SKB.cam={};save();renderSheet();try{if(L6S.on)ls6SkR(1)}catch(e){}}
@@ -3788,7 +3789,7 @@ function skBrMap(id,o,sel){const M=skMLay(),srt=skBO();let h='<div class="skb-mp
     [...new Set(nd.concat(skPairs(sel.id)))].filter(x=>M.N[x]&&x!=sel.id).slice(0,5).forEach(x=>{const b=M.N[x],n=nd.includes(x);ln+='<line x1="'+a.x+'" y1="'+(a.y+24)+'" x2="'+b.x+'" y2="'+(b.y+24)+'" stroke="'+(n?"#ffb35a":"#e5bf64")+'" stroke-width="'+(n?3:2)+'" stroke-opacity="'+(n?.75:.45)+'"'+(n?"":' stroke-dasharray="8 7"')+'/>'});
     h+='<svg class="skb-lk" width="'+M.W+'" height="'+M.H+'">'+ln+'</svg>'}
   for(const sid in M.N){const s=psGet(sid),p=M.N[sid],q=skSq(sid),e=skEqN(sid,o);
-    h+='<button type="button" class="skb-nd'+(q.g&&srt?" g":"")+(e?" on":"")+(sel&&sel.id==sid?" sel":"")+(SKB.fl==sid?" fl":"")+'" data-id="'+sid+'" style="left:'+(p.x-33)+'px;top:'+p.y+'px"><span class="mi">'+skI(s)+(e?'<span class="skb-e">'+e+'</span>':'')+(q.n?'<span class="skb-q">!</span>':'')+(q.g?'<span class="no"></span>':'')+'</span><span class="skb-n">'+skNm(s)+'</span></button>'}
+    h+='<button type="button" class="skb-nd'+(q.g&&srt?" g":"")+(e?" on":"")+(sel&&sel.id==sid?" sel":"")+(SKB.fl==sid?" fl":"")+'" data-id="'+sid+'" style="left:'+(p.x-33)+'px;top:'+p.y+'px"><span class="mi">'+skI(s)+(e?'<span class="skb-e">'+e+'</span>':'')+(q.n?'<span class="skb-q">!</span>':'')+(q.g?'<span class="no"></span>':'')+skXm(s)+'</span><span class="skb-n">'+skNm(s)+'</span></button>'}
   return h+'</div></div>'}
 function skBrMapEv(R,id,sel){const mp=R.querySelector(".skb-mp"),mw=mp.querySelector(".skb-mw"),M=skMLay(),MN=.12,MX=1.3,thr=()=>id=="l"||id=="f"?.8:.72;
   {const d=R.querySelector(".skb-dt");if(d){skDtFit(d,Math.max(46,mp.clientHeight*.55));d.style.top=mp.offsetTop+"px"}}
@@ -3872,6 +3873,7 @@ function skShort(s){if(s.sh)return s.sh;if(SKSH[s.id])return SKSH[s.id];const t=
 function psOwned(){return PSK.filter(s=>psFit(s)&&((S.rb||0)>=(s.rb||0)))}
 function psGet(id){return PSK.find(s=>s.id==id)}
 function psEqList(){S.psl=S.psl||[];const o=psOpen(),r=[];for(let i=0;i<o;i++){const s=psGet(S.psl[i]);if(s&&psFit(s)&&(S.rb||0)>=(s.rb||0))r.push(s)}return r}
+/* 👤 직업 전용 · 🗡️ 무기 전용 표식 (s.xo, 15p 📦) */function skXm(s){return s&&s.xo?'<span class="skb-xo">'+(s.xo=="w"?"🗡️":"👤")+'</span>':""}
 function skI(s,st){return s.img?"<img class='ski' src='"+s.img+"' draggable='false' alt=''"+(st?" style='"+st+"'":"")+">":s.ic}
 const SKIMG={};function skImg(s){if(!s.img)return null;if(!SKIMG[s.id]){const im=new Image();im.src=s.img;SKIMG[s.id]=im}return SKIMG[s.id]}
 function psFx(id){const s=psGet(id);if(!s)return;window._psF={n:(s.img?"":s.ic+" ")+s.n,im:skImg(s),t:gnow()}}
@@ -6805,15 +6807,21 @@ const XRBM=2,XRBT=3000,/* ↩️ 되받아치기: 다음 일반 공격 ×2 · 3�
   XRGV=.15,/* 📏 거리 조준: 노리는 적 거리 100마다 +15% */
   XAMM=2,/* 🧨 강화 탄: 탄 효과 ×2 (🎳 관통 마리 ×2) */
   XFBV=.3,/* 🏕️ 진지 구축: 포대 사슬 거리 안이면 공속 +30% (공속 상한 안) */
-  XLGN=1,/* 🏴 군단 소집: 소환 스킬마다 +1마리 (🌟 소환수 강화의 +1은 옮기기 단계에서 뺄 예정, 지금은 둘 다) */
+  XLGN=1,/* 🏴 군단 소집: 소환 스킬마다 +1마리 (🌟 소환수 강화의 +1은 옮기기 단계에서 뺌 = 아래 📦) */
   XDMV=.3,XDMT=3000,/* 🔯 어둠 낙인: 소환수 피해 +30% · 3초 */
   XMFV=.01,/* 💠 마력 환류: 소환수 공격 명중마다 최대 MP 1% */
   XNCO=1,XNCP=.2,XNCT=10000,XNCX=5,XNCD=.03;/* 🧟 강령술: 해골 병사 (깃발) · 처치마다 20% · 10초 · 최대 5 · 공격 = 최대 MP 3% */
 function xN(k){XS.n[k]=(XS.n[k]||0)+1}/* 확인용 횟수 (검수) */
 const XS={n:{},on:{},oT:-1e9,oS:null,any:0,rb:0,cn:0,clQ:0,fq:[],bzT:-1,bzV:0,sw:null};
 const XW={xrb:"sh",xrf:"sh",xsc:"sh",xbz:"2h",xfe:"2h",xcl:"2h",xrs:"bow",xfo:"bow",xms:"bow",xev:"",xrg:"cb",xam:"cb",xfb:"cb",xlg:"bk",xdm:"bk",xmf:"bk",xnc:"bk"};/* 무기 장치 (sh 방패 · 2h 두손검 · bow 활 · cb 저격 석궁 · bk 마도서 · "" = 직업만) */
-const XWN={sh:"🛡️ 방패 전용이에요 (방패를 껴야)",["2h"]:"🗡️ 두손검 전용이에요",bow:"🏹 활 전용이에요",cb:"🗼 저격 석궁 전용이에요",bk:"📖 마도서 전용이에요"};
-function xWOk(w){if(!S)return false;if(w=="sh")return gdShOk();if(w=="2h")return S.cls=="knight"&&th2();if(w=="bow")return bowOn();if(w=="cb")return cbOn();if(w=="bk")return bkOn();return true}
+const XWN={sh:"🛡️ 방패 전용이에요 (방패를 껴야)",["2h"]:"🗡️ 두손검 전용이에요",bow:"🏹 활 전용이에요",cb:"🗼 저격 석궁 전용이에요",bk:"📖 마도서 전용이에요",st:"🪄 지팡이 전용이에요"};
+/* 📦 옮기기 33 꼬리표 표 (설명은 아래 📦 절 · xOffS가 쓰므로 위에 둠) */
+const XMV={swp:"k",nqk:"k",nch:"k",nkb:"k",nhs:"k",edr:"k",eth:"k",egl:"k",eav:"a",elb:"a",eia:"a",hey:"a",nex:"a",ovl:"m",anv:"m",mcv:"m",nmb:"m",nbt:"m",shb:"sh",sb:"sh",sw:"2h",bx:"2h",ps:"bow",tur:"cb",wir:"cb",mtr:"st",blz:"st",thd:"st",frn:"st",bmg:"st",bmn:"st",cmr:"st",nlr:"bk"};
+const XMC={k:"knight",a:"archer",m:"mage",sh:"knight","2h":"knight",bow:"archer",cb:"archer",st:"mage",bk:"mage"};
+const XMN={k:"👤 기사 전용",a:"👤 궁수 전용",m:"👤 마법사 전용",sh:"🛡️ 방패 전용","2h":"🗡️ 두손검 전용",bow:"🏹 활 전용",cb:"🗼 저격 석궁 전용",st:"🪄 지팡이 전용",bk:"📖 마도서 전용"};
+function xMvW(id){const g=XMV[id];return g&&XWN[g]?g:""}/* 무기 꼬리표만 */
+const XPSD=.2;/* 🚀 질풍 화살: 늘어난 투사체 속도 1%당 투사체 피해 +0.2% */
+function xWOk(w){if(!S)return false;if(w=="sh")return gdShOk();if(w=="2h")return S.cls=="knight"&&th2();if(w=="bow")return bowOn();if(w=="cb")return cbOn();if(w=="bk")return bkOn();if(w=="st")return S.cls=="mage"&&!bkOn();return true}
 DSRC.rfl=["🪞","반사 방패"];DSRC.xcl=["🔻","대검 내려치기"];DSRC.xrs=["💨","속사"];DSRC.xev=["🦋","회피 사격"];DSRC.skel=["🧟","해골 병사"];
 PSK.push(
   {id:"xrb",n:"되받아치기",ic:"↩️",cls:"knight",rb:0,cat:"atk",sh:"반격 → 다음 공격 ×"+XRBM,ef:{},d:"반격이 터지면 "+XRBT/1000+"초 안의 다음 일반 공격 ×"+XRBM+" (🛡️ 방패치기도) · 머리 위 ↩️ · 방패 전용"},
@@ -6837,7 +6845,7 @@ const XSID={};PSK.forEach(s=>{if(/^x[a-z]{2}$/.test(s.id)&&XW[s.id]!=null)XSID[s
 SKE.push(["xrb","shb"],["xrb","sb"],["xrb","ncm"],["xrf","gd"],["xrf","nrt"],["xsc","nch"],["xsc","nkb"],["xsc","nhs"],["xbz","bth"],["xbz","frz"],["xbz","gp"],["xfe","gp"],["xfe","bx"],["xcl","swp"],["xcl","sw"],["xcl","nqk"],["xrs","as"],["xrs","frz"],["xrs","bth"],["xrs","pj"],["xfo","xrs"],["xfo","ncm"],["xms","ds"],["xms","nmo"],["xev","ngs"],["xrg","net"],["xrg","nex"],["xrg","lr"],["xam","tur"],["xfb","tur"],["xfb","wir"],["xlg","gol"],["xlg","wr"],["xlg","nlr"],["xdm","pj"],["xdm","ch"],["xdm","su"],["xmf","ovl"],["xmf","anv"],["xmf","ms"],["xnc","ncx"],["xnc","nsc"],["xnc","frz"]);
 /* ===== 꺼짐 이유 ===== */
 function xHas(id){return psEqList().some(s=>s.id==id)}
-function xOffS(s){if(!s||!XSID[s.id]||!S)return "";const w=XW[s.id];if(w&&!xWOk(w))return XWN[w];const id=s.id;
+function xOffS(s){if(!s||!S)return "";if(XMV[s.id]){const g=xMvW(s.id);return g&&!xWOk(g)?XWN[g]:""}if(!XSID[s.id])return "";const w=XW[s.id];if(w&&!xWOk(w))return XWN[w];const id=s.id;
   if(id=="xrf")return (gemSum().wall||0)>0?"":"🔰 방벽석이 있어야 해요";
   if(id=="xsc"){const c=psEqList().find(x=>x.id=="nch");return c&&!nsOffS(c)?"":"🐂 돌진 공격이 있어야 해요"}
   if(id=="xcl")return melBa()?"":"근접 일반 공격이 있어야 해요";
@@ -6848,7 +6856,7 @@ function xOffS(s){if(!s||!XSID[s.id]||!S)return "";const w=XW[s.id];if(w&&!xWOk(
 function xSmSk(){return psEqList().some(s=>s.ef&&(s.ef.spirit||s.ef.wraith||s.ef.golem||s.ef.satellite))}
 {const _po=psOff;psOff=function(s){return _po(s)||!!xOffS(s)}}
 {const _sw=skWhy;skWhy=function(s){return xOffS(s)||_sw(s)}}
-function xRf(){const r=performance.now();if(r-XS.oT<200&&r>=XS.oT&&XS.oS===S)return;XS.oT=r;XS.oS=S;const o={};let a=0;try{for(const s of psEqList())if(XSID[s.id]&&!psOff(s)){o[s.id]=1;a=1}}catch(e){}if(!o.xcl)XS.cn=0;if(!o.xrb)XS.rb=0;XS.on=o;XS.any=a;try{XS.mm=mmp();XS.mh=mhp()}catch(e){}}
+function xRf(){const r=performance.now();if(r-XS.oT<200&&r>=XS.oT&&XS.oS===S)return;XS.oT=r;XS.oS=S;const o={};let a=0,ps=0;try{for(const s of psEqList()){if(s.id=="ps"&&!psOff(s))ps=1;if(XSID[s.id]&&!psOff(s)){o[s.id]=1;a=1}}}catch(e){}XS.ps=ps;if(!o.xcl)XS.cn=0;if(!o.xrb)XS.rb=0;XS.on=o;XS.any=a;try{XS.mm=mmp();XS.mh=mhp()}catch(e){}}
 /* ===== 감싸기: 피해 (↩️ 다음 공격 ×2 · 🔻 휘두르기 셈 · 🐗 도착 한 방) ===== */
 {const _dm=dmT;dmT=function(m,d,k){xRf();if(!XS.any||!m||!S||typeof d!="number")return _dm(m,d,k);const O=XS.on,t=gnow(),d0=d;
   if(O.xsc&&k=="chg"&&m===mon&&!_dkL){d=Math.max(d,Math.floor(ctrBase()*XSCM*(1+(opSum().thorns||0))));xN("xscA")}/* 내 몸 돌진만 (👻🗿 돌진은 _dkL "chg") */
@@ -6924,6 +6932,29 @@ function xSkStep(t){let ch=0;for(let i=SM.L.length-1;i>=0;i--){const u=SM.L[i];i
 {const _fk=fieldKill;fieldKill=function(f,dl){try{if(f&&!f._dieAt&&!f._xKd&&fld.includes(f)&&f.kind!="b"){f._xKd=1;xSkAdd(f.px,f.py)}}catch(e){console.error(e)}return _fk(f,dl)}}
 /* 그림: 망령 그림(wrCv·wrGl)을 어둡게 / 초록 빛으로 한 번 칠해 두고 해골 병사일 때만 바꿔 그림 */
 const XSKC=new Map();function xSkCv(W,col,op){if(!W)return W;let v=XSKC.get(W);if(!v){v=document.createElement("canvas");v.width=W.width;v.height=W.height;const g=v.getContext("2d");g.drawImage(W,0,0);g.globalCompositeOperation=op;g.fillStyle=col;g.fillRect(0,0,v.width,v.height);XSKC.set(W,v)}return v}
+/* ===== 📦 옮기기 33 (재기획 docs/기획/2026-11-11_무기개성_재기획.md 3절 · 0단계 꼬리표 · 사용자 2026-11-12 "33개 옮김") =====
+   꼬리표 표 하나 XMV: k 기사 · a 궁수 · m 마법사 (직업만) / sh 방패 · 2h 두손검 · bow 활 · cb 저격 석궁 · st 지팡이 · bk 마도서 (무기)
+   직업 = s.cls (다른 직업은 psFit = 안 보임) · 무기 = xOffS 회색 + 이유 · 안 맞는 무기면 psEqList에서 빠짐 = 효과 0 (칸은 그대로, 무기 바꾸면 다시 켜짐)
+   저장: 칸·📜 프리셋을 안 건드림 (🧩 ● X) · 캐릭터마다 처음 한 번 팝업 (S.xmv) */
+for(const id in XMV){const s=psGet(id);if(!s)continue;const g=XMV[id],suf=" · "+XMN[g].replace(/^\S+ /,"");s.cls=XMC[g];s.xo=XWN[g]?"w":"c";
+  const D=Object.getOwnPropertyDescriptor(s,"d"),cut=x=>String(x||"").replace(/ · (기사만|방패 전용|저격 석궁 전용)$/,"")+suf;
+  if(D&&D.get)Object.defineProperty(s,"d",{get(){return cut(D.get.call(this))},configurable:true,enumerable:true});else s.d=cut(s.d)}
+for(const id in XSID){const s=psGet(id);if(s)s.xo=XW[id]?"w":"c"}
+{const s=psGet("ps");if(s){s.n="질풍 화살";s.sh="속도 +100% · 늘어난 속도 1%당 피해 +"+XPSD+"%";s.d="(투사체) 투사체 속도 +100% · 늘어난 투사체 속도(활 +50% 포함) 1%당 투사체 피해 +"+XPSD+"% (상세 능력치 투사체 피해) · 활 전용"}}
+{const s=psGet("su");if(s){s.ef={smD:1};s.sh="소환수 피해 +100%";s.d="(소환) 소환수 피해 +100% (문지기·보스도) · 소환수가 있어야 해요 · +1마리는 🏴 군단 소집(마도서)으로"}}
+/* 안 맞는 무기 = 효과에서 뺌 (opSum·15j·15m·포대 등 전부 psEqList를 봄) · 회색 표시는 칸(S.psl) 그대로 */
+{const _pe=psEqList;psEqList=function(){const r=_pe();for(let i=r.length-1;i>=0;i--){const g=xMvW(r[i].id);if(g&&!xWOk(g))r.splice(i,1)}return r}}
+/* 🚀 질풍 화살: 투사체 피해 += 0.2 × 늘어난 속도 (opSum = 상세 능력치 줄에도) · XS.ps는 xRf가 0.2초마다 */
+{const _os=opSum;opSum=function(){const r=_os.apply(this,arguments);if(XS.ps&&r&&r.pjS>0)r.pjD=(r.pjD||0)+XPSD*r.pjS;return r}}
+/* 직업 카드에 "전용 스킬 N개" */
+for(const k in CLS){const n=PSK.filter(s=>s.cls==k).length;if(n&&CLWP[k]!=null)CLWP[k]+="<br><b style='color:#ffd77a'>👤🗡️ 전용 스킬 "+n+"개</b>"}
+/* 팝업: 이 캐릭터의 칸·📜 프리셋에 옮긴 스킬이 있으면 한 번 (SKGONE 팝업과 같은 모양) */
+function xMvFix(){if(!S||!S.cls||S.xmv)return;const ids=new Set(),add=a=>{if(Array.isArray(a))for(const x of a)if(x)ids.add(x)};
+  try{add(S.psl);if(S.skp)for(const c in S.skp){const P=S.skp[c];if(P&&Array.isArray(P.list))P.list.forEach(L=>add(Array.isArray(L)?L:L&&L.psl))}if(S.pre)for(const c in S.pre){const P=S.pre[c];if(P)add(P.psl)}}catch(e){console.error(e)}
+  const mv=[...ids].filter(id=>XMV[id]&&psGet(id)),su=ids.has("su");S.xmv=1;if(!mv.length&&!su)return;
+  const oc=mv.some(id=>psGet(id).cls!=S.cls),L=mv.map(id=>{const s=psGet(id);return s.ic+" "+s.n+" → "+XMN[XMV[id]]});if(su)L.push("🌟 소환수 강화 → 소환수 피해 +100% (+1마리는 🏴 군단 소집으로)");
+  setTimeout(()=>{try{log("📜 스킬 정리: 전용이 된 스킬 "+mv.length+"개","o");popup("📜 스킬 정리",(mv.length?"전용이 된 스킬 "+mv.length+"개<br>":"")+L.join("<br>")+"<br><small>칸은 그대로예요 · 안 맞는 무기면 회색 (무기를 바꾸면 다시 켜져요)"+(oc?" · 다른 직업 전용은 빈 칸으로 보여요":"")+"</small>",[["확인",closePop]]);save()}catch(e){}},1500)}
+{const _mg=migrate;migrate=function(){_mg();try{xMvFix()}catch(e){console.error(e)}}}
 {const _wd=wrDraw;wrDraw=function(c,t,u){if(!u||u.k!="skel")return _wd(c,t,u);const a=wrCv,b=wrGl;wrCv=function(){return xSkCv(a(),"rgba(30,26,20,.7)","source-atop")};wrGl=function(){return xSkCv(b(),"rgb(150,235,120)","source-atop")};try{return _wd(c,t,u)}finally{wrCv=a;wrGl=b}}}
 
 const POTCD=2000;function potReady(){return gnow()-(window._pt??-1e9)>=POTCD}
