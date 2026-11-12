@@ -3093,23 +3093,24 @@ function renderSkb(){const w=$("skw");if(!w||!S||!S.skin)return;w.classList.togg
 function itemFix(){const all=[...Object.values(S.eq||{}),...(S.inv||[])].filter(Boolean);
   if(!S.v3gm){const OLD=[1,1.5,2.2,3.2,4.5,20];all.forEach(it=>{const g=it.g||0,r=GM[g]/OLD[g];if(r!=1)for(const k of["atk","def","hp"])if(it[k])it[k]=Math.floor(it[k]*r)});S.v3gm=1}
   if(!S.v3so){let n=0;all.forEach(it=>{if((it.g||0)<3&&it.so&&it.so.length){it.so.forEach(x=>{if(x&&x.gk){addGem(x.gk,x.gg);n++}});it.so=[]}});S.v3so=1;if(n)setTimeout(()=>{try{log("💎 영웅 등급 미만 장비의 소켓이 제거되어 보석 "+n+"개를 돌려받았어요","o");gemDirty();render()}catch(e){}},500)}}
-const OPD={atkP:{n:"공격력",b:.04},defP:{n:"방어력",b:.05},hpP:{n:"최대 HP",b:.05},hpReg:{n:"초당 HP 회복",b:.003},critR:{n:"치명타 확률",b:.02,p:1},critD:{n:"치명타 피해",b:.1},aspd:{n:"공격 속도",b:.05},dodge:{n:"회피",b:.025},dr:{n:"받는 피해 감소",b:.02},ls:{n:"흡혈",b:.01},bossD:{n:"문지기·보스 피해",b:.06},multi:{n:"추가타 확률",b:.03},thorns:{n:"반격 피해",b:.3,bt:"⚔️"},thrC:{n:"반격 확률",b:.05,p:1,bt:"⚔️"},pjD:{n:"투사체 피해",b:.06,bt:"🏹"},chD:{n:"전이 피해",b:.15,bt:"🏹"},baD:{n:"일반 공격 피해",b:.08,bt:"🏹"},dgA:{n:"회피",b:.05,p:1,bt:"🏹"},smD:{n:"소환수 피해",b:.1,bt:"📖"},smS:{n:"소환수 공격 속도",b:.06,bt:"📖"},burn:{n:"화상 피해",b:.02},exe:{n:"마무리 일격",b:.1},goldF:{n:"골드 획득",b:.06},expF:{n:"경험치 획득",b:.06},dropF:{n:"드롭률",b:.05},potH:{n:"물약 회복량",b:.1},dbl:{n:"더블 어택 확률",b:.05,p:1},tri:{n:"트리플 어택 확률",b:.03,p:1},oshC:{n:"혈막 최대치",b:.1,p:1,bt:"🗡️"},wallX:{n:"방벽 효과",b:.1,bt:"🛡️"},t2L:{n:"두손검 흡혈",b:.02,p:1,bt:"🗡️"},auR:{n:"오라 범위",b:.1},smB:{n:"소환수 보스 피해",b:.1,bt:"📖"},mpP:{n:"최대 MP",b:.05},mgA:{n:"MP 재생",b:.1},pjS:{n:"투사체 속도",b:.1},mvP:{n:"이동 속도",b:.1},bxP:{n:"피의 폭발 피해",b:.05,bt:"🗡️",sk:"bx"},oshH:{n:"혈막 유지",b:.1,bt:"🗡️"},swA:{n:"베기 범위",b:.05,bt:"🗡️",sk:"swp|sw",hn:"휩쓸기·검의 기운"},swS:{n:"베기 피해",b:.05,p:1,bt:"🗡️",sk:"swp|sw",hn:"휩쓸기 피해 · 검의 기운 다른 적"},frzH:{n:"광란 유지",b:.2,bt:"🗡️",sk:"frz",su:"초"},sbP:{n:"방패 강타 피해",b:.1,bt:"⚔️",sk:"sb"},shbP:{n:"방패치기 피해",b:.05,bt:"⚔️",sk:"shb"},gdX:{n:"긍지 효과",b:.1,bt:"⚔️",sk:"gd"},prD:{n:"관통 피해",b:.08,bt:"🏹",sk:"pr"},dgH:{n:"회피 시 HP 회복",b:.005,bt:"🏹"},mshE:{n:"보호막 효율",b:.1,bt:"📖",sk:"ms"},smX:{n:"소환수 추가타",b:.05,bt:"📖",sk:"sm"},ovD:{n:"과부하 피해",b:.1,bt:"🔮",sk:"ovl"},ovT:{n:"과부하 시간",b:.2,bt:"🔮",sk:"ovl",su:"초"},anD:{n:"마나 폭발 피해",b:.1,bt:"🔮",sk:"anv"},anR:{n:"마나 폭발 범위",b:.05,bt:"🔮",sk:"anv"},tpD:{n:"덫 피해",b:.1,bt:"🏹",sk:"trp"},tpR:{n:"덫 범위",b:.05,bt:"🏹",sk:"trp"},tpC:{n:"덫 추가 확률",b:.02,p:1,bt:"🏹",sk:"trp"},ntT:{n:"속박 시간",b:.15,bt:"🏹",sk:"net",su:"초"},cxD:{n:"연쇄 피해",b:.1,bt:"🏹",sk:"trp"}};
+const OPD={atkP:{n:"공격력",b:.04},defP:{n:"방어력",b:.05},hpP:{n:"최대 HP",b:.05},hpReg:{n:"초당 HP 회복",b:.003},critR:{n:"치명타 확률",b:.02,p:1},critD:{n:"치명타 피해",b:.1},aspd:{n:"공격 속도",b:.05},dodge:{n:"회피",b:.025},dr:{n:"받는 피해 감소",b:.02},ls:{n:"흡혈",b:.01},bossD:{n:"문지기·보스 피해",b:.06},multi:{n:"추가타 확률",b:.03},thorns:{n:"반격 피해",b:.3,bt:"⚔️"},thrC:{n:"반격 확률",b:.05,p:1,bt:"⚔️"},pjD:{n:"투사체 피해",b:.06,bt:"🏹"},chD:{n:"전이 피해",b:.15,bt:"🏹"},baD:{n:"일반 공격 피해",b:.08,bt:"🏹"},dgA:{n:"회피",b:.05,p:1,bt:"🏹"},smD:{n:"소환수 피해",b:.1,bt:"📖"},smS:{n:"소환수 공격 속도",b:.06,bt:"📖"},burn:{n:"화상 피해",b:.02},exe:{n:"마무리 일격",b:.1},goldF:{n:"골드 획득",b:.06},expF:{n:"경험치 획득",b:.06},dropF:{n:"드롭률",b:.05},potH:{n:"물약 회복량",b:.1},dbl:{n:"더블 어택 확률",b:.05,p:1},tri:{n:"트리플 어택 확률",b:.03,p:1},oshC:{n:"혈막 최대치",b:.1,p:1,bt:"🗡️"},wallX:{n:"방벽 효과",b:.1,bt:"🛡️"},t2L:{n:"두손검 흡혈",b:.02,p:1,bt:"🗡️"},auR:{n:"오라 범위",b:.1},smB:{n:"소환수 보스 피해",b:.1,bt:"📖"},mpP:{n:"최대 MP",b:.05},mgA:{n:"MP 재생",b:.1},pjS:{n:"투사체 속도",b:.1},mvP:{n:"이동 속도",b:.1},bxP:{n:"피의 폭발 피해",b:.05,bt:"🗡️",sk:"bx"},oshH:{n:"혈막 유지",b:.1,bt:"🗡️"},swA:{n:"칼 길이",b:.05,bt:"🗡️",hn:"서는 거리·칼로 닿는 범위가 같이"}/* 2026-11-12: 베기 범위 → 칼 길이 (12 wbl 감싸기, 🌕 거검과 같은 자리) */,swS:{n:"베기 피해",b:.05,p:1,bt:"🗡️",sk:"swp|sw",hn:"휩쓸기 피해 · 검의 기운 다른 적"},frzH:{n:"광란 유지",b:.2,bt:"🗡️",sk:"frz",su:"초"},sbP:{n:"방패 강타 피해",b:.1,bt:"⚔️",sk:"sb"},shbP:{n:"방패치기 피해",b:.05,bt:"⚔️",sk:"shb"},gdX:{n:"긍지 효과",b:.1,bt:"⚔️",sk:"gd"},prD:{n:"관통 피해",b:.08,bt:"🏹",sk:"pr"},dgH:{n:"회피 시 HP 회복",b:.005,bt:"🏹"},mshE:{n:"보호막 효율",b:.1,bt:"📖",sk:"ms"},smX:{n:"소환수 추가타",b:.05,bt:"📖",sk:"sm"},smU:{n:"소환수 유지비 감소",b:.06,bt:"📖"}/* 2026-11-12 최종화2: 소환수 유지비 ×(1-v) (15i smUpR) */,ovD:{n:"과부하 피해",b:.1,bt:"🔮",sk:"ovl"},ovT:{n:"과부하 시간",b:.2,bt:"🔮",sk:"ovl",su:"초"},anD:{n:"마나 폭발 피해",b:.1,bt:"🔮",sk:"anv"},anR:{n:"마나 폭발 범위",b:.05,bt:"🔮",sk:"anv"},tpD:{n:"덫 피해",b:.1,bt:"🏹",sk:"trp"},tpR:{n:"덫 범위",b:.05,bt:"🏹",sk:"trp"},tpC:{n:"덫 추가 확률",b:.02,p:1,bt:"🏹",sk:"trp"},ntT:{n:"속박 시간",b:.15,bt:"🏹",sk:"net",su:"초"},cxD:{n:"연쇄 피해",b:.1,bt:"🏹",sk:"trp"}};
 /* 📖 마도서(비전): ovD 과부하 중 주문 피해·과부하 효과(유성·서리 폭풍·벼락·비전 파열) ×(1+v) (2026-11-02 뜻 바뀜, 키 그대로) · ovT 과부하 시간 +v초 · anD 마나 폭발 피해 ×(1+v) · anR 마나 폭발 반경 ×(1+v) (둘 다 마나 폭주 여진 포함) */
 /* 2단계 2-2: sbP 방패 강타 피해 ×(1+v) · shbP 방패치기 피해 ×(1+v) · gdX 긍지 1마리당 방어 ×(1+v) (긍지 스킬 있어야 켜짐) · prD 관통 피해 ×(1+v) · dgH 회피하면 최대 HP v 회복 (0.5초에 1번) · mshE 마나 보호막 MP 1당 막는 피해 ×(1+v) · smX 정령이 쏠 때 v 확률로 한 번 더 */
 /* 2단계(두손검): bxP 폭발 피해 ×(1+v) · oshH 혈막 감소 ×(1-v) · swA 베기 범위 = 휩쓸기 반경·검의 기운 닿는 거리 ×(1+v) · swS 베기 피해 (2026-11-06 예전 "베기 주변 피해") = 🪓 휩쓸기 피해 ×(1+v)·🌙 검의 기운 다른 적 ×(1+v) · frzH 광란 유지 +v초. sk = 짝 스킬(없으면 장비창에서 회색), su = 단위(초) */
 /* 🪤 덫(활 a, 2026-11-02): tpD 덫 피해 ×(1+v) · tpR 덫 반경 ×(1+v) · tpC 치명 아닌 화살도 v 확률로 덫 화살 · ntT 그물 +v초 · cxD 연쇄 한 단계 +15% ×(1+v). 활 a 칸의 투사체 속도·회피·회피 시 HP 회복 8줄 자리에 들어감 (옛 장비에 붙은 그 줄은 그대로 효과 있음, OPD에서 안 지움) */
 /* 장비 몫만 묶는 상한 (스킬·직업 값은 이 뒤에 더해짐) */
-const OGC={thorns:3,wallX:.3,auR:.5,oshC:.6,baD:.75,critD:2,chD:1,pjS:.5,smD:.9,smS:.5,smB:.9,mpP:.45,mgA:.9,bxP:.45,oshH:.6,swA:.3,swS:.4,frzH:1.5,sbP:.9,shbP:.45,gdX:.5,prD:.6,dgH:.03,mshE:.5,smX:.3,ovD:.6,ovT:1.5,anD:.6,anR:.3,tpD:.6,tpR:.3,tpC:.15,ntT:1,cxD:.6};
+const OGC={thorns:3,wallX:.3,auR:.5,oshC:.6,baD:.75,critD:2,chD:1,pjS:.5,smD:.9,smS:.5,smB:.9,mpP:.45,mgA:.9,bxP:.45,oshH:.6,swA:.3,swS:.4,frzH:1.5,sbP:.9,shbP:.45,gdX:.5,prD:.6,dgH:.03,mshE:.5,smX:.3,ovD:.6,ovT:1.5,anD:.6,anR:.3,tpD:.6,tpR:.3,tpC:.15,ntT:1,cxD:.6,smU:.3};
 const OCAP={proj:4,chain:3,tri:.6,dbl:1,thrC:.5,dodge:.45,dr:.6,ls:.2,multi:.5,hpReg:.03,aspd:2,burn:.4};
 const OPS={hat:["hpP","hpReg","dr","expF"],ear:["critR","critD","expF","dropF"],neck:["atkP","ls","bossD","goldF"],ring:["critR","critD","atkP","goldF"],cape:["dodge","hpReg","dr"],top:["hpP","defP","dr"],bottom:["hpP","defP","hpReg","potH"],glove:["aspd","critR","multi","atkP"],shoe:["dodge","aspd","dropF","potH"],
   weapon:{knight:["ls","atkP","bossD","multi"],archer:["critD","aspd","multi","critR"],mage:["atkP","burn","exe","bossD"]},shield:{knight:["dr","defP","hpP","thorns","thrC"],archer:["aspd","multi","critR","dodge"],mage:["burn","exe","ls","hpP"]}};
 const OPN=[0,1,2,2,3,4],OPM=[0,1,1.3,1.7,2.2,3];
 const UQS=["cape","top"],UQG=4,UQP=1,UQO={knight:["thorns","thrC"],archer:["baD","dgA"],mage:["smD","smS"],th2:["oshC","t2L"]};
 /* 전 부위 고유옵션 (1단계: 이미 있는 옵션 + 이동 속도 / 2단계 1차: 두손검 새 옵션 5개 / 2-2: 방패 기사 3·궁수 2·마법사 2 → 빈칸 없음). 빌드 ks 방패 기사 · k2 두손검 기사 · a 궁수 · m 마법사. 전설 1줄 / 유니크 2줄 */
-const UQT={weapon:{ks:["thorns","sbP"],a:["baD","critD"],m:["smD","smB"]},shield:{ks:["wallX","gdX"],a:["tpC","prD"],m:["mgA","mshE"]},hat:{ks:["auR","gdX"],k2:["oshH","swA"],a:["critD","tpR"],m:["mpP","mgA"]},top:{ks:UQO.knight,k2:UQO.th2,a:["dgA","tpD"],m:UQO.mage},cape:{ks:UQO.knight,k2:UQO.th2,a:["dgA","ntT"],m:UQO.mage},bottom:{ks:["wallX","gdX"],k2:["oshH","bxP"],a:["tpD","cxD"],m:["mpP","mshE"]},glove:{ks:["sbP","shbP"],k2:["swS","bxP"],a:["chD","prD"],m:["smS","smB"]},shoe:{ks:["mvP","auR"],k2:["mvP","oshH"],a:["mvP","tpC"],m:["mvP","smX"]},ring:{ks:["sbP","shbP"],k2:["swS","swA"],a:["chD","critD"],m:["smB","mpP"]},neck:{ks:["wallX","auR"],k2:["bxP","swA"],a:["cxD","prD"],m:["mgA","smX"]},ear:{ks:["thrC","shbP"],k2:["swS","frzH"],a:["chD","critR"],m:["mshE","smX"]}};
+const UQT={weapon:{ks:["thorns","sbP"],a:["baD","critD"],m:["smD","smB"]},shield:{ks:["thrC","wallX"],a:["tpC","pjS"],m:["mgA","mshE"]},hat:{ks:["auR","gdX"],k2:["oshH","swA"],a:["critD","tpR"],m:["mpP","mgA"]},top:{ks:UQO.knight,k2:UQO.th2,a:["dgA","tpD"],m:UQO.mage},cape:{ks:UQO.knight,k2:UQO.th2,a:["dgA","ntT"],m:["smD","smU"]},bottom:{ks:["wallX","gdX"],k2:["oshH","bxP"],a:["tpD","cxD"],m:["mpP","smU"]},glove:{ks:["sbP","shbP"],k2:["swS","bxP"],a:["chD","pjS"],m:["smS","smB"]},shoe:{ks:["mvP","auR"],k2:["mvP","frzH"],a:["mvP","tpC"],m:["mvP","smX"]},ring:{ks:["sbP","shbP"],k2:["swS","swA"],a:["chD","critD"],m:["smB","mpP"]},neck:{ks:["wallX","auR"],k2:["bxP","swA"],a:["cxD","pjS"],m:["mgA","smX"]},ear:{ks:["spD","shbP"],k2:["spD","frzH"],a:["spD","critR"],m:["spD","smX"]}};
+/* 2026-11-12 최종화2 (docs/기획/2026-11-12_장비옵션_최신화2.md 5-1): 13칸을 "무기 장치 줄"로 · 귀걸이 = 🔥 원소 피해(spD) · 빠진 줄(관통 피해·보호막 효율 등)이 붙은 예전 장비는 그대로 효과 (OPD에서 안 지움) */
 /* 📖 mb 마도서 마법사 (주문 빌드) — 한 옵션 최대 3칸 · 2026-11-02 2차: 주문 옵션(spD 주문 피해·spC 대기 감소·mtR 메테오 범위·fzT 얼림 시간, 정의는 15e)으로 바꿈
    빠진 mgA·mshE·chD 줄이 붙은 옛 마도서 장비는 그대로 효과 있음 (OPD에서 안 지움) */
-{const MB={weapon:["spD","ovD"],shield:["spC","ovT"],hat:["mpP","spC"],top:["mpP","mtR"],cape:["ovT","fzT"],bottom:["ovT","anR"],glove:["spD","spC"],shoe:["mvP","fzT"],ring:["spD","anD"],neck:["mpP","anD"],ear:["mtR","ovD"]};for(const k in MB)UQT[k]=Object.assign({},UQT[k],{mb:MB[k]})}
+{const MB={weapon:["spD","ovD"],shield:["spC","ovT"],hat:["mpP","mshE"],top:["mpP","mtR"],cape:["ovT","fzT"],bottom:["mshE","anR"],glove:["spD","spC"],shoe:["mvP","fzT"],ring:["spD","anD"],neck:["mpP","anD"],ear:["mtR","ovD"]};for(const k in MB)UQT[k]=Object.assign({},UQT[k],{mb:MB[k]})}
 /* 2026-11-02 사용자: 마법사 고유옵션 표식 바꿈 — mt 📖 = 소환·마나 줄(아래 표의 m 줄, 마도서일 때만) · mo 🔮 = 주문·비전 줄(MB 표, 지팡이 + 오브일 때만). m·mb 이름도 남겨 둠(측정 도구 tests/measure.py가 씀) */
 for(const k in UQT){const o=UQT[k];if(o.m)o.mt=o.m;if(o.mb)o.mo=o.mb}
 const UBI={ks:"⚔️",k2:"🗡️",a:"🏹",mt:"📖",mo:"🔮",m:"📖",mb:"🔮"},CUB={archer:"a",mage:"mo"};
@@ -3497,14 +3498,16 @@ const SWPN=10,SWPM=4,SWPRX=1.2,SWPT=280,SWQ=.35,SWFD=200,SWGM=220,swFx=[],slQ=[]
    SWSR 서는 거리 ÷ 닿는 거리 · SWDM 대상 피해(공격력 ×) · SWDS 다른 적 피해(공격력 ×) · SWGN 잔상 수 · SWGL 잔상 시간 배율 · 한손검·두손검 표 없음 (차이는 칼 길이·칼 폭에서) */
 const SWX=1.5,SWSR=.75,SWDM=1,/* 2026-11-10 B11 대상 80 → 100% */SWDS=.7,SWGN=4,SWGL=1;
 function swkT(){const B=wbl();return {h:B.h,m:SWDM,s:SWDS,sr:SWSR,gn:SWGN,gl:SWGL}}
-function swRch(){return wbl().L*SWX*(1+((S&&opSum().swA)||0))*rgM()}
+function swRch(){return wbl().L*SWX*rgM()}/* 🗡️ 칼 길이(swA)는 wbl()에 들어 있음 (아래) */
+/* 🗡️ 칼 길이 옵션 swA (2026-11-12, 예전 "베기 범위"): 칼 길이 L에 곱함 → 서는 거리·🪓·🔨·🌙·🩸·🐆·🔻 등 칼 길이를 읽는 곳이 같이 (🌕 거검 15q와 같은 자리) · opSum은 0.1초에 한 번 */
+{const _wb=wbl,WC=new Map();let wT=-1e9,wV=0,wIn=0;wbl=function(){const b=_wb();if(!S||!b)return b;const r=performance.now();if((r-wT>100||r<wT)&&!wIn){wIn=1;try{wV=Math.max(0,opSum().swA||0)}catch(e){wV=0}wIn=0;wT=r}if(!(wV>0))return b;let M=WC.get(b);if(!M){M=new Map();WC.set(b,M)}let v=M.get(wV);if(!v){if(M.size>20)M.clear();v=Object.assign({},b,{L:b.L*(1+wV)});M.set(wV,v)}return v}}
 /* 근접 일반 공격 = 지금은 기사 (투사체 변환 없을 때) · 나중 근접 무기도 여기서 */
 let _swpT=-1,_swpV=0,swpN=0,_swpQ=0,swpK=0;DSRC.swp=["🪓","휩쓸기"];LSK.swp=1;
 function swpOn(){const r=performance.now();if(r-_swpT<150&&r>=_swpT)return _swpV;_swpT=r;_swpV=!!(S&&melBa()&&(opSum().sweep||0)>0);return _swpV}/* 07 dmT가 명중마다 부름 → opSum은 0.15초에 한 번 */
 function atkRg(){return S&&S.cls=="knight"&&swOn()?swRch():hRange()}/* 공격 사거리 = 닿는 거리 (🌙 검의 기운이면 그 닿는 거리, 아니면 서는 거리 = 칼 길이·활 사거리 등) */
 function swpTick(){if(++swpN<SWPN)return;swpN=0;if(_swpQ)return;_swpQ=1;Promise.resolve().then(()=>{_swpQ=0;try{swpBig()}catch(e){console.error(e)}})}
 function slIv(){return BASI/(1+aspd())}
-function swpBig(){if(!swpOn()||dead||!S||S.hp<=0)return;const n=gnow(),P=opSum(),R=atkRg()*SWPRX*(1+(P.swA||0)),cr=Math.random()<crit(),d=Math.max(1,Math.floor(atk()*SWPM*(.9+Math.random()*.2)*(cr?critD():1)*(1+(P.swS||0)))),dir=hFace<0?-1:1,du=SWPT,tg=[];
+function swpBig(){if(!swpOn()||dead||!S||S.hp<=0)return;const n=gnow(),P=opSum(),R=atkRg()*SWPRX,cr=Math.random()<crit(),d=Math.max(1,Math.floor(atk()*SWPM*(.9+Math.random()*.2)*(cr?critD():1)*(1+(P.swS||0)))),dir=hFace<0?-1:1,du=SWPT,tg=[];
   for(const f of spAll()){const [X,Y]=monPt(f),dx=X-PX,dy=(Y-PY)/AUY;if(dx*dx+dy*dy>R*R)continue;let p=(Math.atan2((Y-PY)/.58,dx*dir)+Math.PI/2)/6.2832;p-=Math.floor(p);tg.push([f,p])}
   swpK=n;addText(PX,PY-140*SZ,"🪓 휩쓸기!","#ff9a80",0);if(tg.length){dEv("swp",n)}/* 피의 폭발: 맞은 적마다 1타 (사용자 2026-11-07, 예전 한 바퀴 = 1타, 🌙 검의 기운과 같게) */
   slAdd({k:"swp",t0:n,du,dir,r:R,big:1},tg,d,cr,"swp",dir);shk(2.4,180,n+du*.4)}
@@ -3535,7 +3538,7 @@ function swGhost(c,t){if(!SWG.length||!S||S.cls!="knight"||dead)return;
       zoomAt(c,PX,PY);c.translate(PX+Math.cos(ag)*rr/SZ,PY+Math.sin(ag)*AUY*rr/SZ-34);c.rotate((ag-an)*.9);c.translate(0,34);c.scale(fc*1.12,1);c.translate(-PX,-PY);swGSpr(c,e.g,al);if(i==n-1)swGSpr(c,e.g,al*.45,1);c.restore()}}}
 /* 🌙·🪓 설명 = 지금 무기 칼 길이 + 베기 범위 그대로 (문자열로 쓰는 곳 그대로 되게 getter) */
 {const s=PSK.find(x=>x.id=="sw");if(s)Object.defineProperty(s,"d",{configurable:true,get(){let L=WBL["1h"].L*SWX;try{if(S&&S.cls=="knight")L=swRch()}catch(e){}return "(근접) 검의 사정거리가 칼 길이 ×"+SWX+"로 늘어나요 · 멀리 서서 휘둘러 앞쪽 부채꼴(닿는 거리 "+Math.round(L)+", 폭 = 칼 폭) 안 적 전부 ("+(SWDM<1?"대상 "+Math.round(SWDM*100)+"% · ":"")+"다른 적 "+Math.round(SWDS*100)+"%) · 다른 적도 치명 함께 · 공격 사거리도 이만큼 (🩸·🔨·🪓·🐆 반경이 따라 커져요) · 기사만"}})}
-{const s=PSK.find(x=>x.id=="swp");if(s)Object.defineProperty(s,"d",{configurable:true,get(){let R=WBL["1h"].L*SWPRX;try{if(S&&melBa())R=atkRg()*SWPRX*(1+(opSum().swA||0))}catch(e){}return "(근접) 휘두르기 "+SWPN+"번마다 내 둘레를 크게 한 바퀴 · 반지름 = 공격 사거리 ×"+SWPRX+" (지금 "+Math.round(R)+") · 원 안 적 전부 공격력 "+Math.round(SWPM*100)+"% · 추가타도 1번으로 셈 · 흡혈석·폭렬석 적용"}})}
+{const s=PSK.find(x=>x.id=="swp");if(s)Object.defineProperty(s,"d",{configurable:true,get(){let R=WBL["1h"].L*SWPRX;try{if(S&&melBa())R=atkRg()*SWPRX}catch(e){}return "(근접) 휘두르기 "+SWPN+"번마다 내 둘레를 크게 한 바퀴 · 반지름 = 공격 사거리 ×"+SWPRX+" (지금 "+Math.round(R)+") · 원 안 적 전부 공격력 "+Math.round(SWPM*100)+"% · 추가타도 1번으로 셈 · 흡혈석·폭렬석 적용"}})}
 /* 옛 저장: 🪓 휩쓸기가 '10번마다 크게 한 바퀴'로 바뀐 날 한 번 알림 (S.swp2, 스킬 프리셋 어딘가에 휩쓸기가 있던 저장만) */
 {const _mgW=migrate;migrate=function(){_mgW();if(!S||S.swp2)return;S.swp2=1;let u=0;try{u=(S.psl||[]).includes("swp")||/"swp"/.test(JSON.stringify(S.skp||{}))}catch(e){}if(u)setTimeout(()=>{try{log("🪓 휩쓸기가 '휘두르기 "+SWPN+"번마다 크게 한 바퀴'로 바뀌었어요 (검의 기운과 같이 낄 수 있어요)","o");gToastNow("🪓 휩쓸기 바뀜","휘두르기 "+SWPN+"번마다 크게 한 바퀴 · 검의 기운과 같이 낄 수 있어요");save()}catch(e){}},2400)}}
 /* 옛 저장: 🌙 검의 기운(예전 검기)이 투사체 → 근접으로 바뀐 날 한 번 알림 (S.swk1) */
@@ -4039,21 +4042,24 @@ function opV(k,v){const D=OPD[k];return D.su?Math.round(v*100)/100+D.su:Math.rou
 function opHn(k){const h=OPD[k]&&OPD[k].hn;return h&&!opSkOff(k)?" <small style='color:#9fb4d8'>("+h+")</small>":""}/* 툴팁에만 붙는 짧은 안내 (OPD hn) */
 function opTxt(x,it){return opNmU(x,it)+" +"+opV(x.k,x.v)+opHn(x.k)}
 /* 짝 스킬이 없는 고유옵션 줄: 회색 "(스킬 없음)" (계산은 그대로, 스킬이 없어 효과만 없음) */
-function opSkOff(k){const s=OPD[k]&&OPD[k].sk;if(!s||!S)return "";const L=s.split("|"),E=psEqList();return E.some(p=>L.includes(p.id))?"":L.map(x=>(PSK.find(p=>p.id==x)||{}).n||x).join("·")+" 없음"}/* sk "a|b" = 둘 중 하나 있으면 켜짐 (🪓 베기 범위 = 휩쓸기·검의 기운) */
+function opSkOff(k){if(S&&k=="wallX")return gemSum().wall>0?"":"🔰 방벽석 없음";if(S&&k=="auR")return auOn()||gdOn()||hsOn()?"":"오라 스킬 없음";/* 숨은 규칙 막기 (2026-11-12): 할 일 없으면 회색 */const s=OPD[k]&&OPD[k].sk;if(!s||!S)return "";const L=s.split("|"),E=psEqList();return E.some(p=>L.includes(p.id))?"":L.map(x=>(PSK.find(p=>p.id==x)||{}).n||x).join("·")+" 없음"}/* sk "a|b" = 둘 중 하나 있으면 켜짐 (🪓 베기 범위 = 휩쓸기·검의 기운) */
 function opOffL(x,it,uo){return '<div style="color:#777">◆ '+opTxt(x,it)+' <small>('+uo+')</small></div>'}
 function opImp(it,i){if(!S||!it.sl)return null;const x=it.op[i],c=Object.assign({},it,{op:it.op.filter((_,j)=>j!=i)}),F={atkP:atk,defP:def,hpP:mhp}[x.k];return {sd:F?withEq(it.sl,it,F)-withEq(it.sl,c,F):0,cpd:withEq(it.sl,it,cp)-withEq(it.sl,c,cp)}}
-function opLines(it){if(!it.op||!it.op.length)return'';const uo=uqOffV(it);return '<div class="topl">'+it.op.map(x=>uo&&isUq(it,x)?opOffL(x,it,uo):x.u&&opSkOff(x.k)?opOffL(x,it,opSkOff(x.k)):'<div>◆ '+opTxt(x,it)+'</div>').join('')+'</div>'}
+function opLines(it){if(!it.op||!it.op.length)return'';const uo=uqOffV(it);return '<div class="topl">'+it.op.map(x=>uo&&isUq(it,x)?opOffL(x,it,uo):x.u&&opSkOff(x.k)?opOffL(x,it,opSkOff(x.k)):'<div>◆ '+opTxt(x,it)+'</div>').join('')+uqTblL(it)+'</div>'}
+/* 고유옵션 표 고르는 규칙 보이기 (2026-11-12 숨은 규칙 막기, 10 rollOps): 갑옷·장신구는 70%가 지금 낀 무기 쪽 표 */
+function uqTblL(it){if(!it||!it.sl||it.sl=="weapon"||it.sl=="shield"||!(it.op||[]).some(x=>x.u))return "";return "<div style='color:#8f9bb3;font-size:.9em'>💡 고유옵션은 지금 낀 무기 쪽 장비가 더 잘 나와요 (70%)</div>"}
+Object.assign(SDESC,{"◆ 칼 길이":"🗡️ 두손검 고유옵션 · 칼 길이가 늘어나요 → 서는 거리와 칼로 닿는 범위(🪓 휩쓸기·🔨 대지 강타·🌙 검의 기운·🩸 피의 폭발·🐆 착지·🔻 내려치기 등)가 같이 커져요 (🌕 거검과 같은 자리).","◆ 큰 한 방 가속":"원소 큰 한 방(🌠🌨️🌩️·🐲⛈️🗻·🎇🔆🌬️)에 필요한 명중 수가 줄어요 (15번 → 최소 5번) · 🧊 서리 고리 대기도 줄어요.","◆ 큰 한 방 범위":"🌠 메테오·🌨️ 블리자드·🌩️ 낙뢰 반경이 커져요.","◆ 얼림 시간":"🧊 서리 고리 얼림과 ❄️ 냉기 중첩 얼림이 길어져요 (문지기·보스 0.5초는 그대로).","◆ 원소 피해":"내 원소 피해가 늘어나요 (화염 폭발·번개·얼음 깨짐·원소 큰 한 방·주문·📖 소환수 원소). 원소가 있어야 효과가 있어요.","◆ 일반 공격 피해":"일반 공격 피해가 늘어나요 (더블·멀티샷·관통·전이처럼 일반 공격에서 파생된 피해 포함) · 🗼 포대 볼트도 (내 석궁 일반 공격과 같아서).","◆ 보호막 효율":"🔮 지팡이(+📖 예전 마도서 장비) 고유옵션 · 마나 보호막이 MP 1로 막는 피해가 늘어나요. 마나 보호막 스킬이 있어야 효과가 있어요.","◆ 소환수 유지비 감소":"📖 마도서 고유옵션 · 나와 있는 소환수가 1초마다 쓰는 MP가 줄어요. 소환 스킬이 있어야 효과가 있어요.","◆ 방벽 효과":"⚔️ 방패 기사 고유옵션 · 🔰 방벽석의 막을 확률이 늘어나요. 방벽석이 없으면 효과가 없어요.","◆ 오라 범위":"오라(도발의 오라·질주의 오라·수호자의 긍지) 범위가 늘어나요. 오라 스킬이 없으면 효과가 없어요.","◆ 투사체 속도":"화살(투사체)이 더 빨리 날아가요."});
 function opDiff(it,cmp){const A={},B={},N={},so=(cmp&&cmp.so||[]).filter(Boolean),uo=uqOffV(it),uc=cmp&&cmp.op?uqOffV(cmp):"",off=uo?(it.op||[]).filter(x=>isUq(it,x)):[];(it.op||[]).forEach(x=>{if(uo&&isUq(it,x))return;A[x.k]=(A[x.k]||0)+x.v;if(x.u)N[x.k]=opNmU(x,it)});(cmp&&cmp.op||[]).forEach(x=>{if(!(uc&&isUq(cmp,x)))B[x.k]=(B[x.k]||0)+x.v});const ks=[...new Set([...Object.keys(A),...Object.keys(B)])];if(!ks.length&&!so.length&&!off.length)return'';const nm=k=>N[k]||opNm(k);
   const pct=opV;let h='<div class="topl">';
   ks.filter(k=>A[k]).forEach(k=>{const d=A[k]-(B[k]||0);h+='<div>'+(B[k]==null?'<span class="otag nw">신규</span>':'')+'◆ '+nm(k)+' +'+pct(k,A[k])+opHn(k)+(B[k]==null||Math.abs(d)<1e-4?'':' <span class="'+(d>0?"up":"dn")+'">'+(d>0?"▲":"▼")+pct(k,Math.abs(d))+'</span>')+(N[k]&&opSkOff(k)?' <small style="color:#777">('+opSkOff(k)+')</small>':'')+'</div>'});
   ks.filter(k=>!A[k]).forEach(k=>{h+='<div class="orm"><span class="otag rm">제거</span><s>◆ '+nm(k)+' +'+pct(k,B[k])+'</s></div>'});
-  {let e=(it.so||[]).filter(x=>!x).length;so.forEach(g=>{if(e>0){e--;h+='<div><span class="otag mv">이동</span>'+GEM[g.gk].ic+' '+gemDesc(g.gk,g.gg)+'</div>'}else h+='<div class="orm"><span class="otag rm">제거</span><s>'+GEM[g.gk].ic+' '+gemDesc(g.gk,g.gg)+'</s> <small>(보석함으로)</small></div>'})}off.forEach(x=>h+=opOffL(x,it,uo));return h+'</div>'}
+  {let e=(it.so||[]).filter(x=>!x).length;so.forEach(g=>{if(e>0){e--;h+='<div><span class="otag mv">이동</span>'+GEM[g.gk].ic+' '+gemDesc(g.gk,g.gg)+'</div>'}else h+='<div class="orm"><span class="otag rm">제거</span><s>'+GEM[g.gk].ic+' '+gemDesc(g.gk,g.gg)+'</s> <small>(보석함으로)</small></div>'})}off.forEach(x=>h+=opOffL(x,it,uo));return h+uqTblL(it)+'</div>'}
 function thrChance(P){return Math.min(.6,.1+(P.thrC||0))}
 /* 상세 능력치: 짝 스킬이 없어 꺼진 장비 고유옵션 줄(아이템 창 회색 "(OO 없음)")은 합계에서 빼고 옆에 회색 "(꺼짐 +N)" (사용자 2026-11-04) · 켜진 몫이 없으면 줄 전체 회색 · 전투 계산(opSum)은 그대로(그 스킬이 없으면 원래 효과 없음) */
 function opSkSet(){const X=new Set();if(S&&S.eq)for(const sl in S.eq){if(eqOff(sl))continue;const it=S.eq[sl];if(!it||!it.op)continue;const uo=uqOff(it);for(const x of it.op)if(x.u&&!(uo&&isUq(it,x))&&!X.has(x.k)&&opSkOff(x.k))X.add(x.k)}return X}
 let _opPRc=null;function opPR(){if(_opPRc)return _opPRc;const P=opSumOn(),X=opSkSet();let R=P;if(X.size){_opSk=X;try{R=opSumOn()}finally{_opSk=null}}_opPRc={P,R};queueMicrotask(()=>{_opPRc=null});return _opPRc}
 function opRw(row,pc,k,nm){const {P,R}=opPR(),f=v=>OPD[k].su?opV(k,v):pc(v),on=R[k]>1e-9?R[k]:0,of=P[k]-on;if(of<=1e-9)return row(nm,"+"+f(P[k]));const o='<s class="dof">+'+f(of)+'</s>';/* 꺼진 몫 = 회색 줄 긋기 (사용자 2026-11-07: "(꺼짐 …)" 글자 때문에 반 칸이 한 줄로 펴지던 것 → 뺌, 꾹 누르면 설명) */return on?row(nm,"+"+f(on)+" "+o):row(nm,o).replace("<div ",'<div class="dsof" ')}
-function opRows(row,pc){const P=opPR().P;return ["thorns","thrC","baD","dgA","smD","smS","smB","chD","oshC","bxP","oshH","swA","swS","frzH","sbP","shbP","gdX","prD","dgH","mshE","smX","ovD","ovT","anD","anR","tpD","tpR","tpC","ntT","cxD","wallX","auR","pjS","mpP","mgA","hpReg","dodge","dr","critD","ls","multi","bossD","burn","exe","atkP","defP","hpP","critR","goldF","expF","dropF","potH"].filter(k=>P[k]>0&&k!="critD").map(k=>opRw(row,pc,k,"◆ "+OPD[k].n+(k=="dgA"?"(고유)":""))).join("")}
+function opRows(row,pc){const P=opPR().P;return ["thorns","thrC","baD","dgA","smD","smS","smB","chD","oshC","bxP","oshH","swA","swS","frzH","sbP","shbP","gdX","prD","dgH","mshE","smX","smU","ovD","ovT","anD","anR","tpD","tpR","tpC","ntT","cxD","wallX","auR","pjS","mpP","mgA","hpReg","dodge","dr","critD","ls","multi","bossD","burn","exe","atkP","defP","hpP","critR","goldF","expF","dropF","potH"].filter(k=>P[k]>0&&k!="critD").map(k=>opRw(row,pc,k,"◆ "+OPD[k].n+(k=="dgA"?"(고유)":""))).join("")}
 function opFix(){if(!S.v7th){S.v7th=1;[...Object.values(S.eq||{}),...(S.inv||[])].filter(Boolean).forEach(it=>{(it.op||[]).forEach(x=>{if(x.k=="thorns")x.v=Math.round(x.v*3*10000)/10000})})}if(!S.v6op){S.v6op=1;[...Object.values(S.eq||{}),...(S.inv||[])].filter(Boolean).forEach(it=>{if((it.g||0)<2)it.op=[];else if(it.g==2&&it.op&&it.op.length>1)it.op=it.op.slice(0,1)})}if(S.v5op)return;S.v5op=1;[...Object.values(S.eq||{}),...(S.inv||[])].filter(Boolean).forEach(it=>{if(!it.op)it.op=rollOps(it)})}
 
 function dgFix2(){if(S.v10dg)return;S.v10dg=1;const all=[...Object.values(S.eq||{}),...(S.inv||[])];for(const c in S.ceq||{})all.push(...Object.values(S.ceq[c]||{}));all.filter(Boolean).forEach(it=>(it.op||[]).forEach(x=>{if(x.k=="dgA")x.v=Math.round(x.v*1.25*10000)/10000}))}
@@ -4685,7 +4691,8 @@ Object.assign(OPD,{tuD:{n:"포대 피해",b:.1,bt:"🗼",sk:"tur"},tuR:{n:"사�
 Object.assign(OGC,{tuD:.6,tuR:.3,tuS:.4,cmC:.15,wrD:.6});
 /* 칸마다 2개 · 한 옵션 최대 3칸 (기획 5-5) */
 /* (2026-11-03) 무기 critR·반지 tuD·귀걸이 critR → 🎯 btE "볼트 효과"(15f) · 가진 아이템 줄은 그대로 */
-{const AC={weapon:["tuD","btE"],hat:["tuR","critR"],top:["tuD","wrD"],cape:["tuS","cmC"],bottom:["tuR","wrD"],glove:["cmC","critD"],shoe:["mvP","tuS"],ring:["btE","critD"],neck:["tuR","chD"],ear:["btE","chD"]};for(const k in AC)UQT[k]=Object.assign({},UQT[k],{ac:AC[k]})}
+/* 2026-11-12 최종화2: 무기·모자·장갑 = 일반 공격 피해(baD, 포대 볼트에도) · 목걸이 탄 효과 · 귀걸이 원소 피해 */
+{const AC={weapon:["btE","baD"],hat:["baD","critR"],top:["tuD","wrD"],cape:["tuS","cmC"],bottom:["tuR","wrD"],glove:["baD","critD"],shoe:["mvP","tuS"],ring:["btE","critD"],neck:["tuR","btE"],ear:["spD","chD"]};for(const k in AC)UQT[k]=Object.assign({},UQT[k],{ac:AC[k]})}
 Object.assign(SDESC,{"◆ 포대 피해":"🗼 석궁 고유옵션 · 포대 볼트·지휘 볼트 피해가 늘어나요. 석궁 포대 스킬이 있어야 효과가 있어요.","◆ 사슬 거리":"🗼 석궁 고유옵션 · 사슬 방어선이 이어지는 거리(180)가 늘어나요 (포대끼리 더 멀리 있어도 사슬이 이어져요). 사슬 방어선 스킬이 있어야 효과가 있어요.","◆ 포대 연사":"🗼 석궁 고유옵션 · 포대가 쏘는 간격(1.6초)이 짧아져요. 내 공격 속도로는 안 빨라져요. 석궁 포대 스킬이 있어야 효과가 있어요.","◆ 지휘 확률":"🗼 석궁 고유옵션 · 치명타가 아닌 내 일반 공격도 이 확률로 지휘 사격을 불러요. 지휘 사격 스킬이 있어야 효과가 있어요.","◆ 사슬 피해":"🗼 석궁 고유옵션 · 사슬 방어선 피해(공격력 40%)가 늘어나요. 사슬 방어선 스킬이 있어야 효과가 있어요."});
 /* ===== 스킬 4개 ===== */
 PSK.push(
@@ -4725,7 +4732,7 @@ function tuFxCap(){if(TU.fx.length>40)TU.fx.splice(0,TU.fx.length-40)}
 /* 볼트 하나 쏘기: tg 지정 대상(맞힐 때까지 따라감) · an 각도 틀기(부채꼴, 지정 대상 없음) */
 /* bk = 내 일반 공격과 같은 피해 키 ("basic" 첫 발 · "dbl" 더블·트리플 · "multi" 멀티샷·다연장) → 흡혈석·피의 폭발 타수·독 바르기 등이 내 일반 공격과 같게 (딜량 창은 "tur") · of = 멀티샷 발이 겹쳐 보이지 않게 옆으로 비킴(px, 대상은 그대로 따라감) */
 function tuFire(T,tg,t,mul,src,an,dl,bk,of){const O=opSum(),c2=Math.random()<crit(),sx=T.x+Math.cos(T.ta)*10*TUK*SZ,sy=T.y-TUH*TUK*SZ,[X,Y]=monPt(tg),ty=Y-monCY(tg)*SZ*.8;let a=Math.atan2(ty-sy,X-sx);T.ta=a;T.fs=t+(dl||0);
-  const dmg=Math.max(1,Math.floor(atk()*TUM*(1+(O.tuD||0))*mul*(.9+Math.random()*.2)*(c2?critD():1))),D=Math.hypot(X-sx,ty-sy);if(an)a+=an;const ox=of?-Math.sin(a)*of*SZ:0,oy=of?Math.cos(a)*of*SZ:0;
+  const dmg=Math.max(1,Math.floor(atk()*TUM*(1+(O.tuD||0))*(1+(O.baD||0))/* 🗼 볼트 = 내 석궁 일반 공격 → 일반 공격 피해도 (2026-11-12) */*mul*(.9+Math.random()*.2)*(c2?critD():1))),D=Math.hypot(X-sx,ty-sy);if(an)a+=an;const ox=of?-Math.sin(a)*of*SZ:0,oy=of?Math.cos(a)*of*SZ:0;
   const pr=prOn();/* 🔱 관통이면 내 화살처럼: 처음 느리고 끝없이 꿰뚫으며 빨라지고 세짐 · 아니면 1마리 (💀 처치·🎳 관통탄이면 15f가 pm을 늘림) */TU.b.push({x:sx+ox,y:sy+oy,ux:Math.cos(a),uy:Math.sin(a),v:TUBV*(1+(O.pjS||0))/(pr?PRS:1),t0:t+(dl||0),s:0,L:Math.max(200,D+PRL),dmg,cr:c2,hit:new Set(),pm:pr?Infinity:1,prA:pr,tg,an:an||0,D:Math.max(40,D),src,ch:Math.min(3,chN()),cm:src=="tcm"?1:0,bk:bk||null});if(TU.b.length>TUBX)TU.b.splice(0,TU.b.length-TUBX)}
 /* 포대 한 번 쏘기 = 내 석궁 일반 공격과 같게 (사용자 2026-11-04 "완전히 같게"): 더블·트리플(TUDB 간격) · 멀티샷(PJM, 0.04초 간격) · 🔩 다연장 3번째 = 부채꼴 2발 더 (볼트 하나마다) */
 function tuShot(T,tg,t,fan){const O=opSum(),pj=pjN();let n=1;if(O.tri&&Math.random()<O.tri)n=3;else if(O.dbl&&Math.random()<O.dbl)n=2;
@@ -4890,7 +4897,7 @@ function brOffS(s){const e=s&&s.ef;if(!e||!S||!(e.bmg||e.bmn||e.cmr))return "";i
 {const _sw=skWhy;skWhy=function(s){return brOffS(s)||_sw(s)}}
 /* ===== 🔮 오브 주문 옵션 — spD 주문 피해 ×(1+v) · spC 메테오 필요 명중·서리 대기 ×(1-v) (스킬 포함 최대 60%) · mtR 메테오 반경 ×(1+v) · fzT 얼림 +v초 (일반 몬스터만)
    sk:"*spl" = 주문(또는 마나 폭발)이 켜져 있어야 (opSkOff 감싸기) · 칸 표는 10 MB ===== */
-Object.assign(OPD,{spD:{n:"원소 피해",b:.08,bt:"🔮",sk:"*spl"},spC:{n:"메테오·서리 가속",b:.04,bt:"🔮",sk:"*spl"},mtR:{n:"메테오 범위",b:.05,bt:"🔮",sk:"mtr"},fzT:{n:"얼림 시간",b:.1,bt:"🔮",sk:"frn",su:"초"}});
+Object.assign(OPD,{spD:{n:"원소 피해",b:.08,bt:"🔮",sk:"*spl"},spC:{n:"큰 한 방 가속",b:.04,bt:"🔮",sk:"*spl",hn:"필요 명중 −·🧊 대기 −"},mtR:{n:"큰 한 방 범위",b:.05,bt:"🔮",sk:"mtr|blz|thd",hn:"🌠🌨️🌩️"},fzT:{n:"얼림 시간",b:.1,bt:"🔮",sk:"frn|ics|blz",su:"초",hn:"🧊 서리 고리·❄️ 냉기 얼림"}});/* 2026-11-12 최종화2: spC 이름만 · mtR 메테오+블리자드+낙뢰 · fzT 서리 고리+냉기 중첩 얼림 */
 Object.assign(OGC,{spD:.6,spC:.3,mtR:.3,fzT:.6});
 Object.assign(SDESC,{"◆ 원소 피해":"🔮 오브 고유옵션 (지팡이 + 오브일 때만) · 원소 피해(☄️ 화염구·❄️ 냉기 파편·⚡ 연쇄 번개, 🌠 메테오·🌨️ 블리자드·🌩️ 낙뢰, 서리 고리, 마나 폭발)가 커져요. 📕 증폭 스킬과 더해져요.","◆ 메테오·서리 가속":"🔮 오브 고유옵션 (지팡이 + 오브일 때만) · 메테오·블리자드·낙뢰에 필요한 명중 수와 서리 고리 대기 시간이 줄어요. 빠른 영창 스킬과 더해서 최대 60%까지.","◆ 메테오 범위":"🔮 오브 고유옵션 (지팡이 + 오브일 때만) · 메테오가 떨어지는 반경(180)이 넓어져요. 메테오 스킬이 있어야 효과가 있어요.","◆ 얼림 시간":"🔮 오브 고유옵션 (지팡이 + 오브일 때만) · 서리 고리로 얼리는 시간(2초)이 늘어나요. 문지기·보스는 그대로 0.5초. 서리 고리 스킬이 있어야 효과가 있어요."});
 function splList(E){if(!S)return [];return (E||psEqList()).filter(s=>s.spl)}
@@ -4990,7 +4997,7 @@ function icSlowStep(t,fo){for(const m of [mon,...fld]){if(!m)continue;if(!fo&&m.
    + 얼어 있는 동안(_cfU) 받는 피해 +CDFA (모든 피해 · netDm 감쌈) · 얼면 중첩·느려짐은 0 · 얼어 있는 동안은 안 쌓임 · 보스 패턴 중엔 안 걸림 */
 function csAdd(m,t){if(!m||!(m.hp>0)||m._dieAt)return;if(m===mon&&m.kind=="b"&&bpBusy())return;if(cfOn(m,t))return;const n=(m._csU>t?m._csN||0:0)+1;
   if(n<CDSN){m._csN=n;m._csU=t+CDSD;icSlow(m,t,CDSL*n,CDSD);return}
-  m._csN=0;m._csU=0;m._isU=0;icEnd(m,t);const u=t+(m.kind=="b"||m.kind=="e"?CDFB:CDFZ);if(!(m._fzU>t))m._fzS=t;m._fzU=Math.max(m._fzU||0,u);m._cfU=u;
+  m._csN=0;m._csU=0;m._isU=0;icEnd(m,t);const u=t+(m.kind=="b"||m.kind=="e"?CDFB:CDFZ+fzTv()*1000);/* 🔮 얼림 시간 옵션 (2026-11-12) */if(!(m._fzU>t))m._fzS=t;m._fzU=Math.max(m._fzU||0,u);m._cfU=u;
   const [x,y]=monPt(m),hy=y-monCY(m)*SZ*.6;texts.push({x,y:y-104*(m.s||1)*SZ,txt:"❄️ 얼어붙음!",col:"#bfe8ff",big:0,ln:lnOf(m),t0:t});icBurst(x,hy,t,1)}
 function cfOn(m,t){return !!(m&&m._cfU>t&&fzOn(m,t))}
 function icBurst(x,y,t,b){SPX.is.push({x,y,t0:t,sd:Math.random(),a:-1.57,b});if(SPX.is.length>ICFX)SPX.is.shift()}
@@ -5003,16 +5010,16 @@ function cntStep(t,id){const C=SPCN[id];if((SPX[C.n]||0)<5||!C.on())return;const
   if(Math.random()<spEf("ech"))SPX.q.push({k:"ech",at:t+ECHD,id,tg:M});try{hudBars()}catch(e){}}
 function mtrStep(t){cntStep(t,"mtr")}
 /* 🌨️ 눈보라 (블리자드·과부하 서리 폭풍): SPX.bz = {x,y,R,t0,end,iv,nt,pool(한 마리가 남은 시간 동안 받을 피해),dm,pc,cr,sl,mini} · 틱마다 pool을 남은 틱 수로 나눠 안의 적 모두에게 */
-function blzCast(D,t,O,dm,M){const P=D.spl,[x,y]=monPt(M||mon);dEv("blz",t);SPX.bz.push({x,y,R:P.r,t0:t,end:t+P.du,iv:BZI,nt:t+BZI/2,pool:spBv(D)*P.m+bmgA(),dm,pc:SPX.pc||0,sd:Math.random()});
-  shk(3,260,t);wRing(t,x,y,16,P.r,420,"rgb(190,235,255)",5,1);wRing(t+70,x,y,8,P.r*.75,380,"rgb(245,252,255)",2.5,1)}
+function blzCast(D,t,O,dm,M){const P=D.spl,[x,y]=monPt(M||mon);dEv("blz",t);const R=P.r*(1+((O&&O.mtR)||0));SPX.bz.push({x,y,R,t0:t,end:t+P.du,iv:BZI,nt:t+BZI/2,pool:spBv(D)*P.m+bmgA(),dm,pc:SPX.pc||0,sd:Math.random()});
+  shk(3,260,t);wRing(t,x,y,16,R,420,"rgb(190,235,255)",5,1);wRing(t+70,x,y,8,R*.75,380,"rgb(245,252,255)",2.5,1)}
 function bzStep(t){const A=SPX.bz;if(!A.length)return;for(let i=0;i<A.length;i++){const e=A[i];if(e.nt>t+6e4||e.end>t+6e4){e.nt=t;e.end=Math.min(e.end,t+BZD)}
   while(e.nt<=t&&e.nt<=e.end){const n=Math.max(1,Math.floor((e.end-e.nt)/e.iv)+1),d=e.pool/n;e.pool-=d;e.nt+=e.iv;try{bzTick(e,d,t)}catch(er){console.error(er)}}if(t>=e.end&&e.nt>e.end)A.splice(i--,1)}}
 function bzTick(e,d,t){const L=spIn(e.x,e.y,e.R);if(!L.length)return;if(e.mini)ovDmg(L,Math.max(1,Math.floor(d)),"ovz","🌨️","#cfeeff",t,e.cr);else{SPX.hcr=0;for(const m of L)spHit(m,e.dm,"blz",t,"🌨️","#cfeeff",0,d);if(SPX.hcr&&e.pc){cmrRf(e.pc,t);e.pc=0}}
   for(const m of L)csAdd(m,t);spKill(L,60)}
 /* 🌩️ 낙뢰 (2026-11-03 사용자: 메테오·블리자드처럼 넓게): 대상 자리에 반경 THR 원(바닥 표시) → THI 간격으로 THN번 (첫 번은 바로) · 한 번 = 원 안 적 모두에게 (쓴 MP × 계수 + 🔥 전투 마법) ÷ THN
    → 3번 다 원 안에 있으면 메테오와 같은 320% · 💥 치명 환급은 한 시전에 한 번 (G.pc) · 떨어지는 자리는 그림만 원 안에서 흩어짐 (피해는 원 전체) */
-function thdCast(D,t,O,dm,M){dEv("thd",t);const P=D.spl,[x,y]=monPt(M||mon),G={pc:SPX.pc||0},B=(spBv(D)*P.m+bmgA())/P.n;spFx({k:"thdC",t0:t,x,y,R:P.r,du:THI*(P.n-1)+560,sd:Math.random()});
-  for(let i=0;i<P.n;i++){const e={k:"thd",at:t+i*THI,x,y,R:P.r,m:dm,b:B,G,i};if(i)SPX.q.push(e);else thdStrike(e,t)}}
+function thdCast(D,t,O,dm,M){dEv("thd",t);const P=D.spl,[x,y]=monPt(M||mon),G={pc:SPX.pc||0},B=(spBv(D)*P.m+bmgA())/P.n,R=P.r*(1+((O&&O.mtR)||0));spFx({k:"thdC",t0:t,x,y,R,du:THI*(P.n-1)+560,sd:Math.random()});
+  for(let i=0;i<P.n;i++){const e={k:"thd",at:t+i*THI,x,y,R,m:dm,b:B,G,i};if(i)SPX.q.push(e);else thdStrike(e,t)}}
 function thdStrike(e,t){if(!S||dead||!(S.hp>0))return;const L=spIn(e.x,e.y,e.R),sd=Math.random(),an=sd*6.283,r=e.i?e.R*(.2+.35*spH(2,sd)):0,bx=e.x+Math.cos(an)*r,by=e.y+Math.sin(an)*r*AUY;
   SPX.hcr=0;for(const m of L)spHit(m,e.m,"thd",t,"🌩️","#fff6b0",1,e.b);if(SPX.hcr&&e.G.pc){cmrRf(e.G.pc,t);e.G.pc=0}try{boomFx(L,t)}catch(er){}
   const Z=L.slice(0,6).map(m=>{const [mx,my]=monPt(m);return [mx,my-monCY(m)*SZ*.6]});spFx({k:"thd",t0:t,x:bx,gy:by,sd,Z});shk(4.5,300,t);wFlash(t,120,"215,228,255");
@@ -5084,6 +5091,7 @@ function ovzAdd(X,Y,d,cr,t){let b=null,bd=OVZR*.6,n=0,c=null,cd=1e9;for(const e 
 {const _ph=projHit;projHit=function(p,m,ct,X,Y){const n0=projs.length,r=_ph(p,m,ct,X,Y);if(p&&p.ov)for(let i=n0;i<projs.length;i++)projs[i].ov=p.ov;try{ovHit(p,m,X,Y,ct)}catch(e){console.error(e)}return r}}
 /* ===== 돕는 스킬·오브 환급 ===== */
 function spCdM(O){return 1-Math.min(.6,(O&&O.spC)||0)}
+let _fzC=-1e9,_fzV=0;function fzTv(){const r=performance.now();if(r-_fzC>250||r<_fzC){_fzC=r;try{_fzV=S?opSum().fzT||0:0}catch(e){_fzV=0}}return _fzV}/* 냉기 중첩 얼림용 (명중마다 불려서 0.25초 기억) */
 function spEf(k){if(!S)return 0;let v=0;for(const s of psEqList())if(s.ef&&s.ef[k])v+=s.ef[k];return v}
 /* 🔮 오브: 쓴 MP의 OBRF만큼 바로 돌려받음 (내림 → 늘 소모보다 적음) */
 function obRf(mp,t){if(!obOn()||!(mp>0))return;const g=Math.floor(mp*OBRF);if(g<1)return;S.mp=Math.min(mmp(),(S.mp||0)+g);addText(PX-30,PY-70,"🔮+"+g,"#6ab8ff",0)}
@@ -5104,9 +5112,9 @@ function ovlOffS(s){return s&&s.id=="ovl"&&ovlIdle()?"📖 마도서는 일반 �
 {const _a=arSk;arSk=function(k){if(k=="ovl"&&ovlIdle())return false;return _a(k)}}
 {const _po=psOff;psOff=function(s){return _po(s)||!!spSupOff(s)}}
 {const _sw=skWhy;skWhy=function(s){return spSupOff(s)||_sw(s)}}
-{const _ok=opSkOff;opSkOff=function(k){if(OPD[k]&&OPD[k].sk=="*spl"){if(!S)return "";if(k=="spC")return cntOn()||frnOn()?"":"메테오·블리자드·낙뢰·서리 고리 없음";return splAct().length||spHasAn()?"":"주문 없음"}if(k=="mtR"&&S&&psEqList().some(p=>p.id=="mtr")&&!mtrOn())return "메테오 꺼짐";if((k=="ovD"||k=="ovT")&&S&&psEqList().some(p=>p.id=="ovl")&&ovlIdle())return "마도서 · 주문 없음";return _ok(k)}}
+{const _ok=opSkOff;opSkOff=function(k){if(OPD[k]&&OPD[k].sk=="*spl"){if(!S)return "";if(k=="spC")return cntOn()||frnOn()?"":"메테오·블리자드·낙뢰·서리 고리 없음";return splAct().length||spHasAn()?"":"주문 없음"}if(k=="mtR"&&S&&psEqList().some(p=>p.id=="mtr"||p.id=="blz"||p.id=="thd")&&!cntOn())return "큰 한 방 꺼짐";if((k=="ovD"||k=="ovT")&&S&&psEqList().some(p=>p.id=="ovl")&&ovlIdle())return "마도서 · 주문 없음";return _ok(k)}}
 /* 상세 능력치 주문 줄: 꺼진 스킬(psOff, 예: 주문 없을 때 📕·⏳) 몫은 빼고 보여 줌 (실제 계산 opSum은 그대로) · 짧은 이름 SHN (두 칸 모드) */
-Object.assign(SHN,{"원소 피해":"원소피해","메테오·서리 가속":"메테오·서리","메테오 범위":"메테오범위","얼림 시간":"얼림시간"});
+Object.assign(SHN,{"원소 피해":"원소피해","큰 한 방 가속":"한방가속","큰 한 방 범위":"한방범위","얼림 시간":"얼림시간","칼 길이":"칼길이","소환수 유지비 감소":"유지비↓","투사체 속도":"투사체속도"});
 {const _or=opRows;opRows=function(row,pc){const P=opPR().P;return ["spD","spC","mtR","fzT"].filter(k=>P[k]>1e-9).map(k=>opRw(row,pc,k,"◆ "+OPD[k].n)).join("")+_or(row,pc)}}
 /* ===== 옛 저장: 없어진 스킬 칸 비우기 + 알림 1번 (2026-11-02) — 지금 칸 S.psl · 스킬 프리셋 S.skp[직업].list · 직업 보관 S.pre[직업].psl ===== */
 /* 🔆 비전 광선 (2026-11-03 없어짐, ❄️ 냉기 파편로 바뀜): 스킬 칸 + 🪄 원소 줄(S.elm · 스킬 프리셋 S.skp.mage.el · 직업 보관 S.pre.mage.el)도 비움 */
@@ -5631,7 +5639,9 @@ function smUp(u){return !u.off&&!u.dAt}
 function smAct(k){const A=[];for(const u of SM.L)if(u.k==k&&smUp(u))A.push(u);return A.sort((a,b)=>a.sq-b.sq)}
 function smOk(u){return !!(u&&smUp(u)&&u.hp>0&&SM.L.includes(u))}
 /* 유지비 = 초당 최대 MP의 이 비율 (나와 있는 소환수만) */
-function smUpR(){if(!S)return 0;let r=0;for(const u of SM.L)if(smUp(u))r+=SMT[u.k].up*(u.g||1);return r}
+function smUpR(){if(!S)return 0;let r=0;for(const u of SM.L)if(smUp(u))r+=SMT[u.k].up*(u.g||1);return r&&r*(1-Math.min(SMUX,opSum().smU||0))}
+/* 📖 소환수 유지비 감소 smU (2026-11-12 고유옵션, 장비 몫 최대 30% = OGC) · 소환 스킬이 없으면 회색 */
+const SMUX=.6;{const _ok=opSkOff;opSkOff=function(k){if(k=="smU"&&S)return smAny()?"":"소환 스킬 없음";return _ok(k)}}
 function smMx(k,g){return Math.max(1,Math.floor(mmp()*SMT[k].hp*(g||1)))}
 /* 🗿 합체 크기 배율 (보통 소환수 = 1) */
 function smSz(u){return (u.g||1)>1?1+GLSZ*u.g:1}
@@ -6680,6 +6690,8 @@ if(OPD.smX)OPD.smX.sk="wr|gol";/* 📖 소환수 추가타 = 망령·골렘 (정
 {const s=psGet("spa");if(s){s.n="원소 증폭";s.sh="원소 피해 +40%";s.d="모든 원소 피해 +40% (지팡이 원소 공격·메테오·블리자드·낙뢰·서리 고리·마나 폭발 · 기사·궁수 원소 폭발·번개·깨짐·큰 한 방 · 📖 소환수 원소) · 원소가 있어야 해요"}
   const q=psGet("qcs");if(q){q.sh="원소 큰 한 방 필요 명중·서리 대기 -30%";q.d="🌠🌨️🌩️🐲⛈️🗻🎇🔆🌬️ 필요한 명중 -30% (15번 → 11번) · 🧊 서리 고리 대기 -30% · 이 중 하나 필요"}const e=psGet("ech");if(e){e.sh="원소 큰 한 방·서리 고리 20% 한 번 더";e.d="🌠🌨️🌩️🐲⛈️🗻🎇🔆🌬️🧊 쓸 때 20% 확률로 한 번 더 (MP·대기 없음) · 이 중 하나 필요"}}
 if(OPD.spD)OPD.spD.n="원소 피해";
+/* 🔥 원소 피해 spD·큰 한 방 가속 spC 회색 (2026-11-12): 기사·궁수 원소(EAS.sp)·큰 한 방(EAS.N)·📖 소환 원소에도 들어가니 그것도 켜짐으로 */
+{const _ok=opSkOff;opSkOff=function(k){if(S&&(k=="spD"||k=="spC")){try{eaRf()}catch(e){}if(k=="spD"&&(EAS.k||EAS.a||(EAS.m&&smAny())))return "";if(k=="spC"&&EAS.u)return "";const w=_ok(k);return w&&k=="spD"?"원소 없음":w&&k=="spC"?"원소 큰 한 방·서리 고리 없음":w}return _ok(k)}}
 {const _so=spSupOff;spSupOff=function(s){const e=s&&s.ef;if(e&&S){if(e.spD&&(EAS.k||EAS.a||EAS.m))return "";if((e.spC||e.ech)&&EAS.u)return ""}const w=_so(s);return w=="켜진 주문이 있어야 적용"?"켜진 원소가 있어야 적용":w&&w.indexOf("🌠 메테오")==0?"원소 큰 한 방(🌠🐲🎇 등)이나 ❄️ 서리 고리가 있어야 적용":w}}
 /* ===== 📖 마도서 = 원소 소환사 (사용자 C): 원소 줄을 마도서에도 ("📖 소환 원소", 지팡이와 같은 S.elm) → 내 소환수(👻 망령 베기·🗿 골렘 내려찍기·💫 위성 닿기·🐂 소환수 돌진) 공격 전부에 근접 원소 규칙
    🔥 대상 자리 반경 EAFR 폭발 EAFX (그림은 0.1초 안·40 안이면 하나로, 숫자는 적마다 0.3초 합침) · ⚡ 번개 EALX (소환수 흡혈 절반 규칙) + 감전·움찔 · ❄️ 냉기 1중첩 · 언 적 깨짐 · 💫 위성은 닿을 때마다 (제한 없음) · 큰 한 방 없음 */
@@ -7881,7 +7893,7 @@ function ls6CmpH(it,cur){const req=ireq(it),ok=clsOk(it),wx=wtX(it),ub=ok?uqBad(
     (it.op||[]).forEach(x=>{const u=isUq(it,x);if(u)U[x.k]=1;if(x.u)N[x.k]=opNmU(x,it);if(uo&&u){OF[x.k]=(OF[x.k]||0)+x.v;return}A[x.k]=(A[x.k]||0)+x.v});
     (cur&&cur.op||[]).forEach(x=>{const u=isUq(cur,x);if(u){U[x.k]=1;if(x.u&&!N[x.k])N[x.k]=opNmU(x,cur)}if(!(uc&&u))Bv[x.k]=(Bv[x.k]||0)+x.v});
     const ks=[...new Set([...Object.keys(A),...Object.keys(OF),...Object.keys(Bv)])],pv=k=>v=>opV(k,v),row=k=>{const so=N[k]&&opSkOff(k);return '<tr'+(U[k]?' class="uq"':'')+'><td>'+(N[k]||opNm(k))+(so?' <small>('+so+')</small>':'')+'</td><td>'+(Bv[k]?'+'+opV(k,Bv[k]):zr)+'</td><td>'+(A[k]?'+'+opV(k,A[k]):OF[k]?'<s>+'+opV(k,OF[k])+'</s>':zr)+'</td>'+(!A[k]&&OF[k]?'<td class="zr">꺼짐</td>':dd((A[k]||0)-(Bv[k]||0),pv(k),1e-4))+'</tr>'};
-    ks.filter(k=>!U[k]).forEach(k=>h+=row(k));const uk=ks.filter(k=>U[k]);if(uk.length){h+='<tr class="hd"><td colspan="4">✦ 고유옵션'+(uo?' <span class="dn">· 꺼짐: '+uo+'</span>':'')+'</td></tr>';uk.forEach(k=>h+=row(k))}
+    ks.filter(k=>!U[k]).forEach(k=>h+=row(k));const uk=ks.filter(k=>U[k]);if(uk.length){h+='<tr class="hd"><td colspan="4">✦ 고유옵션'+(uo?' <span class="dn">· 꺼짐: '+uo+'</span>':'')+'</td></tr>';uk.forEach(k=>h+=row(k));{const q=uqTblL(it);if(q)h+='<tr><td colspan="4">'+q+'</td></tr>'}/* 고유옵션 표 70% 규칙 (14 uqTblL) */}
     /* 소켓·보석 (opDiff와 같음: 빈 소켓이 있으면 새 장비로 이동, 없으면 보석함으로) */const so=(cur&&cur.so||[]).filter(Boolean);let e=(it.so||[]).filter(x=>!x).length;
     h+='<tr class="hd"><td colspan="4">💎 소켓 '+(cur?(cur.so||[]).length:0)+' → '+(it.so||[]).length+'</td></tr>';so.forEach(g=>{const mv=e>0;if(mv)e--;h+='<tr class="gm"><td colspan="4"><span class="otag '+(mv?'mv">이동':'rm">보석함으로')+'</span>'+GEM[g.gk].ic+' '+gemDesc(g.gk,g.gg)+'</td></tr>'})}
   else if(!SW||!Array.isArray(SW.rows))h+='<tr><td colspan="4" class="l6c-wip">🛠️ <b>준비 중</b><br>장비 하나를 바꿨을 때 내 상세 능력치(보석·특성·스킬까지)가 어떻게 되는지 보여 줄 거예요<br>지금은 [장비끼리]로 봐 주세요</td></tr>';
