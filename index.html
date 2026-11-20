@@ -1105,6 +1105,7 @@ body.lyP #sheet[data-l6p="rb"] .sobr{display:flex;align-items:center;gap:4px;pad
 body.lyP #sheet[data-l6p="rb"] .sobt{flex:0 0 auto;align-items:center;gap:3px;font-size:13px}
 body.lyP #sheet[data-l6p="rb"] .sobp{font-size:14px;min-width:36px}body.lyP #sheet[data-l6p="rb"] .sobe,body.lyP #sheet[data-l6p="rb"] .solv{display:none}body.lyP #sheet[data-l6p="rb"] .sodl{min-width:0}
 body.lyP #sheet[data-l6p="rb"] .sobc{flex:1 1 auto;min-width:0;width:auto;margin:0;gap:4px}
+/* ♾️ ⚡👟 속도 줄 효과 "+N%"·"최대" (2026-11-20): 좁은 비율 창은 .sobe(→ 효과)를 숨기니 속도 줄만 몫 % 대신 효과 (줄 상한이 있어 몫 ≠ 효과) */.sosx{display:none;font-size:12px;font-weight:800;color:#ffe08a;white-space:nowrap;flex:none;font-variant-numeric:tabular-nums}body.lyP #sheet[data-l6p="rb"] .sosx,body.ls6 #sheet[data-l6p="rb"] .sosx{display:inline}body.lyP #sheet[data-l6p="rb"] .sobr[data-sp] .sobp,body.ls6 #sheet[data-l6p="rb"] .sobr[data-sp] .sobp{display:none}@container (min-width:430px){body.ls6 #sheet[data-l6p="rb"] .sosx{display:none}body.ls6 #sheet[data-l6p="rb"] .sobr[data-sp] .sobp{display:inline}}
 body.lyP #sheet[data-l6p="rb"] .sobc .btn.sosq{min-width:40px;width:40px;min-height:36px;font-size:18px}
 body.lyP #sheet[data-l6p="rb"] .socl{height:26px;gap:2px}
 body.lyP #sheet[data-l6p="rb"] #sbody>.srow.l6tr{flex-wrap:nowrap;gap:6px;padding:4px 0}
@@ -2221,12 +2222,14 @@ const TRS={atk:{n:"⚔ 공격력",v:2,u:"",max:500,hid:1},def:{n:"🛡 방어력
 /* 🎁 편의 특성 아이템 드롭률 (사용자 2026-11-02, 포인트당 +1%·최대 100, 사용자): 드롭 배율이 gemSum().drop을 쓰므로 거기에 더함 → 상세 능력치 "드롭률" 줄에도 보임 */
 {const _gs=gemSum;gemSum=function(){const r=_gs.apply(this,arguments);try{r.drop+=tr("drop")*TRS.drop.v/100}catch(e){}return r}}
 // 영혼 각성 (B안 비율 방식): 각성 총량 = SOK × 포인트^SOE, 직업별 비율(칸 0~10)로 파괴/수호/생명/마력에 나눔, 장비 %와 따로 곱함
-const SOK=.05,SOE=.85,SOB=[["a","⚔️ 파괴","공격력","#ff9a3a"],["d","🛡️ 수호","방어력","#9fc4ff"],["h","❤️ 생명","최대 HP","#ff5a6a"],["m","💧 마력","최대 MP","#5ab0ff"]],SOD={a:3,d:3,h:3,m:0};
+const SOK=.05,SOE=.85,SOB=[["a","⚔️ 파괴","공격력","#ff9a3a"],["d","🛡️ 수호","방어력","#9fc4ff"],["h","❤️ 생명","최대 HP","#ff5a6a"],["m","💧 마력","최대 MP","#5ab0ff"],["s","⚡ 신속","공격 속도","#ffe066"],["v","👟 질주","이동 속도","#7dffb0"]],SOD={a:3,d:3,h:3,m:0,s:0,v:0},SOSC=.5;/* ⚡👟 (2026-11-20 사용자 "1", 명세 docs/기획/2026-11-20_영혼각성_속도칸.md (가)): 같은 총량을 나눔 · 줄마다 최대 +SOSC [TEMP] · 없는 칸 = 0 (옮기기 X) */
+function soN(R){const o={};for(const b of SOB)o[b[0]]=(R&&R[b[0]])||0;return o}
 // 환생 1단계(2026-11-02, 임시): 500점(SOP)까지 그대로, 그 뒤로는 √(SOE2) → 포인트 4배 = 총량 2배
 const SOP=500,SOE2=.5;function soTp(p){return p>0?(p<=SOP?SOK*Math.pow(p,SOE):SOK*Math.pow(SOP,SOE)*Math.pow(p/SOP,SOE2)):0}function soT(){return soTp(tr("soul"))}
-function soR(){const R=S&&S.soR&&S.soR[(S&&S.cls)||"knight"];return R?{a:R.a||0,d:R.d||0,h:R.h||0,m:R.m||0}:{...SOD}}
-function soW(){const r=soR(),s=r.a+r.d+r.h+r.m;return s?r:{a:1,d:1,h:1,m:0}}
-function soP(k){const w=soW();return w[k]/(w.a+w.d+w.h+w.m)}
+function soR(){const R=S&&S.soR&&S.soR[(S&&S.cls)||"knight"];return R?soN(R):{...SOD}}
+function soW(){const r=soR();let s=0;for(const b of SOB)s+=r[b[0]];return s?r:{a:1,d:1,h:1,m:0,s:0,v:0}}
+function soP(k){const w=soW();let s=0;for(const b of SOB)s+=w[b[0]];return (w[k]||0)/s}
+function soSp(k){return S?Math.min(SOSC,soT()*soP(k)):0}/* ⚡ s = 공속 (15 ASX 맨 앞, 상한 하나 안) · 👟 v = 이속 (15 hSpd) */
 function soM(k){return 1+soT()*soP(k)}
 function soMark(){window._soPv={t:performance.now(),p:SOB.map(b=>soP(b[0]))}}
 function soSet(k,v,live){v=Math.max(0,Math.min(10,Math.round(v)));const r=soR();if(r[k]===v)return;soMark();r[k]=v;S.soR=S.soR||{};S.soR[S.cls||"knight"]=r;soPre();soClamp();if(live)return;save();render();soDlT()}
@@ -4601,7 +4604,8 @@ function drawField(f,t,out){const c=ctx,a=out?Math.max(0,1-(t-f.fo)/400):Math.ma
 function hRange(){return S.cls=="archer"?WRG.bw*rgM():S.cls=="mage"?mgR()[0]:swOn()?swRch()*SWSR:wbl().L*rgM()}/* rgM = 📏 사거리석 (15o, mgR·swRch엔 이미 들어 있음) *//* 서는 거리 = 기사는 칼 길이(02 WBL, 한손검 46·두손검 60) · 🌙 검의 기운은 닿는 거리 × SWSR · 공격 사거리(닿는 거리)는 12 atkRg */
 let RUNS=100;/* 달리기 그림으로 바뀌는 속도 (2026-11-15 사용자 "100부터 달리기 모션", 예전 30 · 체험판이 바꿈) */const WKR=50,DSM=3,DSB=1.5;/* WKR = 걷기 그림 박자 기준 속도 (보통 게임 HSPD와 같음 → 빨리 걸으면 발도 빨리) */const TUD=5000;const FRZP=.05,FRZN=10,FRZT=3000;let frzN=0,frzT=0;function frzOn(){return !!(S&&(opSum().frz||0)>0)}function frzTT(){return FRZT+((S&&opSum().frzH)||0)*1000}function frzKill(){arcKill();if(!frzOn())return;const n=gnow();if(n-frzT>frzTT())frzN=0;frzN=Math.min(FRZN,frzN+1);frzT=n}function frzSp(){if(!frzOn()||!frzN)return 0;if(gnow()-frzT>frzTT()){frzN=0;return 0}return frzN*FRZP}
 function hpSpd(){if(!S||!((opSum().hpAt||0)>0))return 0;const m=mhp();if(!(m>0))return 0;const cur=Math.min(1,Math.max(0,1-Math.max(0,S.hp)/m)),n=gnow();let L=window._tuL||0;if(n>(window._tuT||0))L=0;if(cur>0&&cur>=L){L=cur;window._tuT=n+TUD}window._tuL=L;return Math.max(cur,L)}
-function hSpd(){return HSPD/* 👟 편의 특성 몫 없앰 (2026-11-15 A안, 16 불러올 때 포인트 환불) */*(dsOn()?DSM:1)*(owNow()?OWSPD:1)*(1+hpSpd()+frzSp()+((S&&opSum().mvP)||0))}
+function hSpd(){return HSPD/* 👟 편의 특성 몫 없앰 (2026-11-15 A안, 16 불러올 때 포인트 환불) */*(dsOn()?DSM:1)*(owNow()?OWSPD:1)*(1+hpSpd()+frzSp()+((S&&opSum().mvP)||0)+soSp("v"))}
+ASX.unshift({k:"so",f:()=>soSp("s")});/* ♾️ ⚡ 신속 = 장비처럼 표 맨 앞 (스킬 공속 capLeft는 그 뒤 남은 몫) */
 const AUR=150,AUY=.55;function auOn(){return !!(S&&opSum().aura>0)}
 function auRx(){return 1+((S&&opSum().auR)||0)}
 function auR(){return AUR*auRx()}
@@ -6661,15 +6665,15 @@ function cpUsers(k,i,c){try{const C=cpG(c),f=k=="s"?"s":"e",u=[];C.list.forEach(
 const cpKey=g=>g?g.gk+"_"+g.gg:null;
 /* 지금 세팅 → 🧩 한 칸 (대신 낀 보석은 원래 원하던 보석으로 기억 — 대신 낀 게 굳지 않게) */
 function cpSnap(){const E=eqpG(),P=skp(),m=E.ms[E.cur]||{},so={};for(const sl of SLK){const it=S.eq[sl];if(!it||!it.so||!it.so.length)continue;const d=m[it.id];so[sl]=it.so.map((g,i)=>{const v=d&&d[i]?bsDv(d[i]):null,ck=cpKey(g);return v&&v.w&&ck===v.p?v.w:ck})}
-  const r=soR();return {e:E.cur,s:P.cur,so,sr:{a:r.a||0,d:r.d||0,h:r.h||0,m:r.m||0},bt:btId(),el:S.cls=="mage"?elId():""}}
+  const r=soR();return {e:E.cur,s:P.cur,so,sr:soN(r),bt:btId(),el:S.cls=="mage"?elId():""}}
 /* 95 장비 스냅샷(so = {칸:{id,k}}) + 대신 낀 기억 → 🧩 보석 배치 */
 function cpSoFrom(L,ms){const so={};if(L&&L.so)for(const sl in L.so){const w=L.so[sl];if(!w||!Array.isArray(w.k))continue;const d=ms&&ms[w.id];so[sl]=w.k.map((x,i)=>d&&d[i]&&bsDv(d[i]).w||x||null)}return so}
 function cpGc(L){let n=0;for(const sl in L.so||{})n+=(L.so[sl]||[]).filter(Boolean).length;return n}
-function cpSumT(L){const r=L.sr||{},B=S.cls=="archer"&&L.bt&&BOLT[L.bt],el=S.cls=="mage"&&L.el&&psGet(L.el);return "🎒"+(L.e+1)+" · 📜"+(L.s+1)+" · 보석 "+cpGc(L)+" · 비율 "+[r.a||0,r.d||0,r.h||0,r.m||0].join("·")+(B?" · "+B.ic+" "+B.n:"")+(el?" · "+el.ic+" "+(ELD[el.id]?ELD[el.id].s:el.n):"")}
+function cpSumT(L){const r=L.sr||{},B=S.cls=="archer"&&L.bt&&BOLT[L.bt],el=S.cls=="mage"&&L.el&&psGet(L.el);return "🎒"+(L.e+1)+" · 📜"+(L.s+1)+" · 보석 "+cpGc(L)+" · 비율 "+[r.a||0,r.d||0,r.h||0,r.m||0].join("·")+(r.s?" ⚡"+r.s:"")+(r.v?" 👟"+r.v:"")+(B?" · "+B.ic+" "+B.n:"")+(el?" · "+el.ic+" "+(ELD[el.id]?ELD[el.id].s:el.n):"")}
 /* ● = 지금이 저장한 🧩와 다른 것 (🎒·📜 번호 · 보석 배치 · 비율 · 탄/원소) · 장비·스킬 내용은 안 셈 (🎒·📜를 따라가는 게 정상) · 보석이 모자라 대신 낀 것도 안 셈 */
 function cpDiff(){try{const C=cpG();if(C.cur<0)return null;const L=C.list[C.cur];if(!L)return null;const n=cpSnap(),d=[];if(n.e!==L.e)d.push("🎒 번호");if(n.s!==L.s)d.push("📜 번호");
   let g=0;for(const sl in n.so){const a=n.so[sl],b=L.so&&L.so[sl];if(!b)continue;for(let i=0;i<a.length&&i<b.length;i++)if((a[i]||null)!==(b[i]||null))g++}if(g)d.push("보석 "+g+"칸");
-  const r=L.sr||{};if(["a","d","h","m"].some(k=>(r[k]||0)!==n.sr[k]))d.push("특성 비율");if(S.cls=="archer"&&typeof L.bt=="string"&&(L.bt||"")!==n.bt)d.push("탄");if(S.cls=="mage"&&typeof L.el=="string"&&(L.el||"")!==n.el)d.push("원소");return d.length?d:null}catch(e){return null}}
+  const r=L.sr||{};if(SOB.some(b=>(r[b[0]]||0)!==(n.sr[b[0]]||0)))d.push("특성 비율");if(S.cls=="archer"&&typeof L.bt=="string"&&(L.bt||"")!==n.bt)d.push("탄");if(S.cls=="mage"&&typeof L.el=="string"&&(L.el||"")!==n.el)d.push("원소");return d.length?d:null}catch(e){return null}}
 /* 🧩 보석 배치 끼우기 (장비칸·소켓 순서) · 기억이 없는 칸·새로 생긴 소켓 = 지금 박힌 것 그대로 · 빼기·끼우기 무료 */
 function cpGems(L){const E=eqpG(),old=E.ms[E.cur]||{},nm={},so=L.so||{},wants=[],r={sub:0,mn:0,mi:{}},ok=k=>k&&GEM[gkSplit(k)[0]]?k:null;
   for(const sl of SLK){const it=S.eq[sl];if(!it||!it.so||!it.so.length)continue;const w=so[sl];if(!w){if(old[it.id])nm[it.id]=old[it.id];continue}
@@ -6687,7 +6691,7 @@ function cpUse(k,force){if(!S||!S.cls)return;const C=cpG(),L=C.list[k];if(!L)ret
     if(E.cur!==L.e)eqpUse(L.e,1);if(skp().cur!==L.s)skpUse(L.s,1);
     if(S.cls=="archer"&&typeof L.bt=="string")S.bolt=BOLT[L.bt]?L.bt:null;
     if(S.cls=="mage"&&typeof L.el=="string")S.elm=ELK.includes(L.el)?L.el:null;
-    if(L.sr){const n={a:L.sr.a||0,d:L.sr.d||0,h:L.sr.h||0,m:L.sr.m||0};if(JSON.stringify(o)!==JSON.stringify(n)){soMark();srC=1}S.soR=S.soR||{};S.soR[S.cls]=n}
+    if(L.sr){const n=soN(L.sr);if(JSON.stringify(o)!==JSON.stringify(n)){soMark();srC=1}S.soR=S.soR||{};S.soR[S.cls]=n}
     r=cpGems(L);C.cur=k}finally{window._cpQ=0}
   try{gemDirty()}catch(e){}S.hp=Math.min(S.hp,mhp());if(S.mp!=null)S.mp=Math.min(S.mp,mmp());bsDirty();tip=null;try{eqSig=""}catch(e){}
   const gc=SLK.reduce((a,sl)=>a+(S.eq[sl]&&S.eq[sl].so?S.eq[sl].so.filter(Boolean).length:0),0),q="🧩 "+pnQ(k,"c"),t="🎒"+(L.e+1)+" · 📜"+(L.s+1)+" · 보석 "+gc+"개"+(srC?" · 특성 비율":"");
@@ -6751,9 +6755,9 @@ function cpMig(E,c){c=c||S.cls||"knight";const live=c===S.cls,v=E.v;E.v=3;["st",
   if(Array.isArray(E.bag)){for(const b of E.bag)if(Array.isArray(b))for(const it of b)if(it)E.st.push(it);delete E.bag}
   {let gb=0;for(const it of E.st)if(it&&it.so&&it.so.some(Boolean)){retGems(it);it.so=it.so.map(()=>null);gb++}if(gb)try{gemDirty()}catch(e){}}
   if(live){try{skpSync()}catch(e){}E.list[E.cur]=eqpSnap()}
-  const sr0=live?soR():(()=>{const R=S.soR&&S.soR[c];return R?{a:R.a||0,d:R.d||0,h:R.h||0,m:R.m||0}:{...SOD}})(),
+  const sr0=live?soR():(()=>{const R=S.soR&&S.soR[c];return R?soN(R):{...SOD}})(),
     bt=k=>Array.isArray(P.bt)&&typeof P.bt[k]=="string"?P.bt[k]:"",el=k=>Array.isArray(P.el)&&typeof P.el[k]=="string"?P.el[k]:"",
-    one=k=>({e:k,s:k,so:cpSoFrom(E.list[k],E.ms[k]),sr:E.sr[k]&&typeof E.sr[k]=="object"?{a:E.sr[k].a||0,d:E.sr[k].d||0,h:E.sr[k].h||0,m:E.sr[k].m||0}:{...sr0},bt:bt(k),el:el(k)}),
+    one=k=>({e:k,s:k,so:cpSoFrom(E.list[k],E.ms[k]),sr:E.sr[k]&&typeof E.sr[k]=="object"?soN(E.sr[k]):{...sr0},bt:bt(k),el:el(k)}),
     now=()=>live?cpSnap():{e:E.cur,s:P.cur,so:cpSoFrom(E.list[E.cur],E.ms[E.cur]),sr:{...sr0},bt:bt(P.cur),el:el(P.cur)};/* 다른 직업 = 그 직업을 떠날 때 저장된 🎒·📜 지금 칸 (pickClass가 떠나기 전에 eqpSync·skpSync) */
   if(v===2||E.link!==false){for(let k=0;k<PRN;k++)if(E.list[k]&&!C.list[k]){C.list[k]=one(k);n++}
     if(v===2)P.nm=(E.nm||[]).slice();C.nm=(E.nm||[]).slice();
@@ -11064,6 +11068,90 @@ HCD.yor=()=>XS.on.yor?{f:0,k:ZN.rT}:null;
 HCD.yos=()=>XS.on.yos?{f:0,k:ZN.sT,ov:zoGOn(gnow())?1:0}:null;
 HCD.yot=()=>{if(!XS.on.yot)return null;const on=zoGOn(gnow());return {f:0,ov:on?1:0,k:ZN.tT,tx:on&&ZN.gx>0?String(Math.round(ZN.gx/1000)):""}};
 
+/* ===== ✒️ zrn 룬 새기기 (2026-11-20 체험판 v39 → 진짜 게임, 사용자 "1 진행해줘" · 빌드 18 영창 · 19 대마법사 · 20 하늘빛 술사 · 21 마나 폭주가 낌) =====
+   내 일반 공격(BAK 키)이 맞힌 적 발밑 룬 +1 (적마다 ZRV.rX · ZRV.rT ms) + 공격 한 번에 MP +ZRV.rMp · 새긴 수 ZRN.c가 ZRV.rN(⏳ qcs = rQ)이면 다음 큰 마법 = 평타 N번 셈(15x NHB msp·xbm·yod) 대신
+     🌠🌩️🌨️ = 경고 → 이름 → 쾅 (MP 값 그대로, 모자라면 기다림) · 🔦 광선 · 🛫 위성 쏘기 · 🎆 마나 폭발 = MP 가득 그대로, 노린 적 자리에서 · 🌝 방전 = 광선 맞던 적 자리에서
+     크기 = 게이지 f(0~1) × ZRV.rM → 쓴 룬은 원으로 빨려 들고 원이 커짐 (떨어지는 자리 = 노린 적, 대상 고르기 규칙 안 바뀜) · 📏 범위 ×ZRV.r (boomRM) = ✒️ 낀 동안
+   체험판 trial.js는 이 파일 이름(ZRV·ZRN·zrOn·zrNeed·zrRing)을 그대로 씀 (옛 이름 MGV·RN·rOn·rNeed·mgRing = 별명) · 숫자 [TEMP] */
+const ZRV={w:500,r:1.6,rN:8,rQ:6,rX:5,rT:6000,rM:.5,rMp:.01};
+const zrP=v=>Math.round(v*100)+"%";
+const ZRN={c:0,fT:-1e9,mpK:null,pend:{},mul:0,bmP:null,bmF:0,txT:-1e9,sk:[],bx:[],warn:[],sup:{},qT:-1e9,q:0,n:{cast:0,bm:0,an:0,sd:0,nb:0,rune:0}};
+const zrQ=()=>{const r=performance.now();if(r-ZRN.qT>500||r<ZRN.qT){ZRN.qT=r;try{ZRN.q=psEqList().some(s=>s.id==="qcs"&&!psOff(s))?1:0}catch(e){}}return ZRN.q};
+const zrNeed=()=>zrQ()?ZRV.rQ:ZRV.rN;
+PSK.push(
+ {id:"zrn",n:"룬 새기기",ic:"✒️",cls:"mage",rb:0,ax:"sp",cat:"atk",sh:"평타로 룬 · 게이지가 차면 큰 마법 바로 · 게이지만큼 커짐",ef:{},
+  d:"내 일반 공격이 맞힌 적 발밑에 룬 +1 (적마다 최대 "+ZRV.rX+" · "+ZRV.rT/1000+"초 · 발밑 숫자) · 맞힐 때 MP + 최대 MP "+zrP(ZRV.rMp)+" (공격 한 번에 한 번)<br>룬을 새길 때마다 칸 게이지 +1 ("+ZRV.rN+"칸 · ⏳ 있으면 "+ZRV.rQ+"칸) → 가득이면 다음 🌠🌩️🌨️🔦🛫 큰 마법이 평타 N번을 안 기다리고 바로 (MP는 그대로 써요)<br>이 스킬을 끼면 마법 폭발 반경 ×"+ZRV.r+" · 가득 찬 게이지로 터지면 반경 +"+zrP(ZRV.rM)+" 더 (룬이 원으로 빨려 들어감) 그리고 게이지 0 · 🎆는 MP가 차면 그대로 터지고, 그때 게이지가 가득이면 +"+zrP(ZRV.rM)+" · 칸 아래 = 게이지 N/"+ZRV.rN+" (⏳ 있으면 N/"+ZRV.rQ+")"});
+XW.zrn="";XSID.zrn=1;{const s=psGet("zrn");if(s)s.xo="c"}
+DSRC.zrn=["✒️","룬 새기기"];
+SKE.push(["zrn","mtr"],["zrn","thd"],["zrn","blz"],["zrn","xbm"],["zrn","anv"],["zrn","yod"],["zrn","qcs"]);
+const zrOn=()=>!!(XS.on&&XS.on.zrn);
+/* ===== 룬 ===== */
+{const _mk=mkMon;mkMon=function(){const r=_mk.apply(this,arguments);if(r&&typeof r=="object"){r._rnN=0;r._rnU=0}return r}}
+const zrN=(m,t)=>m&&m._rnN>0&&m._rnU>t&&m.hp>0&&!m._dieAt?m._rnN:0;
+function zrAdd(m,t){if(!m||!(m.hp>0))return;m._rnN=Math.min(ZRV.rX,zrN(m,t)+1);m._rnU=t+ZRV.rT;const N=zrNeed();if(ZRN.c<N){ZRN.c++;if(ZRN.c>=N)ZRN.fT=t}ZRN.n.rune++;
+ if(tkA!==ZRN.mpK){ZRN.mpK=tkA;const M=mmp();S.mp=Math.min(M,(S.mp||0)+M*ZRV.rMp)}}
+/* 크기 = 새긴 룬 게이지 f(0~1) × ZRV.rM → 다 차서 쏘면 늘 +50% · 룬 그림 = 게이지만큼, 필드 적 발밑 룬(가까운 순) → 모자라면 마법사 몸에서 → 커지는 원 가장자리로 날아가 박힘 */
+function zrTake(x,y,R0,t,f){f=Math.max(0,Math.min(1,f||0));const mul=1+ZRV.rM*f,R1=R0*mul,G=Math.round(f*zrNeed());if(!G)return mul;const L=[];let g=0;
+ const A=[mon,...fld].filter(m=>zrN(m,t)>0).map(m=>[m,monPt(m)]).sort((p,q)=>Math.hypot(p[1][0]-x,p[1][1]-y)-Math.hypot(q[1][0]-x,q[1][1]-y));
+ for(const [m,P] of A){if(g>=G)break;const k=Math.min(G-g,zrN(m,t));g+=k;L.push([P,k]);m._rnN-=k;if(m._rnN<=0){m._rnN=0;m._rnU=0}}if(g<G)L.push([[PX,PY-40*SZ],G-g]);
+ let j=0;for(const [P,k] of L)for(let i=0;i<k;i++){const a=(j/G)*6.283+.3;ZRN.sk.push({x0:P[0],y0:P[1],x:x+Math.cos(a)*R1,y:y+Math.sin(a)*R1*AUY,n:1,t0:t+j*30});j++}if(ZRN.sk.length>40)ZRN.sk.splice(0,ZRN.sk.length-40);
+ ZRN.bx.push({x,y,R0,R1,n:G,t0:t+200});if(ZRN.bx.length>8)ZRN.bx.shift();
+ if(t-ZRN.txT>=1000||t<ZRN.txT){ZRN.txT=t;texts.push({x,y:y-70*SZ,txt:"✒️×"+G+" 원 +"+Math.round((mul-1)*100)+"%",col:"#e6c8ff",big:1,ln:"rnT",t0:t+380})}return mul}
+const zrUse=t=>{ZRN.c=Math.max(0,ZRN.c-zrNeed());ZRN.fT=t};
+/* 평타 셈 끄기 (✒️ 낀 동안만) */
+for(const B of NHB)if(B.k==="msp"||B.k==="xbm"||B.k==="yod"){const o=B.on;B.on=function(){if(zrOn())return false;return o.apply(this,arguments)}}
+/* 큰 마법 크기: 🌠🌩️🌨️ = 시전 때 O.mtR (반경이 처음 정해지는 곳 한 번) · 🎆🌝🛫 = 그 함수 동안 boomRM × ZRN.mul */
+for(const id of ["mtr","thd","blz"]){const o=SPLC[id];if(o)SPLC[id]=function(D,t,O,dm,M){const p=ZRN.pend[id];if(p){delete ZRN.pend[id];const m0=(O&&O.mtR)||0;O=Object.assign({},O,{mtR:(1+m0)*p-1})}return o.call(this,D,t,O,dm,M)}}
+/* 📏 ×ZRV.r = ✒️ 낀 빌드만 */{const o=boomRM;boomRM=function(){let v=o.apply(this,arguments);if(zrOn())v*=ZRV.r;if(ZRN.mul)v*=ZRN.mul;return v}}
+/* 이름 글: 경고 때 이미 띄운 마법은 시전 때 한 번 건너뜀 */
+{const o=spName;spName=function(D){if(D&&ZRN.sup[D.id]){ZRN.sup[D.id]=0;return}return o.apply(this,arguments)}}
+/* 🎆 = MP 가득 그대로 · 노린 적 자리에서 (룬 크기) · 원래 그림(15b AR.fx anv)은 내 몸 자리라 빼고 ZRN.bx an 고리로 */
+const zrAt=(x,y,f)=>{const a=PX,b=PY;PX=x;PY=y;try{return f()}finally{PX=a;PY=b}};
+{const o=arcFire;arcFire=function(t,ov,a){if(!a||!zrOn())return o.call(this,t,ov,a);
+ const M=spAlive(mon)&&t>=(mon.born||0)?mon:null;if(!M)return o.call(this,t,ov,a);const [x,y]=monPt(M);let R0=1;try{R0=anvR()*boomRM()}catch(e){}ZRN.n.an++;let f=0;if(ZRN.c>=zrNeed()){f=1;zrUse(t)}const mul=zrTake(x,y,R0,t,f);ZRN.mul=mul;const n0=AR.fx.length;
+ try{return zrAt(x,y,()=>o.call(this,t,ov,a))}finally{ZRN.mul=0;for(let i=AR.fx.length-1;i>=n0&&i>=0;i--){const F=AR.fx[i];if(F.k==="anv"){AR.fx.splice(i,1);ZRN.bx.push({x,y,R0:F.R,R1:F.R,n:0,t0:t,an:1,tg:F.tg})}}}}}
+/* 🌝 방전 = 광선 맞던 적 자리에서 (룬 크기) */
+{const o=ytNb;ytNb=function(t,D){if(!zrOn()||!ZRN.bmP)return o.apply(this,arguments);const [x,y]=ZRN.bmP;let R0=1;try{R0=hRange()*YTNR*boomRM()}catch(e){}const mul=zrTake(x,y,R0,t,ZRN.bmF);ZRN.bmF=0;ZRN.mul=mul;ZRN.n.nb++;try{return zrAt(x,y,()=>o.call(this,t,D))}finally{ZRN.mul=0}}}
+/* 🛫 위성 쏘기: 룬 크기는 터질 때 */
+{const o=yoSdHit;yoSdHit=function(F,t){if(!zrOn()||!F)return o.apply(this,arguments);let R0=1;try{R0=YODR*rgM()*boomRM()}catch(e){}const mul=zrTake(F.x,F.y,R0,t,1);ZRN.mul=mul;try{return o.apply(this,arguments)}finally{ZRN.mul=0}}}
+/* 칸 아래 글 */
+HCD.zrn=()=>{if(!zrOn())return null;const N=zrNeed();return {f:Math.max(0,1-ZRN.c/N),ch:1,k:ZRN.fT,ov:ZRN.c>=N?1:0,tx:ZRN.c+"/"+N}};
+for(const id of ["mtr","thd","blz","xbm","yod"]){const o=HCD[id];if(o)HCD[id]=function(){const r=o.apply(this,arguments);if(!r||!zrOn())return r;const N=zrNeed();r.f=Math.max(0,1-ZRN.c/N);r.tx="";if(SPCN[id])r.mp=ZRN.c>=N&&(S.mp||0)<spCostN(psGet(id));return r}}
+/* 설명 끝 줄 (✒️ 낀 동안) */
+const ZRD={thd:"✒️ 있으면 평타 셈 대신 새긴 룬 "+ZRV.rN+"개마다 (⏳ 있으면 "+ZRV.rQ+"개) (경고 → 쾅)",mtr:"✒️ 있으면 평타 셈 대신 새긴 룬 "+ZRV.rN+"개마다 (⏳ 있으면 "+ZRV.rQ+"개)",blz:"✒️ 있으면 평타 셈 대신 새긴 룬 "+ZRV.rN+"개마다 (⏳ 있으면 "+ZRV.rQ+"개) (경고 → 쾅)",xbm:"✒️ 있으면 평타 셈 대신 새긴 룬 "+ZRV.rN+"개마다 (⏳ 있으면 "+ZRV.rQ+"개)",yod:"✒️ 있으면 평타 셈 대신 새긴 룬 "+ZRV.rN+"개마다 (⏳ 있으면 "+ZRV.rQ+"개) · 터지는 원에 룬 크기",
+ anv:"✒️ 있으면 MP 가득 → 내 둘레 대신 노린 적 자리에서 터짐 (룬 게이지가 가득이면 +"+zrP(ZRV.rM)+")",ytn:"✒️ 있으면 내 둘레 대신 광선이 닿던 적 자리에서 터짐",qcs:"✒️ 있으면 룬 게이지 "+ZRV.rN+" → "+ZRV.rQ+"칸"};
+for(const id in ZRD){try{const s=psGet(id);if(!s)continue;const P=Object.getOwnPropertyDescriptor(s,"d");if(!P)continue;let v=P.value;Object.defineProperty(s,"d",{configurable:true,enumerable:true,get(){const b=P.get?P.get.call(s):v;let ok=0;try{ok=!!(S&&xHas("zrn"))}catch(e){}return ok?b+"<br>"+ZRD[id]:b},set(x){if(P.set)P.set.call(s,x);else v=x}})}catch(e){console.error(e)}}
+/* 시전 (fAggStep 뒤 매 프레임) */
+function zrFire(t){if(!zrOn()||dead||!S||!(S.hp>0)||t-bossWarn<2200)return;
+ for(let i=ZRN.warn.length-1;i>=0;i--){const w=ZRN.warn[i];if(t>=w.at){SPX.rdy[w.id]=1;ZRN.warn.splice(i,1)}}
+ if(ZF.bm&&spAlive(ZF.bm.m))ZRN.bmP=monPt(ZF.bm.m);
+ if(ZRN.c<zrNeed())return;eaRf();const id=EAS.mb;
+ if(id&&SPCN[id]&&SPCN[id].on()){if(SPX.rdy[id]||ZRN.warn.some(w=>w.id===id))return;const D=psGet(id);if(!D||(S.mp||0)<spCostN(D))return;const M=spTg(D.spl.rg,t);if(!M)return;
+  const [x,y]=monPt(M),O=opSum(),R0=D.spl.r*(1+((O&&O.mtR)||0))*boomRM();zrUse(t);ZRN.n.cast++;const mul=zrTake(x,y,R0,t,1);ZRN.pend[id]=mul;
+  if(id==="mtr"){SPX.rdy[id]=1;return}/* 🌠 = 원래 경고 원 → 이름 → 떨어짐 */
+  ZRN.warn.push({id,at:t+ZRV.w,t0:t,x,y,R0,R:R0*mul});ZRN.sup[id]=1;texts.push({x,y:y-120*SZ,txt:D.ic+" "+D.n+"!",col:"#fff2a8",big:1,ln:"mgW",t0:t});return}
+ xRf();
+ if(XS.on.xbm){if(ZF.bm||!spAlive(mon)||t<(mon.born||0))return;const B=NHB.find(B=>B.k==="xbm");if(!B)return;zrUse(t);B.go(mon,t);ZRN.bmP=monPt(mon);ZRN.bmF=1;ZRN.n.bm++;return}
+ if(XS.on.yod){if(!spAlive(mon)||t<(mon.born||0)||!yoSdFree())return;const B=NHB.find(B=>B.k==="yod");if(!B)return;zrUse(t);B.go(mon,t);ZRN.n.sd++;return}}
+{const o=fAggStep;fAggStep=function(t){const r=o.apply(this,arguments);try{if(S&&S.cls=="mage")zrFire(t)}catch(e){console.error(e)}return r}}
+/* 평타 맞힘 = 룬 (맨 바깥 쪽 dmT · 딜량 창 이름 _dkL은 안쪽이 지우기 전에 읽음) */
+{const _d=dmT;dmT=function(m,d,k){const kk=_dkL||k,r=_d.apply(this,arguments);try{if(r>0&&m&&BAK[kk]&&S&&S.cls=="mage"&&XS.on&&XS.on.zrn)zrAdd(m,gnow())}catch(e){}return r}}
+/* ===== 그림: 발밑 룬 · 빨려 드는 룬 · 커지는 원 · 경고 고리 ===== */
+function zrRing(c,x,y,R,e,col,k){c.save();c.translate(x,y);c.scale(1,AUY);c.globalAlpha=(.18+.22*Math.abs(Math.sin(e*Math.PI*2)))*Math.min(1,e*4+.3);c.fillStyle=col;c.beginPath();c.arc(0,0,R,0,6.283);c.fill();
+ c.globalAlpha=.85;c.strokeStyle=col;c.lineWidth=3*k;c.setLineDash([12*k,8*k]);c.lineDashOffset=-e*60*k;c.beginPath();c.arc(0,0,R,0,6.283);c.stroke();c.setLineDash([]);c.lineWidth=2*k;c.globalAlpha=.9;c.beginPath();c.arc(0,0,R*e,0,6.283);c.stroke();c.restore()}
+function zrDraw(c,t,k){
+ for(const m of [mon,...fld]){const n=zrN(m,t);if(!n||t<(m.born||0))continue;const [x,y]=monPt(m),a=Math.min(1,(m._rnU-t)/800),rr=(26+n*5)*k;
+  c.save();c.globalAlpha=.6*a;c.translate(x,y+2);c.scale(1,AUY);c.strokeStyle="#d49cff";c.lineWidth=3.5*k;c.beginPath();c.arc(0,0,rr,0,6.283);c.stroke();c.fillStyle="#f8ecff";for(let i=0;i<n;i++){const q=t/900+i*6.283/n;c.beginPath();c.moveTo(Math.cos(q)*rr,Math.sin(q)*rr-8*k);c.lineTo(Math.cos(q)*rr+5*k,Math.sin(q)*rr);c.lineTo(Math.cos(q)*rr,Math.sin(q)*rr+8*k);c.lineTo(Math.cos(q)*rr-5*k,Math.sin(q)*rr);c.fill()}c.restore();
+  /* 숫자 = 발 왼쪽 몸 높이 (이름표·HP 바는 발 아래라 피함) */const bx=x-rr-6*k,by=y-24*k;c.save();c.globalAlpha=a;c.fillStyle="rgba(70,25,120,.94)";c.beginPath();c.arc(bx,by,16*k,0,6.283);c.fill();c.strokeStyle="#f0d8ff";c.lineWidth=3*k;c.stroke();c.fillStyle="#fff";c.font="bold "+Math.round(24*k)+"px sans-serif";c.textAlign="center";c.textBaseline="middle";c.fillText(String(n),bx,by+1*k);c.restore()}
+ for(let i=ZRN.sk.length-1;i>=0;i--){const F=ZRN.sk[i],e=(t-F.t0)/420;if(e>=1||e<-10){ZRN.sk.splice(i,1);continue}if(e<0)continue;const q=e*e,x=F.x0+(F.x-F.x0)*q,y=F.y0+(F.y-F.y0)*q-Math.sin(e*Math.PI)*30*k;
+  c.save();c.globalCompositeOperation="lighter";c.strokeStyle="rgba(200,150,255,.7)";c.lineWidth=5*k;c.beginPath();c.moveTo(F.x0+(F.x-F.x0)*q*.5,F.y0+(F.y-F.y0)*q*.5);c.lineTo(x,y);c.stroke();c.fillStyle="#f6e8ff";for(let j=0;j<Math.min(5,F.n);j++){const o=j*7*k;c.beginPath();c.arc(x+Math.cos(j*1.3)*o*.5,y+Math.sin(j*1.3)*o*.3,(9-e*3)*k,0,6.283);c.fill()}c.restore()}
+ for(let i=ZRN.bx.length-1;i>=0;i--){const B=ZRN.bx[i],e=(t-B.t0)/(B.an?560:520);if(e>=1||e<-10){ZRN.bx.splice(i,1);continue}if(e<0)continue;const g=1-Math.pow(1-Math.min(1,e*1.8),3),R=B.an?12+g*(B.R1+6):B.R0+(B.R1-B.R0)*g;
+  c.save();c.translate(B.x,B.y);c.scale(1,AUY);c.globalCompositeOperation="lighter";c.globalAlpha=(1-e)*.95;c.strokeStyle=B.an?"rgb(180,90,255)":"rgb(210,150,255)";c.lineWidth=(B.an?11*(1-e)+2:(B.n?6:3)*(1-e*.5))*k;c.beginPath();c.arc(0,0,R,0,6.283);c.stroke();
+  if(B.n&&B.R1>B.R0){c.globalAlpha=(1-e)*.5;c.lineWidth=2*k;c.setLineDash([6*k,6*k]);c.beginPath();c.arc(0,0,B.R0,0,6.283);c.stroke();c.setLineDash([])}
+  if(B.an&&e<.3){c.globalAlpha=(1-e/.3)*.4;c.fillStyle="rgb(130,50,230)";c.beginPath();c.arc(0,0,R*.92,0,6.283);c.fill()}else if(B.n&&e<.4){c.globalAlpha=(1-e/.4)*.25;c.fillStyle="rgb(170,100,255)";c.beginPath();c.arc(0,0,R,0,6.283);c.fill()}c.restore()}
+ for(const w of ZRN.warn){const e=Math.max(0,Math.min(1,(t-w.t0)/(w.at-w.t0))),g=Math.min(1,(t-w.t0)/380);zrRing(c,w.x,w.y,w.R0!=null?w.R0+(w.R-w.R0)*g*g:w.R,e,"#ffe066",k)}}
+{const _tp=nsTop;nsTop=function(c,t){const r=_tp.apply(this,arguments);if(!S||S.cls!="mage")return r;try{if(zrOn()||ZRN.bx.length||ZRN.sk.length||ZRN.warn.length)zrDraw(c,t,Math.max(.8,SZ))}catch(e){}return r}}
+
 const POTCD=2000;function potReady(){return gnow()-(window._pt??-1e9)>=POTCD}
 // 물약 자동 사용: 맞을 때만이 아니라 0.2초마다 HP 확인 (피의 폭발처럼 스스로 HP를 쓰거나 대기 중에 맞은 경우도, 사용자 2026-11-02)
 setInterval(()=>{try{if(S&&S.cls&&!dead&&S.hp>0&&!paused()&&potAt()>0&&S.pot>0&&S.hp<mhp()*potAt()&&usePot()!==false)render()}catch(e){}},200);
@@ -11109,8 +11197,8 @@ function soUI(sb){const L=tr("soul"),T=soT(),rp=Math.floor(S.rp||0),all=soTp(L+r
   c.querySelector(".bw").append(mkBtn("+1",rp<1,()=>{window._soPop=1;buyTr("soul")},"rb:so1"),mkBtn("전부",rp<1,()=>{const n=Math.floor(S.rp||0),b=soT();if(n<1)return;window._soPop=1;buyTrAll("soul");try{gToastNow("♾️ 각성 +"+soFmt(n)+"점","총량 +"+soFmt(b*100)+"% → +"+soFmt(soT()*100)+"%")}catch(e){}},"rb:soa"));sb.append(c);
   const r=document.createElement("div");r.className="sor";
   r.innerHTML="<div class='soa'><span>비율 정하기 · "+CL().ic+" "+CL().n+"</span><small>✔ 언제든 무료</small></div><div class='sostk'>"+SOB.map(b=>"<i style='background:"+b[3]+"'></i>").join("")+"</div><div class='sostl'>"+SOB.map(b=>"<span>"+b[1].split(" ")[0]+" <b style='color:"+b[3]+"'></b></span>").join("")+"</div><div class='sorows'>"+
-    SOB.map(b=>"<div class='sobr' style='--c:"+b[3]+"'><div class='sobt'><span class='sobn'>"+b[1]+"</span><b class='sobp'></b><span class='sobe'>→ "+b[2]+" <b></b></span><em class='sodl'></em></div><div class='sobc'><button type='button' class='btn sosq' data-so='"+b[0]+"' data-d='-1' aria-label='"+b[1]+" 줄이기'>−</button><div class='socl' data-so='"+b[0]+"'>"+"<i></i>".repeat(10)+"</div><button type='button' class='btn sosq' data-so='"+b[0]+"' data-d='1' aria-label='"+b[1]+" 늘리기'>+</button><span class='solv'><b></b>칸</span></div></div>").join("")+
-    "</div><div class='sozero'>전부 0칸이면 <b>공·방·HP 똑같이</b> 나눠서 적용돼요</div><div class='sobtn'><button type='button' class='btn sodef'>기본 (공·방·HP 똑같이)</button></div><small>칸 수를 정하면 합이 항상 <b style='color:#ffe08a'>100%</b>가 되게 자동으로 나눠요. 한 곳을 올리면 다른 곳이 줄어요.<br>비율은 🎒 프리셋마다 따로 저장돼요 (프리셋을 바꾸면 비율도 같이 바뀌어요).</small>";
+    SOB.map(b=>"<div class='sobr'"+(b[0]=="s"||b[0]=="v"?" data-sp='1'":"")+" style='--c:"+b[3]+"'><div class='sobt'><span class='sobn'>"+b[1]+"</span><b class='sobp'></b>"+(b[0]=="s"||b[0]=="v"?"<b class='sosx'></b>":"")+"<span class='sobe'>→ "+b[2]+" <b></b></span><em class='sodl'></em></div><div class='sobc'><button type='button' class='btn sosq' data-so='"+b[0]+"' data-d='-1' aria-label='"+b[1]+" 줄이기'>−</button><div class='socl' data-so='"+b[0]+"'>"+"<i></i>".repeat(10)+"</div><button type='button' class='btn sosq' data-so='"+b[0]+"' data-d='1' aria-label='"+b[1]+" 늘리기'>+</button><span class='solv'><b></b>칸</span></div></div>").join("")+
+    "</div><div class='sozero'>전부 0칸이면 <b>공·방·HP 똑같이</b> 나눠서 적용돼요</div><div class='sobtn'><button type='button' class='btn sodef'>기본 (공·방·HP 똑같이)</button></div><small>칸 수를 정하면 합이 항상 <b style='color:#ffe08a'>100%</b>가 되게 자동으로 나눠요. 한 곳을 올리면 다른 곳이 줄어요. ⚡ 신속·👟 질주는 줄마다 최대 +"+Math.round(SOSC*100)+"% (공속은 모든 공속 합 상한 +"+Math.round(OCAP.aspd*100)+"% 안).<br>비율은 🎒 프리셋마다 따로 저장돼요 (프리셋을 바꾸면 비율도 같이 바뀌어요).</small>";
   r.querySelectorAll(".sosq").forEach(b=>b.onclick=()=>soAdj(b.dataset.so,+b.dataset.d));
   r.querySelector(".sodef").onclick=()=>{soDef();try{gToastNow("기본 비율로","공·방·HP 똑같이 (3·3·3·0)")}catch(e){}};
   r.querySelectorAll(".socl").forEach(cl=>{const k=cl.dataset.so,at=x=>{const q=cl.getBoundingClientRect();return (x-q.left)/Math.max(1,q.width)*10};
@@ -11122,11 +11210,12 @@ function soUI(sb){const L=tr("soul"),T=soT(),rp=Math.floor(S.rp||0),all=soTp(L+r
   const od=["atk","def","hp","mp"].filter(k=>tr(k)>0);if(od.length){const o=document.createElement("div");o.className="soold";o.innerHTML="<b>📜 예전 특성</b><small>예전 방식 특성이에요 · 더 올릴 수 없어요 · 초기화하면 포인트로 돌려받아요</small>"+od.map(k=>{const T=TRS[k],l=tr(k);return "<div><span>"+T.n+" <b>Lv."+l+"</b></span><em>+"+soFmt(l*T.v)+T.u+"</em></div>"}).join("");sb.append(o)}}
 function trRstRow(sb){const n=trSpent(),q=window._trRst&&n>0,r=document.createElement("div");r.className="srow trr"+(q?" trq":"");r.innerHTML="<span>🔁 특성 초기화<br><small>"+(q?"<b style='color:#ffb38a'>정말 초기화할까요?</b> 찍은 특성 "+soFmt(n)+"점을 모두 돌려받아요 (무료) · 비율은 그대로"+(["atk","def","hp","mp"].some(k=>tr(k)>0)?"<br><b style='color:#ff8a7a'>⚠️ 예전 특성(공·방·HP·MP)은 초기화하면 다시 찍을 수 없어요</b>":""):"찍은 특성 "+soFmt(n)+"점을 모두 포인트로 돌려받아요 (무료) · 비율은 그대로")+"</small></span>";const w=document.createElement("div");w.className="bw";
   if(q)w.append(mkBtn("아니요",false,()=>{window._trRst=0;renderSheet()}),mkBtn("예",false,()=>{window._trRst=0;const m=trReset();render();if(m)try{gToastNow("🔁 특성 초기화","포인트 +"+soFmt(m)+" 돌려받았어요")}catch(e){}}));else w.append(mkBtn("초기화",n<1,()=>{window._trRst=1;renderSheet()}));r.append(w);sb.append(r)}
-function soFill(r){const T=soT(),R=soR(),pv=window._soPv&&performance.now()-window._soPv.t<1500?window._soPv.p:null,z=!(R.a+R.d+R.h+R.m),st=r.querySelectorAll(".sostk i"),sl=r.querySelectorAll(".sostl b"),rw=r.querySelectorAll(".sobr");
-  SOB.forEach((b,j)=>{const k=b[0],p=soP(k),v=R[k],w=rw[j];st[j].style.width=p*100+"%";sl[j].textContent=Math.round(p*100)+"%";w.querySelector(".sobp").textContent=Math.round(p*100)+"%";w.querySelector(".sobe b").textContent="+"+soFmt(T*p*100)+"%";w.querySelector(".solv b").textContent=v;
+function soFill(r){const T=soT(),R=soR(),pv=window._soPv&&performance.now()-window._soPv.t<1500?window._soPv.p:null,z=!SOB.some(b=>R[b[0]]),st=r.querySelectorAll(".sostk i"),sl=r.querySelectorAll(".sostl b"),rw=r.querySelectorAll(".sobr");
+  SOB.forEach((b,j)=>{const k=b[0],p=soP(k),v=R[k],w=rw[j];st[j].style.width=p*100+"%";sl[j].textContent=Math.round(p*100)+"%";w.querySelector(".sobp").textContent=Math.round(p*100)+"%";{const sx=k=="s"||k=="v"?"+"+soFmt(soSp(k)*100)+"%"+(v>0&&T*p>=SOSC?" 최대":""):"";w.querySelector(".sobe b").textContent=sx||"+"+soFmt(T*p*100)+"%";const q=w.querySelector(".sosx");if(q){const cp=v>0&&T*p>=SOSC,tx=cp?"최대":sx;if(q.textContent!==tx)q.textContent=tx;q.style.color=cp?"#ffb070":""}}/* 좁은 창: 줄 상한이면 "최대" (상세 능력치 공속 "상한"과 같은 꼴, 칸이 좁아지지 않게) */w.querySelector(".solv b").textContent=v;
     w.querySelectorAll(".sosq").forEach(x=>x.disabled=+x.dataset.d<0?v<=0:v>=10);w.querySelectorAll(".socl i").forEach((c,i)=>c.classList.toggle("on",i<v));
     const dl=w.querySelector(".sodl"),df=pv?Math.round(p*100)-Math.round(pv[j]*100):0;dl.className="sodl"+(df>0?" up":df<0?" dn":"");dl.textContent=df>0?"▲"+df:df<0?"▼"+(-df):""});
-  r.querySelector(".sozero").classList.toggle("on",z);r.querySelector(".sodef").disabled=R.a==3&&R.d==3&&R.h==3&&R.m==0}
+  r.querySelector(".sozero").classList.toggle("on",z);r.querySelector(".sodef").disabled=R.a==3&&R.d==3&&R.h==3&&R.m==0&&!R.s&&!R.v}
+/* ♾️ ⚡👟 출처: 상세 능력치 "공격 속도"·"이동 속도" 꾹 누르기 글에 각성 몫 한 줄 (2026-11-20) */{const _sd=showSD;showSD=function(k,r){_sd.apply(this,arguments);try{if(k!="공격 속도"&&k!="이동 속도")return;const q=k=="공격 속도"?"s":"v",n=soR()[q]||0,v=soSp(q),e=$("sdesc");if(e)e.innerHTML+="<br><span style='color:#ffe08a'>♾️ 각성 +"+Math.round(v*1000)/10+"%"+(n>0&&v>=SOSC-1e-9?" (최대)":"")+" = "+(q=="s"?"⚡ 신속":"👟 질주")+" "+n+"칸"+(n?"":" (환생 창 ♾️ 비율에서 올려요)")+" · 줄마다 최대 +"+Math.round(SOSC*100)+"%</span>"}catch(e){}}}
 /* 🏪 상점 화면 (2026-11-04 A안): 지갑 줄(창 제목 아래 고정, 높이는 한 번만 재서 기억 — 다시 그릴 때 재면 스크롤이 맨 위로 튐) + 탭 (window._shT: pot·gem·eq·gc, 저장 안 함) · 모자라면 버튼 어둡게 + "N개 모자라요" */
 /* 🎰 뽑기 내용 (2026-11-08 상점 안 '뽑기' 탭으로 옮김) · 다른 곳에서 뽑기 열기 = gcOpen() */
 function gcOpen(){window._shT="gc";openSheet("shop")}
