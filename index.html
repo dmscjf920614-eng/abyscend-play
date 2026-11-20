@@ -6356,6 +6356,19 @@ function lpSq(t){const e=1-(t-(NS.lpL||-1e9))/130;return e>0&&e<=1?e:0}/* 착지
     else if(L>NHSN){hm.dur=L/v*1000/NHSV;hm.lp={h0:0,H:Math.max(NHSHM,L*NHSH)};wRing(hm.t0,hm.x0,hm.y0,4,26,260,"rgb(230,215,190)",2.5,1)}
     else{hm.dur=L/v*1000;arrive=marrive=hm.t0+hm.dur;if(n-NS.hsT>=NHSC){NS.hsT=n;NS.q.push({k:"hl",hm,lp:0,at:hm.t0+hm.dur,fl:S.fl,bm:bossMode})}return r}
     arrive=marrive=hm.t0+hm.dur;NS.q.push({k:"hl",hm,lp:1,at:hm.t0+hm.dur,fl:S.fl,bm:bossMode})}catch(e){console.error(e)}return r}}
+/* 🐆 서로 다가오는 걸음(15 rushIn = 문지기·정예·보스)도 도약 (2026-11-20 버그 "문지기한테는 안 함": 위 approach만 바꿔서 rushIn으로 오는 적에겐 걸어감)
+   만나는 자리 = 몬스터도 걸어와 같은 순간 도착 (rushIn처럼 몬스터는 내 옆 st 자리) · 내 속도만 이동 속도 ×NHSV · 보스 = 경고(2.2초) 끝나고 걷기 시작할 때(t0) 도약 · 가까우면 도약 없이 (위와 같게) */
+{const _ri=rushIn;rushIn=function(t0,sx,sy,vb,reach){const n=gnow();let air=0,go=false;try{nsRf();air=lpH(n);const ok=Math.max(n,t0)-bossWarn>=2200;if(!ok||t0>n+50)air=0;go=!!(S&&NS.on.nhs&&mon&&ok&&n-(NS.hsP||-1e9)<=NHSP)}catch(e){}
+  NS.lpG=go||air>0?1:0;let r;try{r=_ri.apply(this,arguments)}finally{NS.lpG=0}
+  try{if(!go&&!(air>0))return r;NS.hsP=-1e9;const m=mon,R=hRange(),v=Math.max(1,hSpd())*NHSV,dir=sx>PX?1:-1,D0=Math.abs(sx-PX),st=Math.min(reach||44,R-2),a=D0-st,b=Math.abs(sy-PY);
+    /* 같은 순간 도착: 나(가로 v)는 hx, 몬스터(vb, 비스듬히)는 내 옆 st 자리 → 착지하자마자 닿음 (🐂 nsChRi와 같은 셈) · 답이 없으면 rushIn 셈(사거리 끝에서 만남) */
+    let t1=-1;if(a>1&&vb>0){const A=v*v-vb*vb,B=-2*a*v,C=a*a+b*b;if(Math.abs(A)<1e-6)t1=C/(-B);else{const q=B*B-4*A*C;if(q>=0){const s=Math.sqrt(q),z=[(-B-s)/(2*A),(-B+s)/(2*A)].filter(x=>x>0&&v*x<=a+.5).sort((x,y)=>x-y);if(z.length)t1=z[0]}}}
+    let mvT=0;if(t1>0)mvT=t1*1000;else{t1=D0>R?(D0-R)/(v+vb):0}const hx=PX+dir*v*t1,L=Math.abs(hx-PX);
+    if(!(air>0)&&L<=NHSN){if(n-NS.hsT>=NHSC){NS.hsT=n;NS.q.push({k:"hl",hm,lp:0,at:hm.t0+hm.dur,fl:S.fl,bm:bossMode})}return r}
+    const bx=hx+dir*st;hm.x1=hx;hm.y1=PY;if(air>0){const ta=t0+t1*1000;hm.t0=Math.min(n,t0);hm.dur=Math.max(150,ta-hm.t0);hm.lp={h0:air,H:Math.max(NHSHM*.5,L*NHSH)}}else{hm.dur=t1*1000;hm.lp={h0:0,H:Math.max(NHSHM,L*NHSH)};wRing(hm.t0,hm.x0,hm.y0,4,26,260,"rgb(230,215,190)",2.5,1)}
+    m.px=bx;m.py=PY;m.mv={x0:sx,y0:sy,x1:bx,y1:PY,t0,dur:mvT||Math.hypot(bx-sx,PY-sy)/vb*1000};arrive=hm.t0+hm.dur;marrive=Math.max(arrive,m.mv.t0+m.mv.dur);
+    try{if(hm!==BL.lpHm){BL.lpHm=hm;if(!(hm.lp.h0>0)||!BL.lpS)BL.lpS=[hm.x0,hm.y0]}}catch(e){}/* 15zn 🦗 도약 거리 셈 (그쪽은 approach만 감쌈) */
+    NS.q.push({k:"hl",hm,lp:1,at:hm.t0+hm.dur,fl:S.fl,bm:bossMode})}catch(e){console.error(e)}return r}}
 /* 🐆 착지 (nsQ "hl") */
 function nsLand(e,t){if(e.hm!==hm)return;if(e.lp)NS.lpL=t;try{window._tkNow&&window._tkNow()}catch(er){}if(!e.lp||dead||!(S.hp>0))return;const bz=nsBz(),km=NS.km,R=Math.max(20,atkRg()*NHSRM);/* 공격 사거리 (설명대로, 2026-11-08 · 예전 hRange = 서는 거리) */
   wRing(t,PX,PY,6,km?R:34,300,bz?"rgb(255,120,90)":"rgb(255,220,180)",km?4:2.5,1);shk(bz?3.4:km?2:1.2,bz?220:140,t);try{if(fxQ()>0)kfxBurst(PX,PY,km?6:3,km?8:4,hFace,["#8a6a44","#c9a878","#e8d8b0"],performance.now(),1)}catch(er){}
