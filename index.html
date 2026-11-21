@@ -1854,6 +1854,86 @@ body.ls6 #tuc.pr{left:auto;right:8px;transform:none;animation:none}
 @media (min-width:600px) and (min-height:601px){.tsn-sw{left:50%;right:auto;width:560px;margin-left:-280px}}
 
 </style>
+<style>
+/* ===== 📜 스킬 창: 🔍 찾기 + ✨ 고급 모양 (2026-11-21 사용자 "1" = 시안 A + 고급 모양, docs/UI/시안/2026-11-21_스킬찾기.html · 13 skFd* · UI규칙 §29)
+   스킬 창(.skbr)에만 · 흐림 효과 X · 움직임은 transform만 · 칸은 보일 때만 그림(content-visibility) · 클래스 접두어 skfd- */
+
+/* --- 🔍 세로·큰 화면: 묶음 설명 줄 자리 = [🔍 찾기 예시 낱말…] + [못 쓰는 것 숨김] --- */
+.skfd-fb{position:relative;flex:1 1 auto;min-width:0;height:26px;display:flex;align-items:center;gap:4px;padding:0 9px 0 7px;border:1px solid #050b14;border-radius:13px;background:linear-gradient(#08111e,#0d1a2e);box-shadow:inset 0 0 0 1px #4a7ab0,inset 0 2px 5px #000c;color:#dff0ff;font-size:var(--fs-small);white-space:nowrap;overflow:hidden;text-align:left}
+.skfd-fb::after{content:"";position:absolute;inset:-6px -2px}
+.skfd-fb i{font-style:normal;font-size:12px;flex:none}.skfd-fb b{flex:none;font-weight:700}
+.skfd-fb span{min-width:0;overflow:hidden;text-overflow:ellipsis;color:#8fb3d8}
+/* 가로 판·넓은 지도: 8번째 칸 = 🔍 찾기 (예전 "무기 먼저" 자리) */
+.skb-tb>.skfd-tb{color:#bfe0ff;border-color:#3d6a9a}
+.skb-tb>.skfd-tb.on{background:linear-gradient(#1d3b63,#0c1a30);color:#dff0ff;border-color:#9ccaff;font-weight:700}
+/* --- 찾기 판 (탭·묶음 줄 자리) --- */
+.skfd-pn{flex:none;display:flex;flex-direction:column;gap:3px;padding:4px;border:1px solid #02060c;border-radius:8px 8px 0 0;background:linear-gradient(#10223a,#0a1424);box-shadow:inset 0 0 0 1px #5ab0ff,inset 0 14px 18px -14px #8fd0ff33}
+.skfd-in{display:flex;gap:4px}
+.skfd-q{flex:1 1 auto;min-width:0;height:38px;border:1px solid #3d6a9a;border-radius:8px;background:#050b14;color:#eaf4ff;font:inherit;font-size:var(--fs-name);padding:0 10px;outline:none;-webkit-user-select:text;user-select:text;box-shadow:inset 0 2px 5px #000c}
+.skfd-q:focus{border-color:#9ccaff}
+.skfd-q::placeholder{color:#6f8fb0}
+.skfd-x{flex:none;width:40px;height:38px;border:1px solid #02060c;border-radius:8px;background:linear-gradient(#173052,#0c1a30);box-shadow:inset 0 0 0 1px #4a7ab0;font-size:15px;color:#dff0ff;padding:0}
+.skfd-rw{display:flex;align-items:center;gap:6px;min-height:30px}
+.skfd-lb{flex:1 1 auto;min-width:0;font-size:var(--fs-small);color:#cfe2ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:3px}.skfd-lb b{color:#fff}
+.skbr .skfd-tg .k,.skbr .skfd-tg .t1{display:inline-block}.skbr .skfd-tg .t1{display:inline}
+.skbr .skfd-tg{height:28px;padding:0 9px;border-radius:14px;gap:4px;justify-content:flex-start}
+.skfd-ls{border:1px solid #2d4a6a;border-top:0;border-radius:0 0 8px 8px;background:linear-gradient(#0a1424,#0b0f16);padding-left:3px!important;padding-right:3px!important}
+.skfd-cw{display:flex;flex-wrap:wrap;gap:4px;align-items:center;padding:4px 0 5px;border-bottom:1px solid #1d3048}
+.skfd-cl{flex:none;width:34px;display:flex;flex-direction:column;align-items:center;line-height:1.1;color:#8fb3d8}.skfd-cl i{font-style:normal;font-size:14px}.skfd-cl small{font-size:var(--fs-small)}
+.skfd-ch{flex:none;max-width:100%;height:34px;display:inline-flex;align-items:center;gap:4px;padding:0 9px;border:1px solid #02060c;border-radius:17px;background:linear-gradient(#10223a,#08111e);box-shadow:inset 0 0 0 1px #3d6a9a,inset 0 1px 0 #ffffff12;font-size:var(--fs-small);color:#dff0ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:transform .1s}
+.skfd-ch b{color:#8fd0ff;font-size:var(--fs-small)}
+.skfd-ch:active,.skfd-fb:active,.skfd-x:active{transform:scale(.95)}
+.skfd-em{padding:16px 8px;text-align:center;font-size:var(--fs-desc);color:var(--mut)}
+/* 고른 묶음 띠 (칸 보기) */
+.skfd-bar{flex:none;display:flex;align-items:center;gap:6px;min-height:34px;margin-top:3px;padding:0 3px 0 9px;border:1px solid #02060c;border-radius:8px;background:linear-gradient(#173052,#0a1c3c);box-shadow:inset 0 0 0 1px #5ab0ff;color:#cfe2ff;font-size:var(--fs-desc)}
+.skfd-bar span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.skfd-bar b{color:#fff}
+.skfd-bar button{position:relative;flex:none;height:28px;min-width:64px;border:1px solid #5a8ac0;border-radius:8px;background:#0c2140;font-size:var(--fs-small);color:#dff0ff;padding:0 8px}
+.skfd-bar button::after{content:"";position:absolute;inset:-4px -3px}
+/* 숨긴 못 쓰는 스킬 알림 (늘 보임) */
+.skfd-hid{display:flex;align-items:center;gap:8px;margin:8px 2px 2px;font-size:var(--fs-small);color:#ff9a8a}
+.skfd-hid b{color:#ffb0a0}
+.skfd-hid button{position:relative;flex:none;height:30px;padding:0 14px;border:1px solid #7a3020;border-radius:15px;background:#0006;font-size:var(--fs-small);color:#ffb0a0}
+.skfd-hid button::after{content:"";position:absolute;inset:-4px -2px}
+
+/* --- ✨ 고급 모양 (스킬 창만): 두 겹 테두리 · 안쪽 빛 · 깊이 · 묶음 색 밑줄 · 누를 때 움직임 --- */
+.skbr .skb-tb>button{border-color:#0a0603;background:linear-gradient(#21170c,#120c07);box-shadow:inset 0 0 0 1px #4a3820,inset 0 1px 0 #ffffff0f}
+.skbr .skb-tb>button.on{background:linear-gradient(#5e4519,#3a2a16);color:#ffe9a8;border-color:#0a0603;box-shadow:inset 0 0 0 1px #e5bf64,inset 0 1px 0 #fff3c466,0 0 8px #ffcf5a33}
+.skbr .skb-tb>.skfd-tb{box-shadow:inset 0 0 0 1px #3d6a9a,inset 0 1px 0 #ffffff12}
+.skbr .skb-tb>.skfd-tb.on{box-shadow:inset 0 0 0 1px #9ccaff,0 0 8px #5ab0ff44}
+.skbr .skb-sub{background:linear-gradient(#3a2a16,#2a1d0e);box-shadow:inset 0 -6px 10px -8px #000,inset 0 1px 0 #ffffff0d}
+.skbr .skb-tg{border-color:#0a0603;box-shadow:inset 0 0 0 1px #6e5430;background:linear-gradient(#1f160c,#120c07)}
+.skbr .skb-tg.on{box-shadow:inset 0 0 0 1px #e5bf64,inset 0 1px 0 #fff3c455;background:linear-gradient(#4e3914,#261a0b)}
+.skbr .skb-sh{color:#f0d690;font-weight:700;letter-spacing:.3px;margin:8px 2px 4px}
+.skbr .skb-sh::before{content:"";width:6px;height:6px;transform:rotate(45deg);flex:none;background:linear-gradient(135deg,#fff0b8,#c9a24f);box-shadow:0 0 4px #ffcf5a88}
+.skbr .skb-sh::after{background:linear-gradient(90deg,#c9a24f99,#6e543044 60%,#0000)}
+.skbr .skb-sh.no::before{background:#a8483a;box-shadow:none}
+.skbr .skb-gr{gap:5px}
+.skbr .skb-c{border-color:#0a0603;border-radius:9px;background:linear-gradient(#2b2013,#160f08);box-shadow:inset 0 0 0 1px #5a4424,inset 0 1px 0 #ffffff17,inset 0 -10px 14px -10px #000;transition:transform .12s ease-out;content-visibility:auto;contain-intrinsic-size:58px 60px}
+.skbr .skb-c::after{content:"";position:absolute;left:10px;right:10px;bottom:2px;height:2px;border-radius:2px;background:var(--kc,#e5bf64);opacity:.55;pointer-events:none}
+.skbr .skb-c .skb-i{width:30px;height:26px;border-radius:50%;background:radial-gradient(circle at 50% 38%,#4a3820,#120c06 72%);box-shadow:inset 0 2px 3px #000,0 1px 0 #ffffff12;font-size:18px}
+.skbr .skb-c .skb-i .ski{width:20px;height:20px}
+.skbr .skb-c .skb-n{text-shadow:0 1px 1px #000;color:#f0e4c8}
+.skbr .skb-c.on{border-color:#2a1c0a;background:radial-gradient(120% 90% at 50% 0%,#5a4219,#1e1509 70%);box-shadow:inset 0 0 0 1px #ffd77a,inset 0 0 12px #ffcf5a40,0 0 8px #ffcf5a55}
+.skbr .skb-c.on .skb-n{color:#ffe9a8}
+.skbr .skb-c.g{background:#100b07;box-shadow:inset 0 0 0 1px #2e2318}.skbr .skb-c.g::after{opacity:.15}
+.skbr .skb-c.sel,.skbr .skb-c.sel.g{box-shadow:inset 0 0 0 1px #fff3c4,0 0 0 2px #ffe08a,0 0 14px #ffcf5a99}
+.skbr .skb-c:active{transform:scale(.94)}
+.skbr .skb-c.pp{animation:skfdPop .28s ease-out}
+.skbr .skb-c.pp::before{content:"";position:absolute;inset:0;border-radius:9px;background:linear-gradient(105deg,#0000 30%,#fff6d040 48%,#0000 66%);transform:translateX(-100%);animation:skfdShine .45s ease-out;pointer-events:none}
+@keyframes skfdPop{0%{transform:scale(.92)}60%{transform:scale(1.04)}100%{transform:scale(1)}}
+@keyframes skfdShine{to{transform:translateX(100%)}}
+.skbr .skb-e{background:radial-gradient(circle at 35% 30%,#fff4c8,#e5bf64 45%,#8a6420);box-shadow:0 0 0 1px #2a1c0a,0 0 5px #ffcf5a99;color:#2a1a05}
+.skbr .skb-q{background:radial-gradient(circle at 35% 30%,#ffe2b0,#ff9a2a 55%,#a85a10);box-shadow:0 0 0 1px #2a1306,0 0 4px #ff9a2a88}
+.skbr .skb-dt{border:1px solid #000;background:linear-gradient(#2a1d0f,#150e07);box-shadow:inset 0 0 0 1px #e5bf64,inset 0 0 0 3px #150e07,inset 0 14px 18px -14px #ffd27a40,0 8px 18px #000d}
+.skbr .skb-di{border:1px solid #2a1c0a;box-shadow:inset 0 0 0 1px #e5bf64,inset 0 0 8px #ffcf5a33;background:radial-gradient(circle at 50% 35%,#4a3518,#140d07 75%)}
+.skbr .skb-dt .skb-bt .btn:active{transform:translateY(1px)}
+.skbr .skb-pc{border-color:#0a0603;box-shadow:inset 0 0 0 1px #6e5430,inset 0 1px 0 #ffffff12;background:linear-gradient(#1f160c,#120c07)}
+.skbr .skb-pc.on{box-shadow:inset 0 0 0 1px #e5bf64}
+/* 장착 10칸 (스킬 창 안만: 세로 창·가로 판·넓은 지도·큰 화면) */
+:is(body.lyP #sheet[data-pv=sk],#ls6sk,#ls6fm,.sks-q) .l6s-s:not(.em):not(.lk):not(.pick){background:radial-gradient(circle at 50% 30%,#4a3518,#1a1209 75%);box-shadow:inset 0 0 0 1px #2a1c0a,inset 0 0 8px #ffcf5a33,0 0 6px #ffcf5a22}
+:is(body.lyP #sheet[data-pv=sk],#ls6sk,#ls6fm,.sks-q) .l6s-s.em{background:#0c0805;box-shadow:inset 0 3px 6px #000c}
+
+</style>
 </head>
 <body>
 <main>
@@ -4147,7 +4227,7 @@ function skMapE(L){const ids=new Set(L.map(s=>s.id)),E=[],seen=new Set(),add=(a,
    시안 docs/UI/시안/2026-11-10_스킬창_배치.html (A 격자 + 지도) · UI규칙 §29 · 예전 빗살 지도(SKTREE·skNM)·☰ 목록(skRowView)은 없앰
    세로 창(17b)·가로 판(17 #ls6sk)·넓은 지도(17 #ls6fm)·큰 화면(skSView) 모두 skBr 하나 → 넣기·빼기는 예전 함수 그대로(skSelBtns·skSelAct·skInto·elSet·skUnequip)
    ✏️ SKBR = 묶음 표 하나: [탭 키, 그림, 이름, 한 줄 설명, 지도 구역 색, [[묶음 이름, [스킬 id…]], …]] → id만 옮기고 python build.py (칸·지도 둘 다 바뀜)
-   표에 없는 새 스킬 = ⚔️ 공통 탭 맨 끝 "❔ 새 스킬" · 보기 S.skv ("m" = 🗺️ 지도, 없으면 ▦ 칸) · 내 무기 먼저 S.sko (0 = 끔, 없으면 켬) · 탭 window._skTab (저장 X)
+   표에 없는 새 스킬 = ⚔️ 공통 탭 맨 끝 "❔ 새 스킬" · 보기 S.skv ("m" = 🗺️ 지도, 없으면 ▦ 칸) · 못 쓰는 것 숨김 S.sko (0 = 맨 끝에 보임, 없으면 숨김 · 2026-11-21 예전 "내 무기 먼저" 자리) · 🔍 찾기 window._skFd · 탭 window._skTab (저장 X)
    회색·'!'·'같이 쓰면 좋아요'는 게임 규칙에서: 못 씀 = psFit·skWhy(빈 빌드에 무엇을 넣어도 안 풀림) · '!' = 지금 빌드로는 꺼짐(스킬 하나·장비로 풀림) · 필요한 스킬 = 빈 빌드에 하나씩 넣어 skWhy가 풀리는 것(skNeedT) */
 const SKBR=[
  ["mel","🗡️","근접","근접 · 근접 넓게 · 몸 한 방 (기사 근접 공격에 붙음)","#ff7a5a",[["근접 공격 바꾸기",["shb"]],["넓게 · 몸 한 방",["swp","nqk","nch","nkb"]],["기사 원소 큰 한 방",["edr","eth","egl"]],["🛡️ 방패 전용",["xsc","xrb","xrf"]],["🗡️ 두손검 전용",["xcl"]]]],
@@ -4161,7 +4241,28 @@ function skBT(){if(_skBT&&_skBT.n===PSK.length)return _skBT;const W={},put=new S
   const lo=PSK.filter(s=>!put.has(s.id)).map(s=>s.id);if(lo.length)T.find(t=>t.k=="all").secs.push({h:"❔ 새 스킬",ids:lo});
   T.forEach(t=>{t.secs=t.secs.filter(x=>x.ids.length);t.secs.forEach(x=>x.ids.forEach(id=>W[id]={t:t.k,h:x.h}))});return _skBT={n:PSK.length,T,W}}
 function skBV(){return S&&S.skv=="m"?"m":"g"}
-function skBO(){return !(S&&S.sko===0)}
+function skBO(){return !(S&&S.sko===0)}/* (2026-11-21) S.sko = 못 쓰는 것 숨김 (예전 "내 무기 먼저" 자리, 0 = 맨 끝에 보임) · 씀 → '!' 순서는 늘 */
+/* ===== 🔍 스킬 찾기 (사용자 2026-11-21 "스킬이 너무 많아서 원하는 걸 찾기 힘들어요" → 시안 A "1", docs/UI/시안/2026-11-21_스킬찾기.html · UI규칙 §29)
+   찾기 판(skfd-pn) = 탭·묶음 줄 자리: 글 쓰기 칸(이름·짧은 설명·묶음·탭 이름) + 못 쓰는 것 숨김 + 묶음 바로가기 단추(SKBR 묶음 + 보이는 수) · 단추 = 그 묶음만(칸) / 그 자리로 날아감(지도)
+   숨긴 못 쓰는 스킬은 늘 "🚫 못 쓰는 N개 숨김 [보기]"로 알림 · 상태 window._skFd (창이 열린 동안만, 저장 X): o 판 열림 · q 쓴 글 · sec "탭|묶음 번호" */
+function skFd(){return window._skFd||(window._skFd={o:0,q:"",sec:""})}
+function skFdSig(){const F=window._skFd;return F?(F.o?"f":"")+F.sec:""}
+function skFdSec(){const F=skFd();if(!F.sec)return null;const a=F.sec.split("|"),T=skBT().T.find(t=>t.k==a[0]),x=T&&T.secs[+a[1]];return x?{T,x}:null}
+let _skFdT=null;function skFdTx(id){if(!_skFdT||_skFdT.n!==PSK.length)_skFdT={n:PSK.length,m:{}};const m=_skFdT.m;if(m[id]==null){const B=skBT(),s=psGet(id),W=B.W[id],T=W&&B.T.find(t=>t.k==W.t);m[id]=[s?skNm(s):"",String(s&&s.sh||"").replace(/<[^>]*>/g,""),W?W.h:"",T?T.n:""].join(" ").toLowerCase()}return m[id]}
+function skFdOrd(ids){const o=[],n=[],g=[];ids.forEach(id=>{const q=skSq(id);(q.g?g:q.n?n:o).push(id)});return {v:o.concat(n),g}}
+function skFdHid(n){return '<div class="skfd-hid"><span>🚫 못 쓰는 <b>'+n+'</b>개 숨김</span><button type="button" data-a="sort">보기</button></div>'}
+function skFdEsc(t){return String(t).replace(/[&<>"]/g,c=>"&#"+c.charCodeAt(0)+";")}
+function skFdRes(){const q=skFd().q.trim().toLowerCase();return q?skFdOrd(PSK.map(s=>s.id).filter(id=>skBT().W[id]&&skFdTx(id).includes(q))):null}
+function skFdLb(){const F=skFd(),r=skFdRes();return r?'"'+skFdEsc(F.q.trim())+'" 찾은 것 <b>'+(r.v.length+(skBO()?0:r.g.length))+'</b>개':"묶음 바로가기 · 누르면 그 스킬만"}
+/* 판 안 목록: 쓴 글이 있으면 찾은 스킬 칸 · 없으면 탭마다 묶음 단추 (보이는 수, 0이면 뺌) */
+function skFdList(o,sel){const B=skBT(),hd=skBO(),r=skFdRes();
+  if(r){let h=r.v.length?'<div class="skb-gr">'+r.v.map(i=>skBrC(i,o,sel)).join("")+'</div>':"";if(r.g.length)h+=hd?skFdHid(r.g.length):'<div class="skb-sh no">🚫 못 써요 <em>'+r.g.length+'</em></div><div class="skb-gr">'+r.g.map(i=>skBrC(i,o,sel)).join("")+'</div>';return h||'<div class="skfd-em">찾은 스킬이 없어요 · 다른 낱말로 찾아 보세요</div>'}
+  let h="",ng=0;B.T.forEach(T=>{let c="";T.secs.forEach((x,i)=>{let v=0;x.ids.forEach(id=>{if(hd&&skSq(id).g)ng++;else v++});if(v)c+='<button type="button" class="skfd-ch" data-sec="'+T.k+"|"+i+'">'+x.h+' <b>'+v+'</b></button>'});if(c)h+='<div class="skfd-cw"><span class="skfd-cl"><i>'+T.ic+'</i><small>'+T.n+'</small></span>'+c+'</div>'});
+  return h+(ng?skFdHid(ng):"")}
+/* 찾기 단추 안 예시 낱말 = 이 캐릭터가 쓸 수 있는 스킬이 많은 묶음 4개 */
+function skFdHint(){const a=[];skBT().T.forEach(T=>T.secs.forEach(x=>{const v=x.ids.filter(id=>!skSq(id).g).length;if(v)a.push([v,x.h.replace(/^[^가-힣(]+/,"").split(/[ ·(]/)[0]])}));a.sort((p,q)=>q[0]-p[0]);return [...new Set(a.map(x=>x[1]).filter(Boolean))].slice(0,4).join(" · ")+"…"}
+function skFdRe(id){window._skSel=null;window._skSlot=null;SKB.lt=null;SKB.sv[id]=0;SKB.pd[id]=null;renderSheet();try{if(L6S.on)ls6SkR()}catch(x){}}
+function skKc(id){const B=skBT(),W=B.W[id];if(!W)return "";if(!B.KC)B.KC=Object.fromEntries(B.T.map(t=>[t.k,t.c]));return B.KC[W.t]||""}
 function skNm(s){return s.n}/* (2026-11-16) 원소 속성도 모든 무기 같은 이름 (15m s.n = 🔥 화염 속성 · ⚡ 번개 속성 · ❄️ 냉기 속성) · 예전: 무기별 이름 (화염검·불화살·화염구, 15m eaWn) */
 const SKB={RC:{},q:{},sv:{},pd:{},cam:{},lt:null,drg:0,op:"",fl:"",fly:0,an:0,ms:{}};
 /* 필요한 스킬 표: 빈 빌드에서 skWhy가 있으면 다른 스킬을 하나씩 넣어 보고 풀리는 것을 모음 · 마법사 원소 줄은 원소 줄에 넣어 봄
@@ -4199,11 +4300,12 @@ function skEqN(id,o){const i=(S.psl||[]).slice(0,o).indexOf(id);if(i>=0)return i
 let _skPE=null;
 function skPairs(id){if(!_skPE||_skPE.n!==PSK.length){const M={};skMapE(PSK).forEach(e=>{(M[e[0]]=M[e[0]]||[]).push(e[1]);(M[e[1]]=M[e[1]]||[]).push(e[0])});_skPE={n:PSK.length,M}}return _skPE.M[id]||[]}
 function skRo(w){const c=w.charCodeAt(w.length-1)-44032;return c<0||c>11171||c%28==0||c%28==8?"로는":"으로는"}
-/* 탭의 묶음들 · 내 무기 먼저면: 씀 → '!' 순서, 못 씀은 맨 끝 한 묶음 */
-function skBrSecs(tk){const B=skBT(),t=B.T.find(x=>x.k==tk);let secs=t?t.secs.map(x=>({h:x.h,ids:x.ids.slice()})):B.T.map(T=>({h:T.ic+" "+T.n,ids:T.secs.flatMap(x=>x.ids)}));if(!skBO())return secs;
-  const bad=[];secs=secs.map(x=>{const o=[],n=[];x.ids.forEach(id=>{const q=skSq(id);(q.g?bad:q.n?n:o).push(id)});return {h:x.h,ids:o.concat(n)}}).filter(x=>x.ids.length);
+/* 탭의 묶음들 (🔍 묶음을 골랐으면 그 묶음 하나) · 늘 씀 → '!' 순서 · 못 씀 = 숨김(S.sko 켬: 개수 줄 {hid}) 또는 맨 끝 한 묶음 */
+function skBrSecs(tk){const B=skBT(),FS=skFdSec(),t=B.T.find(x=>x.k==tk);let secs=FS?[{h:FS.x.h,ids:FS.x.ids.slice()}]:t?t.secs.map(x=>({h:x.h,ids:x.ids.slice()})):B.T.map(T=>({h:T.ic+" "+T.n,ids:T.secs.flatMap(x=>x.ids)}));
+  const bad=[];secs=secs.map(x=>{const r=skFdOrd(x.ids);bad.push(...r.g);return {h:x.h,ids:r.v}}).filter(x=>x.ids.length);
+  if(bad.length&&skBO()){secs.push({hid:bad.length,ids:[]});return secs}
   if(bad.length){const wn=wtNm()||(CLS[S.cls]||{}).n||"";secs.push({h:"🚫 "+wn+skRo(wn)+" 못 써요",ids:bad,no:1})}return secs}
-function skBrC(id,o,sel){const s=psGet(id),q=skSq(id),n=skEqN(id,o);return '<button type="button" class="skb-c'+(q.g?" g":"")+(n?" on":"")+(sel&&sel.id==id?" sel":"")+(SKB.fl==id?" fl":"")+'" data-id="'+id+'">'+(q.n?'<span class="skb-q">!</span>':'')+(n?'<span class="skb-e">'+n+'</span>':'')+skXm(s)+'<span class="skb-i">'+skI(s)+'</span><span class="skb-n">'+skNm(s)+'</span>'+(q.g?'<span class="skb-r">'+q.g+'</span>':'')+'</button>'}
+function skBrC(id,o,sel){const s=psGet(id),q=skSq(id),n=skEqN(id,o),lt=SKB.lt;return '<button type="button" class="skb-c'+(q.g?" g":"")+(n?" on":"")+(sel&&sel.id==id?" sel":"")+(SKB.fl==id?" fl":"")+(sel&&sel.id==id&&lt&&lt.id==id&&Date.now()-lt.t<400?" pp":"")+'" data-id="'+id+'" style="--kc:'+skKc(id)+'">'+(q.n?'<span class="skb-q">!</span>':'')+(n?'<span class="skb-e">'+n+'</span>':'')+skXm(s)+'<span class="skb-i">'+skI(s)+'</span><span class="skb-n">'+skNm(s)+'</span>'+(q.g?'<span class="skb-r">'+q.g+'</span>':'')+'</button>'}
 /* 보기 바꾸기 [▦|🗺️] (머리줄에 둠: 세로 17b pvHx · 가로 17 #ls6sk · 큰 화면 skSView) */
 function skVtH(){const m=skBV()=="m";return '<span class="skb-vt"><button type="button" data-a="vg" class="'+(m?"":"on")+'" aria-label="칸으로 보기">▦</button><button type="button" data-a="vm" class="'+(m?"on":"")+'" aria-label="지도로 보기">🗺️</button></span>'}
 function skVtSet(v){if(!S)return;const m=v=="vm"||v=="m";if((skBV()=="m")===m)return;S.skv=m?"m":"g";SKB.cam={};save();renderSheet();try{if(L6S.on)ls6SkR(1)}catch(e){}}
@@ -4218,18 +4320,25 @@ function skBrDt(s,o,eqs){const q=skSq(s.id),n=skEqN(s.id,o),B=skBT(),W=B.W[s.id]
 /* 그리기: host 안에 탭·(묶음 설명)·칸 또는 지도·설명판·안내 한 줄 · opt = {id: p 세로 · l 가로 판 · f 넓은 지도 · s 큰 화면, o, eqs, sel, map} */
 function skBr(host,opt){const id=opt.id,o=opt.o,eqs=opt.eqs,sel=opt.sel,B=skBT(),MAP=!!opt.map,L=id=="l"||id=="f";{const qk=setupSig()+"|"+wtNm()+"|"+(S.elm||"")+"|"+(S.bolt||"")+"|"+(S.rb||0);if(SKB.qk!==qk){SKB.qk=qk;SKB.q={};skOpM(()=>{for(const x of PSK)SKB.q[x.id]=skSt(x)})}}/* 86개를 한 번에 (opSum 한 번) *//* 상태는 빌드가 바뀔 때만 다시 (누를 때마다 skWhy 86번 X) */
   let tab=window._skTab||"all0";if(tab!="all0"&&!B.T.some(t=>t.k==tab))tab="all0";
-  const R=document.createElement("div");R.className="skbr skb-"+id+(MAP?" map":" grid");R.dataset.id=id;
-  const tg='<button type="button" class="skb-tg'+(skBO()?" on":"")+'" data-a="sort" aria-label="내 무기로 쓸 수 있는 것 먼저"><span class="k"></span><span class="t1">내 무기 먼저</span><span class="t0">무기 먼저</span></button>';
-  let h='<div class="skb-tb">'+[{k:"all0",ic:"📚",n:"전체"}].concat(B.T).map(t=>'<button type="button" data-t="'+t.k+'"'+(tab==t.k?' class="on"':'')+'><i>'+t.ic+'</i><span>'+t.n+'</span></button>').join("")+(L?tg:"")+'</div>';
-  const T=B.T.find(t=>t.k==tab);if(!L)h+='<div class="skb-sub"><span class="sd">'+(T?T.sub:"모든 스킬 "+PSK.length+"개 · 판정별 묶음")+'</span>'+tg+'</div>';
+  const F=skFd(),FO=!!F.o,FS=!FO&&skFdSec(),MV=MAP&&!FO;/* 찾기 판이 열리면 지도 대신 판 (닫으면 지도 그대로) */
+  const R=document.createElement("div");R.className="skbr skb-"+id+(MV?" map":" grid")+(FO?" fnd":"");R.dataset.id=id;
+  const tg=c=>'<button type="button" class="skb-tg'+(c?" "+c:"")+(skBO()?" on":"")+'" data-a="sort" aria-label="못 쓰는 스킬 숨기기"><span class="k"></span><span class="t1">못 쓰는 것 숨김</span></button>';
+  let h="";
+  if(FO)h+='<div class="skfd-pn"><div class="skfd-in"><input class="skfd-q" type="text" enterkeyhint="search" autocomplete="off" spellcheck="false" placeholder="이름이나 낱말 (예: 방패, 독)" aria-label="스킬 찾기" value="'+skFdEsc(F.q)+'"><button type="button" class="skfd-x" data-a="fc" aria-label="찾기 닫기">✕</button></div><div class="skfd-rw"><span class="skfd-lb">'+skFdLb()+'</span>'+tg("skfd-tg")+'</div></div>';
+  else{h+='<div class="skb-tb">'+[{k:"all0",ic:"📚",n:"전체"}].concat(B.T).map(t=>'<button type="button" data-t="'+t.k+'"'+(tab==t.k&&!FS?' class="on"':'')+'><i>'+t.ic+'</i><span>'+t.n+'</span></button>').join("")+(L?'<button type="button" class="skfd-tb'+(FS?" on":"")+'" data-a="fo" aria-label="스킬 찾기"><i>🔍</i><span>찾기</span></button>':"")+'</div>';
+    if(!L)h+='<div class="skb-sub"><button type="button" class="skfd-fb" data-a="fo" aria-label="스킬 찾기"><i>🔍</i><b>찾기</b><span>'+skFdHint()+'</span></button>'+tg("")+'</div>'}
+  if(FS)h+='<div class="skfd-bar"><span>🔍 <b>'+FS.x.h+'</b> · '+FS.T.ic+' '+FS.T.n+'</span><button type="button" data-a="fsx">✕ 다 보기</button></div>';
   const rep=window._skRep&&psGet(window._skRep),rs=skRS(o);
   if(rep||rs!=null)h+='<div class="skb-rp"><span>'+(rep?skI(rep)+" <b>"+skNm(rep)+"</b>"+(josa(skNm(rep))=="이"?"과":"와")+" 바꿀 칸을 눌러 주세요":"📍 <b>"+(rs+1)+"번 칸</b>에 넣을 스킬을 고르세요")+'</span><button type="button" class="btn" data-a="rpx">취소</button></div>';
-  if(!MAP){let c="";skBrSecs(tab).forEach(x=>{c+='<div class="skb-sh'+(x.no?" no":"")+'">'+x.h+' <em>'+x.ids.length+'</em></div><div class="skb-gr">'+x.ids.map(i=>skBrC(i,o,sel)).join("")+'</div>'});h+='<div class="skb-ct">'+c+'</div>'}
+  if(FO)h+='<div class="skb-ct skfd-ls">'+skFdList(o,sel)+'</div>';
+  else if(!MV){let c="";skBrSecs(tab).forEach(x=>{if(x.hid){c+=skFdHid(x.hid);return}c+='<div class="skb-sh'+(x.no?" no":"")+'">'+x.h+' <em>'+x.ids.length+'</em></div><div class="skb-gr">'+x.ids.map(i=>skBrC(i,o,sel)).join("")+'</div>'});h+='<div class="skb-ct">'+c+'</div>'}
   else h+=skBrMap(id,o,sel);
-  h+=MAP?'<div class="skb-mf"><span class="hn">끌기 · 두 손가락 = 크기 · 두 번 = 끼우기</span><button type="button" data-mz="-" aria-label="작게">－</button><button type="button" data-mz="+" aria-label="크게">＋</button><button type="button" data-mz="fit" class="w">전체</button>'+(id=="l"?'<button type="button" data-mz="wd" class="w">넓게</button>':id=="f"?'<button type="button" data-mz="wd" class="w">좁게</button>':'')+'</div>':'<div class="skb-hn">누르면 설명 · 두 번 누르면 끼우기/빼기</div>';
+  h+=MV?'<div class="skb-mf"><span class="hn">끌기 · 두 손가락 = 크기 · 두 번 = 끼우기</span><button type="button" data-mz="-" aria-label="작게">－</button><button type="button" data-mz="+" aria-label="크게">＋</button><button type="button" data-mz="fit" class="w">전체</button>'+(id=="l"?'<button type="button" data-mz="wd" class="w">넓게</button>':id=="f"?'<button type="button" data-mz="wd" class="w">좁게</button>':'')+'</div>':'<div class="skb-hn">누르면 설명 · 두 번 누르면 끼우기/빼기</div>';
   R.innerHTML=h;if(sel){R.classList.add("hdt");R.append(skBrDt(sel,o,eqs))}host.append(R);SKB.fl="";
   R.addEventListener("click",e=>skBrClick(e,R,id,o,eqs));
-  if(MAP)skBrMapEv(R,id,sel);else skBrGrid(R,id,sel&&sel.id);return R}
+  if(MV)skBrMapEv(R,id,sel);else skBrGrid(R,id,sel&&sel.id);
+  if(FO){const inp=R.querySelector(".skfd-q");inp.addEventListener("input",()=>{F.q=inp.value;const c=R.querySelector(".skb-ct");c.innerHTML=skFdList(o,sel);R.querySelector(".skfd-lb").innerHTML=skFdLb();c.scrollTop=0;SKB.sv[id]=0});inp.addEventListener("keydown",e=>{if(e.key=="Enter")inp.blur()})}/* 쓰는 동안은 목록만 (창을 다시 그리지 않음 = 키보드 그대로) */
+  return R}
 /* 설명판 자리 (칸·지도 같이): 탭 줄·묶음 설명 줄은 절대 안 가림 = 내용 칸(.skb-ct / .skb-mp) 안에서만 뜸
    칸 보기: 누른 칸을 안 가리는 쪽(위 먼저, 안 되면 아래)에, 높이는 그 빈 곳만큼 → 누른 칸이 손가락 밑에서 안 움직임 · 위에 놓을 땐 칸 목록에 같은 높이 위 여백 + 스크롤 보정(SKB.sv = 여백 뺀 스크롤)
    빈 곳이 좁으면 설명 1줄(c1) → 설명 숨김(nd) → 같이 쓰면 좋아요 숨김(nc) · 이름 줄을 누르면 전부 펼침(칸을 가려도 됨) · 그래도 안 되면 위에 놓고 칸을 그 아래로 스크롤 */
@@ -4249,15 +4358,20 @@ function skBrHost(id){return document.querySelector(".skbr.skb-"+id)}
 /* 누르기 (칸·지도 같이): 한 번 = 설명 · 같은 자리 0.45초 안 두 번 = 끼우기/빼기 (두 번째가 설명판에 떨어져도) */
 function skBrClick(e,R,id,o,eqs){const nw=Date.now(),lt=SKB.lt;
   /* 두 번 누르기 = 같은 칸(또는 그 칸 위에 방금 뜬 설명판) · 같은 자리 24px · 0.45초 · 지도는 같은 배율 */
-  if(lt&&nw-lt.t<450&&Math.hypot(e.clientX-lt.x,e.clientY-lt.y)<24&&!e.target.closest("[data-t],.skb-tg,[data-mz],.skb-rp")){const hn=e.target.closest("[data-id]"),hd=e.target.closest(".skb-dt");
+  if(lt&&nw-lt.t<450&&Math.hypot(e.clientX-lt.x,e.clientY-lt.y)<24&&!e.target.closest("[data-t],.skb-tg,[data-mz],.skb-rp,.skfd-pn .skfd-in,.skfd-rw,.skfd-tb,.skfd-fb,.skfd-bar,.skfd-hid,[data-sec]")){const hn=e.target.closest("[data-id]"),hd=e.target.closest(".skb-dt");
     if(((hn&&hn.dataset.id==lt.id)||(hd&&!hn))&&(!R._m||Math.abs(R._m.s()-lt.s)<1e-3)){SKB.lt=null;const s=psGet(lt.id);if(s)skBrDbl(s,o,eqs);return}}
   if(SKB.drg&&nw-SKB.drg<350&&e.target.closest(".skb-mp")){SKB.drg=0;return}/* 지도를 끈 뒤 손 뗀 자리 누름만 무시 (탭·버튼은 그대로) */
   const dd=e.target.closest(".skb-dd");if(dd){dd.classList.toggle("op");SKB.op=dd.classList.contains("op")?window._skSel:"";return}
   const dn=e.target.closest(".skb-dn,.skb-di");if(dn){const d=dn.closest(".skb-dt"),c=R.querySelector(".skb-ct,.skb-mp");if(d&&c&&d.classList.contains("c1")){d.classList.remove("c1","nd","nc");d.style.maxHeight=Math.max(46,c.clientHeight-4)+"px";d.style.top=c.offsetTop+"px"}return}/* 좁아서 줄인 설명판 = 이름을 누르면 전부 */
   const b=e.target.closest("button");if(!b)return;const a=b.dataset.a;
-  if(b.dataset.t){if(window._skTab==b.dataset.t&&!R.classList.contains("map")&&!window._skSel)return;window._skTab=b.dataset.t;window._skSel=null;window._skSlot=null;SKB.lt=null;SKB.sv[id]=0;SKB.pd[id]=null;SKB.fly=1;renderSheet();/* 탭 = 설명판 닫고 그 탭으로 */try{if(L6S.on)ls6SkR()}catch(x){}
+  if(b.dataset.t){const F=skFd(),fd=F.sec||F.o;F.sec="";F.o=0;F.q="";if(!fd&&window._skTab==b.dataset.t&&!R.classList.contains("map")&&!window._skSel)return;window._skTab=b.dataset.t;window._skSel=null;window._skSlot=null;SKB.lt=null;SKB.sv[id]=0;SKB.pd[id]=null;SKB.fly=1;renderSheet();/* 탭 = 설명판 닫고 그 탭으로 */try{if(L6S.on)ls6SkR()}catch(x){}
     const N=skBrHost(id);if(N&&N._m&&SKB.fly){SKB.fly=0;N._m.go(N._m.tab())}return}
   if(a=="sort"){S.sko=skBO()?0:1;if(S.sko)delete S.sko;save();renderSheet();return}
+  if(a=="fo"){const F=skFd();if(F.o){F.o=0;F.q=""}else F.o=1;skFdRe(id);return}/* 🔍 찾기 판 열기 (가로 🔍 칸 = 열림이면 닫기) */
+  if(a=="fc"){const F=skFd();F.o=0;F.q="";skFdRe(id);return}
+  if(a=="fsx"){skFd().sec="";skFdRe(id);return}
+  if(b.dataset.sec){const F=skFd(),k=b.dataset.sec;F.o=0;F.q="";if(skBV()!="m"){F.sec=k;skFdRe(id);return}
+    F.sec="";const a2=k.split("|"),T=skBT().T.find(t=>t.k==a2[0]),x=T&&T.secs[+a2[1]];skFdRe(id);const N=skBrHost(id),f=x&&(x.ids.find(i=>!skSq(i).g)||x.ids[0]);if(N&&N._m&&f)N._m.go(N._m.node(f));return}/* 지도 = 그 묶음 자리로 날아감 */
   if(a=="dx"){window._skSel=null;window._skSlot=null;window._skLT=null;SKB.lt=null;renderSheet();return}
   if(a=="rpx"){window._skRep=null;window._skRepS=null;renderSheet();return}
   if(b.dataset.mz){const z=b.dataset.mz,m=R._m;if(z=="wd"){try{ls6Fm(id=="l"?1:0)}catch(x){}return}if(!m)return;if(z=="fit")m.go(m.fit());else m.zoomBy(z=="+"?1.35:1/1.35);return}
@@ -4271,7 +4385,7 @@ function skBrDbl(s,o,eqs){const q=skSt(s);if(q.g){skBrToast("🚫 "+(q.w||q.g));
   if(skElR(s)){elSet(elId()==s.id?"":s.id);return}if(o<1){skBrToast("🔒 환생하면 스킬 칸이 열려요");return}
   if(skRS(o)!=null){skInto(s,o);return}if(eqs.has(s.id)){window._skSlot=null;skUnequip(S.psl.indexOf(s.id));return}skSelAct(s,o,eqs)}
 /* 같이 쓰면 좋아요 → 그 스킬로 (칸: 다른 탭이면 그 탭으로 · 지도: 그 칸으로 날아감) + 반짝 */
-function skBrJump(sid,id){const W=skBT().W[sid],N0=skBrHost(id),map=N0&&N0.classList.contains("map");if(!map&&(window._skTab||"all0")!="all0"&&W&&window._skTab!=W.t){window._skTab=W.t;SKB.sv[id]=0;SKB.pd[id]=null}
+function skBrJump(sid,id){const W=skBT().W[sid],N0=skBrHost(id),map=N0&&N0.classList.contains("map");{const F=skFd();if((F.o||F.sec)&&!(N0&&N0.querySelector('.skb-ct [data-id="'+sid+'"]'))){F.o=0;F.sec="";F.q="";if(W&&!map&&(window._skTab||"all0")!="all0")window._skTab=W.t;SKB.sv[id]=0;SKB.pd[id]=null}}if(!map&&(window._skTab||"all0")!="all0"&&W&&window._skTab!=W.t){window._skTab=W.t;SKB.sv[id]=0;SKB.pd[id]=null}
   window._skSel=sid;window._skSlot=null;window._skLT=null;SKB.lt=null;SKB.fl=sid;renderSheet();const N=skBrHost(id);if(!N)return;if(N._m)N._m.show(sid,true);else skBrVis(N,sid,true)}
 /* ===== 🗺️ 지도 = 탭 6개가 구역 6개(3×2, 구역 색) · 구역 안 = 묶음마다 반듯한 줄(한 줄 6칸) · 선 없음 (고른 스킬의 '필요'(주황)·'같이 쓰면 좋아요'(점선)만 옅게)
    끌기 · 두 손가락 · 휠 · ＋－ · 전체 · 멀리(배율 < 0.72 세로 / 0.8 가로)는 이름 숨김 + 누르면 그 칸으로 확대 · 탭 = 그 구역으로 날아감 · 보던 자리 SKB.cam[id] (저장 X) */
@@ -4354,7 +4468,7 @@ const SKG=SKAXS.map(a=>[a[0],a[1]+" "+a[2]]);
 function skGrp(s){return skAx(s)}
 function skGN(k){return (SKG.find(g=>g[0]==k)||[k,k])[1]}
 /* 창을 다시 그릴지: 바뀐 게 없으면 그대로 둠 (누르는 도중 칸이 다시 만들어져 눌림이 사라지는 것 막기) */
-function psSig(){let P=null,nm=null;try{const q=skp();P=[q.cur,q.list.map(x=>(x||[]).filter(Boolean).length)];nm=[eqpG().nm,eqpG().list.map(x=>!!x),eqpG().ms,bsLkS(),cpSig()]}catch(e){}return JSON.stringify([S.cls,S.rb,psOpen(),(S.psl||[]).slice(0,PSLOTS),window._skSel||"",window._skRep||"",window._skSlot??"",window._skRepS??"",window._skTab||"",(S.skv||"")+(S.sko===0?"0":""),psPlace||"",S.bolt||"",S.eq,P,nm])}
+function psSig(){let P=null,nm=null;try{const q=skp();P=[q.cur,q.list.map(x=>(x||[]).filter(Boolean).length)];nm=[eqpG().nm,eqpG().list.map(x=>!!x),eqpG().ms,bsLkS(),cpSig()]}catch(e){}return JSON.stringify([S.cls,S.rb,psOpen(),(S.psl||[]).slice(0,PSLOTS),window._skSel||"",window._skRep||"",window._skSlot??"",window._skRepS??"",window._skTab||"",(S.skv||"")+(S.sko===0?"0":"")+skFdSig(),psPlace||"",S.bolt||"",S.eq,P,nm])}
 function skSame(){const sb=$("sbody");return !!(sb&&sb.querySelector(".sks-hd")&&sb._sks===psSig())}
 /* 칸 먼저 고르기: skRS = 지금 고른 칸 (없으면 null) · skPickFor = 그 칸에 넣을 스킬 고르기 시작 · skSlotBtns = 칸 누른 설명판의 [빼기][바꾸기] */
 function skRS(o){const r=window._skRepS;return r!=null&&r<o?r:null}
