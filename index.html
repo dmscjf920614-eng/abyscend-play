@@ -6519,8 +6519,8 @@ function nsZcUse(m){if(!NS.on.nzc||nsZcP()<1)return 1;NS.zd=0;nsZcFx(m);NS.zcX=N
 function nsZcArm(){if(!NS.on.nzc||!NS.inTk||NS.zcK||nsZcP()<1)return;NS.zd=0;NS.zcK=NZCM;nsZcFx(mon);dEv("zc")}
 /* 🔋 딜량 창 따로 줄 "충전 일격" (사용자 2026-11-21 "충전일격 데미지는 dps 창에 따로"): 충전 일격 한 방 통째로(실제 피해) "zc"로 옮김 + 터진 횟수 1 (2026-11-21: 늘어난 몫만 셈 → 약해진 적을 끝내는 한 방이면 0이라 줄이 안 뜸 → 통째로)
    일반 공격(baM을 곱하는 basic·dbl·multi) = 그 tick NS.zcK · 🐂 도착 chg·🐆 내려찍기 leap = nsZcUse 뒤 같은 nsQ 안 NS.zcX (nsQ 끝나면 0) */
-DSRC.zc=["🔋","충전 일격"];const ZCDK={basic:1,dbl:1,multi:1,shb:1},ZCUK={chg:1,leap:1};
-{const _dm=dmT;dmT=function(m,d,k){const kd=_dkL||k;let M=0;try{if(NS.zcK>1&&NS.inTk&&ZCDK[kd])M=NS.zcK;else if(NS.zcX>1&&ZCUK[kd])M=NS.zcX}catch(e){}if(!(M>1))return _dm.apply(this,arguments);
+DSRC.zc=["🔋","충전 일격"];const ZCDK={basic:1,dbl:1,multi:1,shb:1,gs:1},ZCUK={chg:1,leap:1},ZCPK={basic:1,dbl:1,multi:1,pierce:1,chain:1,gs:1};/* ZCPK = 충전 tick에 쏜 투사체(p.zc)가 나중에 닿을 때 (2026-11-21 궁수: 화살은 tick 뒤 닿아서 안 셌음) */
+{const _dm=dmT;dmT=function(m,d,k){const kd=_dkL||k;let M=0;try{if(NS.zcK>1&&NS.inTk&&ZCDK[kd])M=NS.zcK;else if(NS.zcX>1&&ZCUK[kd])M=NS.zcX;else if(NS.zcP&&ZCPK[kd]){M=NS.zcP.zc;NS.zcP=null}}catch(e){}if(!(M>1))return _dm.apply(this,arguments);
   const ss=sessGet(),a0=(ss.sr&&ss.sr[kd])||0,r=_dm.apply(this,arguments);
   try{const n=gnow(),sr=ss.sr;if(sessGet()!==ss||!sr)return r;const e=(sr[kd]||0)-a0,x=e>0?e:0;if(x>0){sr[kd]-=x;sr.zc=(sr.zc||0)+x;if(r1On(n)&&r1.sr&&r1.sr[kd]>=x){r1.sr[kd]-=x;r1.sr.zc=(r1.sr.zc||0)+x}const q=dpsQS[dpsQS.length-1];if(q&&q[1]===kd&&q[2]>=x){q[2]-=x;dpsQS.push([q[0],"zc",x])}}}catch(er){console.error(er)}return r}}
 {const _q=nsQ;nsQ=function(){try{return _q.apply(this,arguments)}finally{NS.zcX=0}}}
@@ -6528,7 +6528,8 @@ DSRC.zc=["🔋","충전 일격"];const ZCDK={basic:1,dbl:1,multi:1,shb:1},ZCUK={
 {const _dt=dsTake;dsTake=function(){try{nsZcArm()}catch(e){}return _dt.apply(this,arguments)}}
 {const _bm=baM;baM=function(){const b=_bm();return NS.zcK&&NS.inTk?b*NS.zcK:b}}
 {const _sd=shbDmg;shbDmg=function(){const d=_sd.apply(this,arguments);return NS.zcK>1&&NS.inTk?Math.floor(d*NS.zcK):d}}/* 🛡️ 방패치기가 일반 공격이어도 "다음 공격 ×2" (2026-11-21 버그: 09 방패치기 피해는 baM을 안 곱해 충전만 쓰고 그대로였음) */
-{const _tk1=tick;tick=function(){try{return _tk1.apply(this,arguments)}finally{NS.zcK=0}}}
+{const _tk1=tick;tick=function(){const n0=projs.length;try{return _tk1.apply(this,arguments)}finally{try{if(NS.zcK>1)for(let i=n0;i<projs.length;i++){const q=projs[i];if(q&&q.cl!=="spirit")q.zc=NS.zcK}}catch(e){}NS.zcK=0}}}/* 충전 tick에 쏜 내 투사체(baM ×2를 받은 것, 👤 잔상 한 발 포함) = p.zc */
+{const _ph=projHit;projHit=function(p){const z=NS.zcP,n0=projs.length;NS.zcP=p&&p.zc>1?p:null;try{return _ph.apply(this,arguments)}finally{NS.zcP=z;try{if(p&&p.zc>1)for(let i=n0;i<projs.length;i++)projs[i].zc=p.zc}catch(e){}}}}/* 닿는 한 방(첫 dmT)만 🔋 줄로 · ⛓️ 튕긴 탄도 이어받음 (피해가 그 발 ×) */
 /* 🐎 기세: 공격력 += 기본 × NMOV × 늘어난 이동 속도 %(상세 능력치 이동 속도와 같은 값 = hSpd/HSPD−1) · 0.1초마다 셈 · 피의 맹세처럼 장비 비교(atkNoVow)엔 안 들어감 · 상세 능력치 공격력 🐎 */
 function nsMoV(){const r=performance.now();if(r-(NS.moT||-1e9)<100&&r>=NS.moT)return NS.moV||0;NS.moT=r;let v=0;try{if(NS.on.nmo&&S&&!dead)v=Math.min(NMOX,Math.max(0,hSpd()/HSPD-1)*100*NMOV)}catch(e){}NS.moV=v;return v}
 {const _va=vowAtk;vowAtk=function(b){const v=_va(b),g=b*nsMoV();NS.vwV=v;NS.mov=g;return v+g}}
