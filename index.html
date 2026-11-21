@@ -6517,16 +6517,17 @@ function nsZcP(){return NS.on.nzc?Math.min(1,(NS.zd||0)/NZCF):0}
 function nsZcFx(m){const t=gnow();NS.zcF=t;addText(PX,PY-150*SZ,"⚡ 충전 일격!","#ffe25a",0,1);let x=PX,y=PY;if(m&&m.hp>0){[x,y]=monPt(m);y-=monCY(m)*SZ*.6}nsFx({k:"fl",x,y,R:46,t0:t+(m?60:0),c:"rgb(255,230,110)"});wRing(t,x,y,6,52,260,"rgb(255,235,140)",4,1)}
 function nsZcUse(m){if(!NS.on.nzc||nsZcP()<1)return 1;NS.zd=0;nsZcFx(m);NS.zcX=NZCM;dEv("zc");return NZCM}
 function nsZcArm(){if(!NS.on.nzc||!NS.inTk||NS.zcK||nsZcP()<1)return;NS.zd=0;NS.zcK=NZCM;nsZcFx(mon);dEv("zc")}
-/* 🔋 딜량 창 따로 줄 "충전 일격" (사용자 2026-11-21 "충전일격 데미지는 dps 창에 따로"): 충전으로 늘어난 몫만 "zc"로 옮김 (기본 몫 = 실제 피해 ÷ 배수, 넘친 피해는 늘어난 몫에서 먼저 뺌) + 터진 횟수 1
+/* 🔋 딜량 창 따로 줄 "충전 일격" (사용자 2026-11-21 "충전일격 데미지는 dps 창에 따로"): 충전 일격 한 방 통째로(실제 피해) "zc"로 옮김 + 터진 횟수 1 (2026-11-21: 늘어난 몫만 셈 → 약해진 적을 끝내는 한 방이면 0이라 줄이 안 뜸 → 통째로)
    일반 공격(baM을 곱하는 basic·dbl·multi) = 그 tick NS.zcK · 🐂 도착 chg·🐆 내려찍기 leap = nsZcUse 뒤 같은 nsQ 안 NS.zcX (nsQ 끝나면 0) */
-DSRC.zc=["🔋","충전 일격"];const ZCDK={basic:1,dbl:1,multi:1},ZCUK={chg:1,leap:1};
+DSRC.zc=["🔋","충전 일격"];const ZCDK={basic:1,dbl:1,multi:1,shb:1},ZCUK={chg:1,leap:1};
 {const _dm=dmT;dmT=function(m,d,k){const kd=_dkL||k;let M=0;try{if(NS.zcK>1&&NS.inTk&&ZCDK[kd])M=NS.zcK;else if(NS.zcX>1&&ZCUK[kd])M=NS.zcX}catch(e){}if(!(M>1))return _dm.apply(this,arguments);
   const ss=sessGet(),a0=(ss.sr&&ss.sr[kd])||0,r=_dm.apply(this,arguments);
-  try{const n=gnow(),sr=ss.sr;if(sessGet()!==ss||!sr)return r;const e=(sr[kd]||0)-a0,x=e>0?e-Math.min(e,r/M):0;if(x>0){sr[kd]-=x;sr.zc=(sr.zc||0)+x;if(r1On(n)&&r1.sr&&r1.sr[kd]>=x){r1.sr[kd]-=x;r1.sr.zc=(r1.sr.zc||0)+x}const q=dpsQS[dpsQS.length-1];if(q&&q[1]===kd&&q[2]>=x){q[2]-=x;dpsQS.push([q[0],"zc",x])}}}catch(er){console.error(er)}return r}}
+  try{const n=gnow(),sr=ss.sr;if(sessGet()!==ss||!sr)return r;const e=(sr[kd]||0)-a0,x=e>0?e:0;if(x>0){sr[kd]-=x;sr.zc=(sr.zc||0)+x;if(r1On(n)&&r1.sr&&r1.sr[kd]>=x){r1.sr[kd]-=x;r1.sr.zc=(r1.sr.zc||0)+x}const q=dpsQS[dpsQS.length-1];if(q&&q[1]===kd&&q[2]>=x){q[2]-=x;dpsQS.push([q[0],"zc",x])}}}catch(er){console.error(er)}return r}}
 {const _q=nsQ;nsQ=function(){try{return _q.apply(this,arguments)}finally{NS.zcX=0}}}
 {const _ss=shotSnap;shotSnap=function(){try{nsZcArm()}catch(e){}return _ss.apply(this,arguments)}}
 {const _dt=dsTake;dsTake=function(){try{nsZcArm()}catch(e){}return _dt.apply(this,arguments)}}
 {const _bm=baM;baM=function(){const b=_bm();return NS.zcK&&NS.inTk?b*NS.zcK:b}}
+{const _sd=shbDmg;shbDmg=function(){const d=_sd.apply(this,arguments);return NS.zcK>1&&NS.inTk?Math.floor(d*NS.zcK):d}}/* 🛡️ 방패치기가 일반 공격이어도 "다음 공격 ×2" (2026-11-21 버그: 09 방패치기 피해는 baM을 안 곱해 충전만 쓰고 그대로였음) */
 {const _tk1=tick;tick=function(){try{return _tk1.apply(this,arguments)}finally{NS.zcK=0}}}
 /* 🐎 기세: 공격력 += 기본 × NMOV × 늘어난 이동 속도 %(상세 능력치 이동 속도와 같은 값 = hSpd/HSPD−1) · 0.1초마다 셈 · 피의 맹세처럼 장비 비교(atkNoVow)엔 안 들어감 · 상세 능력치 공격력 🐎 */
 function nsMoV(){const r=performance.now();if(r-(NS.moT||-1e9)<100&&r>=NS.moT)return NS.moV||0;NS.moT=r;let v=0;try{if(NS.on.nmo&&S&&!dead)v=Math.min(NMOX,Math.max(0,hSpd()/HSPD-1)*100*NMOV)}catch(e){}NS.moV=v;return v}
@@ -6759,6 +6760,7 @@ setInterval(()=>{try{if(!S||!S.cls||S.cpGd||window._cpGs||!$("pop").hidden||(typ
 function cpShN(k,i){const u=cpUsers(k,i);if(u.length<2)return;const t=performance.now();if(t-(_cpNT[k]||0)<4000)return;_cpNT[k]=t;log((k=="s"?"📜 "+pnQ(i,"s")+" 스킬 바뀜 · 이 스킬 프리셋을":"🎒 "+pnQ(i,"e")+" 장비 바뀜 · 이 장비 프리셋을")+" 쓰는 🧩: "+u.join("·")+" (모두 같이 바뀌어요)","o")}
 {const _es=eqpSync;eqpSync=function(){let b=null;try{if(S&&S.cls){const E=eqpG(),L=E.list[E.cur];b=[E.cur,JSON.stringify(L&&L.eq||{})]}}catch(e){}const r=_es.apply(this,arguments);
   try{if(b&&!_bsSw&&!window._cpQ&&performance.now()-(window._cpSwT||0)>1500){const E=eqpG(),L=E.list[E.cur];if(E.cur===b[0]&&JSON.stringify(L&&L.eq||{})!==b[1])cpShN("e",E.cur)}}catch(e){}return r}}
+{const _cu=cpUse;cpUse=function(k){const r=_cu.apply(this,arguments);try{const C=cpG();if(S&&S.cls&&C.cur===k&&C.list[k])window._ss=null}catch(e){}return r}}/* 🧩 바꾸면 💥 딜량 창 "이 세팅" 새로 (사용자 2026-11-21 "프리셋 바꾸면 dps창 초기화 안됨" · 스킬·장비가 같은 🧩끼리는 08 setupSig가 같아 안 바뀌었음 → 07 sessGet이 새로 만듦) */
 {const _ss=skpSync;skpSync=function(){let b=null;try{if(S&&S.cls){const P=skp();b=[P.cur,JSON.stringify(P.list[P.cur]||[])]}}catch(e){}const r=_ss.apply(this,arguments);
   try{if(b&&!window._cpQ&&performance.now()-(window._cpSwT||0)>1500){const P=skp();if(P.cur===b[0]&&JSON.stringify(P.list[P.cur]||[])!==b[1])cpShN("s",P.cur)}}catch(e){}return r}}
 {const _su=skpUse;skpUse=function(){window._cpSwT=performance.now();if(pnBz())return _su.apply(this,arguments);const r=pnBt(()=>_su.apply(this,arguments));save();render();try{renderSheet()}catch(e){}return r}}
