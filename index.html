@@ -6517,12 +6517,12 @@ function nsZcP(){return NS.on.nzc?Math.min(1,(NS.zd||0)/NZCF):0}
 function nsZcFx(m){const t=gnow();NS.zcF=t;addText(PX,PY-150*SZ,"⚡ 충전 일격!","#ffe25a",0,1);let x=PX,y=PY;if(m&&m.hp>0){[x,y]=monPt(m);y-=monCY(m)*SZ*.6}nsFx({k:"fl",x,y,R:46,t0:t+(m?60:0),c:"rgb(255,230,110)"});wRing(t,x,y,6,52,260,"rgb(255,235,140)",4,1)}
 function nsZcUse(m){if(!NS.on.nzc||nsZcP()<1)return 1;NS.zd=0;nsZcFx(m);NS.zcX=NZCM;dEv("zc");return NZCM}
 function nsZcArm(){if(!NS.on.nzc||!NS.inTk||NS.zcK||nsZcP()<1)return;NS.zd=0;NS.zcK=NZCM;nsZcFx(mon);dEv("zc")}
-/* 🔋 딜량 창 따로 줄 "충전 일격" (사용자 2026-11-21 "충전일격 데미지는 dps 창에 따로"): 충전 일격 한 방 통째로(실제 피해) "zc"로 옮김 + 터진 횟수 1 (2026-11-21: 늘어난 몫만 셈 → 약해진 적을 끝내는 한 방이면 0이라 줄이 안 뜸 → 통째로)
+/* 🔋 딜량 창 따로 줄 "충전 일격" (사용자 2026-11-21 "충전일격 데미지는 dps 창에 따로"): 충전으로 늘어난 몫만 "zc"로 옮김 = 실제 피해 × (1 − 1/배수), 나머지는 원래 줄(⚔️·👤 잔상·🛡️ 등) 그대로 (사용자 2026-11-21 "스킬마다 따로 봐야" · 비율로 나눠서 마지막 한 방도 🔋에 보임) "zc"로 옮김 + 터진 횟수 1 (2026-11-21: 늘어난 몫만 셈 → 약해진 적을 끝내는 한 방이면 0이라 줄이 안 뜸 → 통째로)
    일반 공격(baM을 곱하는 basic·dbl·multi) = 그 tick NS.zcK · 🐂 도착 chg·🐆 내려찍기 leap = nsZcUse 뒤 같은 nsQ 안 NS.zcX (nsQ 끝나면 0) */
 DSRC.zc=["🔋","충전 일격"];const ZCDK={basic:1,dbl:1,multi:1,shb:1,gs:1},ZCUK={chg:1,leap:1},ZCPK={basic:1,dbl:1,multi:1,pierce:1,chain:1,gs:1};/* ZCPK = 충전 tick에 쏜 투사체(p.zc)가 나중에 닿을 때 (2026-11-21 궁수: 화살은 tick 뒤 닿아서 안 셌음) */
 {const _dm=dmT;dmT=function(m,d,k){const kd=_dkL||k;let M=0;try{if(NS.zcK>1&&NS.inTk&&ZCDK[kd])M=NS.zcK;else if(NS.zcX>1&&ZCUK[kd])M=NS.zcX;else if(NS.zcP&&ZCPK[kd]){M=NS.zcP.zc;NS.zcP=null}}catch(e){}if(!(M>1))return _dm.apply(this,arguments);
   const ss=sessGet(),a0=(ss.sr&&ss.sr[kd])||0,r=_dm.apply(this,arguments);
-  try{const n=gnow(),sr=ss.sr;if(sessGet()!==ss||!sr)return r;const e=(sr[kd]||0)-a0,x=e>0?e:0;if(x>0){sr[kd]-=x;sr.zc=(sr.zc||0)+x;if(r1On(n)&&r1.sr&&r1.sr[kd]>=x){r1.sr[kd]-=x;r1.sr.zc=(r1.sr.zc||0)+x}const q=dpsQS[dpsQS.length-1];if(q&&q[1]===kd&&q[2]>=x){q[2]-=x;dpsQS.push([q[0],"zc",x])}}}catch(er){console.error(er)}return r}}
+  try{const n=gnow(),sr=ss.sr;if(sessGet()!==ss||!sr)return r;const e=(sr[kd]||0)-a0,x=e>0?e*(1-1/M):0;if(x>0){sr[kd]-=x;sr.zc=(sr.zc||0)+x;if(r1On(n)&&r1.sr&&r1.sr[kd]>=x){r1.sr[kd]-=x;r1.sr.zc=(r1.sr.zc||0)+x}const q=dpsQS[dpsQS.length-1];if(q&&q[1]===kd&&q[2]>=x){q[2]-=x;dpsQS.push([q[0],"zc",x])}}}catch(er){console.error(er)}return r}}
 {const _q=nsQ;nsQ=function(){try{return _q.apply(this,arguments)}finally{NS.zcX=0}}}
 {const _ss=shotSnap;shotSnap=function(){try{nsZcArm()}catch(e){}return _ss.apply(this,arguments)}}
 {const _dt=dsTake;dsTake=function(){try{nsZcArm()}catch(e){}return _dt.apply(this,arguments)}}
