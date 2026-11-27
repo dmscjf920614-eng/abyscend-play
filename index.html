@@ -2579,8 +2579,8 @@ function addAp(k,n){n=Math.min(n,S.ap||0);if(n<1)return;S[k]+=n;S.ap-=n;if(k=="v
 /* XPK(레벨) = 필요 경험치 배수 (2026-11-11 환생해도 레벨 유지, 임시): 환생 한 바퀴(상한 L→L+10)가 예전 1→L+10 총량과 비슷하게 · XPKT [새 상한 레벨, 배수] 사이는 직선, 20 이하 1 · 220 위 7.01 */
 /* 성장 2차 (2026-11-12, 임시): LVE·LVEN = Lv 1~10 필요 경험치 ×0.5 · LVFREE = 레벨 상한이 여기 닿으면(환생 18) 상한 없음 (09 lvCap) · Lv 200 위 = XPKT 마지막 점 */
 const LVE=.5,LVEN=10,LVFREE=200;
-/* 🏔️ 탑의 끝 TOPF (2026-11-25 사용자 "1", docs/기획/2026-11-25_환생_1000층_명세.md 3): 1000층 주인 뒤로 안 오름 (09 floorClear·08 applyFloor) · PSFS = 스킬 칸 2~10번 = 계정 최고 PSFS×칸 층 (12 psOpen) [TEMP] */
-const TOPF=1000,PSFS=10;
+/* 🏔️ 탑의 끝 TOPF (2026-11-25 사용자 "1", docs/기획/2026-11-25_환생_1000층_명세.md 3): 1000층 주인 뒤로 안 오름 (09 floorClear·08 applyFloor) */
+const TOPF=1000;/* (2026-11-27 사용자) 스킬 칸·💎 보석 = 다시 환생 횟수 (12 psOpen · 06 gmOk), 옛 PSFS 층 규칙 없앰 */
 const XPKT=[[20,1],[30,3.31],[35,4.46],[40,6.16],[45,10.6],[50,18.2],[60,38.4],[70,76],[80,139],[90,188],[100,213],[110,244],[119,284],[130,471],[140,664],[150,855],[165,1020],[180,1170],[199,1360],[200,239000]];/* 레벨 시간표 (docs/밸런스/2026-11-12_레벨시간표.md 하루 20시간 안, 팀장 OK) · 마지막 점 뒤 = 그 값 그대로 = Lv 200 위 한 달 벽 */function XPK(l){if(l<=XPKT[0][0])return 1;for(let i=1;i<XPKT.length;i++){const[a,x]=XPKT[i-1],[b,y]=XPKT[i];if(l<=b)return x+(y-x)*(l-a)/(b-a)}return XPKT[XPKT.length-1][1]}
 /* 🌱 ECH0·ECA0 = 초반 몬스터 체력·공격 곡선 (성장 2차 a6, 임시): 1층 ×ECH0/ECA0 → 15층 ×1 (ECP 거듭제곱 곡선: 1이면 직선, 5 = 10층까지 낮게 → 첫 환생 10층 보스를 새 캐릭터가 잡게, 성장 2차 검수) · 체력 MFh·공격 MFa(보스·문지기 monHA도), 골드·경험치(MF)는 그대로 */
 const WTHF=2,WTHB=.8125,WTAK=0,WTAA=2.2,WTHK=.0015,WTBA=1,ECH0=.15,ECA0=.3,ECP=5,ECRm=(f,e)=>f<15?e+(1-e)*Math.pow((f-1)/14,ECP):1,MFa=f=>{f=Math.max(1,f||1);return Math.pow(1+.1*(f-1),1.8)*(1+WTAK*Math.max(0,f-15))*WTAA*ECRm(f,ECA0)},MFh=f=>{f=Math.max(1,f||1);return Math.pow(1+.1*(f-1),1.8)*(1+WTHK*Math.max(0,f-15))*ECRm(f,ECH0)};
@@ -3215,7 +3215,7 @@ const GEM={ruby:{n:"루비",ic:"🔴",k:"atk",v:[.03,.06,.1,.15,.22]},emerald:{n
 /* 💎 보석 정리 (2026-11-11, docs/기획/2026-11-10_보석_정리.md, 숫자 전부 임시): 토파즈·사파이어·자수정·사냥꾼석 없앰(15o gmConv) · 🏏 연격석 = 추가 공격 피해(xtra) · 🛡️ 반격석 공용 · ✴️ 폭렬석 ↓ + 주변 폭발(15o gmSplash) · 🍀 행운석 골드·경험·드롭 · 새 📏🐾🫧☠️ (15o) · combo = 장비 옵션 "추가타 확률"만 */
 const GCAP={blood:.15,combo:.4,xtra:.8,counter:.5,burst:.6,fire:.3,wall:.35,luck:.4,range:.3,swift:.4,mana:3.6,pain:.5,roar:.8,flood:.6,rush:.12/* ⛏️ = 겹 하나당 [임시] */},GGN=["조각난 ","흐릿한 ","","찬란한 ","완벽한 "];
 /* 💎 보석 해금 = 스킬 10칸 다 열림 (환생 10 · 계정 공유, 2026-11-22 docs/기획/2026-11-22_보석_해금.md): 그 전엔 소켓 0(nSock) · 보석 드랍 X(dropGem) · 보석 효과 0(gemSum, 옵션 몫은 그대로) · 보석 화면 🔒 한 줄(GMLT) · 옛 저장의 보석·소켓은 지우지 않음 */
-function gmOk(){return psOpen()>=PSLOTS}const GMLT="💎 보석 = 최고 "+PSFS*10+"층에 열려요";function gmLkL(){return GMLT+' <span class="nwr">(지금 최고 '+(S?abF():0)+'층)</span>'}/* 2026-11-25: 환생 10 → 계정 최고 100층 (= 스킬 10칸, 12 psOpen) */
+function gmOk(){return psOpen()>=PSLOTS}const GMLT="💎 보석 = 환생 10에 열려요";function gmLkL(){return GMLT+' <span class="nwr">(지금 환생 '+((S&&S.rb)||0)+')</span>'}/* 2026-11-27 사용자: 다시 환생 10 (= 스킬 10칸, 12 psOpen) */
 /* 💎 잠긴 동안 "보석이 있어야/보석으로 된다" 글 = 보석 말을 뺌 (검수 1 원칙, 팀장 2026-11-22 · 그냥 정보 "환생·보석·창고 초기화"는 둠) · 보이는 곳: 스킬 설명 13 psDesc · 꾹 설명 08 showSD · 칸 글 15w · 꺼진 이유 · 안내 글 몇 곳 */
 const GMTXR=[[" · 흡혈석·폭렬석 적용",""],["치명 X → ✴️ 폭렬석 안 터짐","치명 X"],["원소·탄·보석 그대로","원소·탄 그대로"],["(흡혈석·폭렬석·🩸 피의 폭발 셈 X)","(🩸 피의 폭발 셈 X)"],[" (흡혈석 O)",""],[" × 📏 사거리석",""],["원소 화상·화염석·","원소 화상·"],[/ · 화염석은 1초 피해 × [\d.]+초 몫/,""],["·보석·오브)","·오브)"],
  [" (칭호·환생·보석)"," (칭호·환생)"],["장비·보석이 떨어질","장비가 떨어질"],["(보석·장비 옵션·🎁 편의 특성)","(장비 옵션·🎁 편의 특성)"],[" (흡혈석과 합산)",""],[" (반격석과 합산)",""],[" (화염석과 합산)",""],["장비·보석 드롭 확률","장비 드롭 확률"],["(보석+옵션 합계","(옵션 합계"],["·폭렬석 폭발 범위가"," 범위가"],[" 📏 사거리석으로 늘어나요.",""],["방벽석이 없으면 효과가 없어요.","방벽석이 없으면 효과가 없어요 · "+GMLT+"."],
@@ -4097,7 +4097,7 @@ function gRoll(min){const P=GR.map((x,i)=>i<min?0:x.p),T=P.reduce((a,b)=>a+b,0);
 function gPull(g){/* 영웅·전설 = 루비 상자 (옛 스킨 삭제 2026-11-12) */
   if(g==0){const v=Math.floor(60*GLD(S.fl||1));S.gold+=v;return{g,e:"💰",t:"골드 주머니",s:v.toLocaleString()+" G"}}
   if(g==1){S.pot+=5;return{g,e:"🧪",t:"체력 물약",s:"5개"}}
-  if(g==2){S.shard=(S.shard||0)+3;return{g,e:"💠",t:"보석 파편",s:"3개"+(gmOk()?"":" · 최고 "+PSFS*10+"층부터 써요")}}
+  if(g==2){S.shard=(S.shard||0)+3;return{g,e:"💠",t:"보석 파편",s:"3개"+(gmOk()?"":" · 환생 10에 써요")}}
   S.ruby+=DUPR[g];return{g,e:"🔻",t:"루비 상자",s:"루비 "+DUPR[g]}}
 function doGacha(n){const c=n==10?GCOST[1]:GCOST[0];if((S.ruby||0)<c){log("루비가 부족합니다","b");render();return}S.ruby-=c;const R=[];
   for(let i=0;i<n;i++){let g=gRoll(0);if(n==10&&i==n-1&&!R.some(r=>r.g>=2))g=gRoll(2);R.push(gPull(g))}
@@ -4627,11 +4627,11 @@ function chFxDraw(c,t){for(let i=chFx.length-1;i>=0;i--){const e=chFx[i],ar=e.t0
   else{const hp=(t-ar)/350,es=e.s||CHS;c.save();c.translate(tg.px,tg.py);c.scale(es,es);c.translate(-tg.px,-tg.py);if(hp<1)hitFx(c,tg.px,tg.py,tg,hp,0,e.sx,e.sy);if(e.c=="mage"&&t<ar+380)mageBurst(c,x1,y1,(t-ar)/380);c.restore()}}}
 
 const PSLOTS=10;
-/* 🧩 스킬 칸 (2026-11-25 환생 횟수 → 계정 최고 층, docs/기획/2026-11-25_환생_1000층_명세.md 2): 1번 칸 = 첫 환생 · 2~10번 칸 = 계정 최고 PSFS×칸 층 (20·30…100층) · 💎 보석(06 gmOk)·레벨 상한(09 lvCap)도 abF
+/* 🧩 스킬 칸 (2026-11-25 환생 횟수 → 계정 최고 층, docs/기획/2026-11-25_환생_1000층_명세.md 2): 1번 칸 = 첫 환생 · 2~10번 칸 = 환생 2~10번 (2026-11-27 되돌림) · 💎 보석(06 gmOk) = 10칸 · 레벨 상한(09 lvCap)만 abF
    abF = 계정 최고 층 S.abf (09 floorClear, 15p ACK) · 지금 캐릭터 기록(bev·rbM)보다 낮을 수 없음 */
 function abF(){return S?Math.max(S.abf||0,S.bev||0,S.rbM||0):0}
-function psOpen(){return S&&S.rb>0?Math.max(1,Math.min(PSLOTS,Math.floor(abF()/PSFS))):0}
-function psLkTx(i){return i<1?"첫 환생 때 열려요":"최고 "+PSFS*(i+1)+"층에서 열려요 (지금 최고 "+abF()+"층)"}function psLkSh(i){return i<1?"환생":PSFS*(i+1)+"층"}
+function psOpen(){return Math.max(0,Math.min(PSLOTS,(S&&S.rb)||0))}/* 2026-11-27 사용자 "뜬금없이 열리는 느낌": 칸 = 다시 환생 횟수 (계정 공유 rb, 15p ACK) · 레벨 상한·영혼은 그대로 최고 층 */
+function psLkTx(i){return i<1?"첫 환생 때 열려요":"환생 "+(i+1)+"번에 열려요 (지금 환생 "+((S&&S.rb)||0)+")"}function psLkSh(i){return (i+1)+"환생"}
 /* ===== 처치 손맛 (보기 전용 · 실제 시간): 효과 품질 FXQ · 조각·먼지 · 금화 · ×N 처치 ===== */
 let FXQ=2;const _fq={l:0,a:16,bt:0,gt:0};
 function fxQ(){return Math.min(FXQ,SPD>=5?1:2)}
@@ -5168,7 +5168,7 @@ function opHn(k){const h=OPD[k]&&OPD[k].hn;return h&&!opSkOff(k)?" <small style=
 function opTxt(x,it){return opNmU(x,it)+" +"+opV(x.k,x.v)+opHn(x.k)}
 /* 짝 스킬이 없는 고유옵션 줄: 회색 "(스킬 없음)" (계산은 그대로, 스킬이 없어 효과만 없음) */
 const OPGONE={oshC:"무기 개편으로 없어짐",oshH:"무기 개편으로 없어짐",t2L:"무기 개편으로 없어짐"};/* (2026-11-15) 혈막·두손검 흡혈 옵션 = 효과 0 (13 opSum) → 장비 줄 회색 */
-function opSkOff(k){if(OPGONE[k])return OPGONE[k];if(S&&k=="wallX")return !gmOk()?"💎 보석 = 최고 "+PSFS*10+"층에":gemSum().wall>0?"":"🔰 방벽석 없음";if(S&&k=="auR")return auOn()||gdOn()?"":"오라 스킬 없음";/* 숨은 규칙 막기 (2026-11-12): 할 일 없으면 회색 */const s=OPD[k]&&OPD[k].sk;if(!s||!S)return "";const L=s.split("|"),E=psEqList();return E.some(p=>L.includes(p.id))?"":L.map(x=>(PSK.find(p=>p.id==x)||{}).n||x).join("·")+" 없음"}/* sk "a|b" = 둘 중 하나 있으면 켜짐 (🪓 베기 범위 = 휩쓸기·검의 기운) */
+function opSkOff(k){if(OPGONE[k])return OPGONE[k];if(S&&k=="wallX")return !gmOk()?"💎 보석 = 환생 10에":gemSum().wall>0?"":"🔰 방벽석 없음";if(S&&k=="auR")return auOn()||gdOn()?"":"오라 스킬 없음";/* 숨은 규칙 막기 (2026-11-12): 할 일 없으면 회색 */const s=OPD[k]&&OPD[k].sk;if(!s||!S)return "";const L=s.split("|"),E=psEqList();return E.some(p=>L.includes(p.id))?"":L.map(x=>(PSK.find(p=>p.id==x)||{}).n||x).join("·")+" 없음"}/* sk "a|b" = 둘 중 하나 있으면 켜짐 (🪓 베기 범위 = 휩쓸기·검의 기운) */
 function opOffL(x,it,uo){return '<div style="color:#777">◆ '+opTxt(x,it)+' <small>('+uo+')</small></div>'}
 function opImp(it,i){if(!S||!it.sl)return null;const x=it.op[i],c=Object.assign({},it,{op:it.op.filter((_,j)=>j!=i)}),F={atkP:atk,defP:def,hpP:mhp}[x.k];return {sd:F?withEq(it.sl,it,F)-withEq(it.sl,c,F):0,cpd:withEq(it.sl,it,cp)-withEq(it.sl,c,cp)}}
 function opLines(it){if(!it.op||!it.op.length)return'';const uo=uqOffV(it);return '<div class="topl">'+it.op.map(x=>uo&&isUq(it,x)?opOffL(x,it,uo):(x.u||OPGONE[x.k])&&opSkOff(x.k)?opOffL(x,it,opSkOff(x.k)):'<div>◆ '+opTxt(x,it)+(x.k=="aspd"?asCapTx():'')+'</div>').join('')+uqTblL(it)+'</div>'}
@@ -14999,7 +14999,7 @@ function fgCr(){const g=FG.cg||3,c=EPR[g],h=S.esh||0,cl=S.cls||"knight",fl=typeo
   return fgPtH()+'<div class="fg-top"><span class="fg-gd">⚙️ <b class="fg-esh">'+hudN(h)+'</b> <small>장비 파편</small></span></div><div class="shp-seg">'+[3,4,5].map(x=>'<button type="button" data-fcg="'+x+'"'+(x==g?' class="on"':'')+'><span style="color:'+GC[x]+'">'+GN[x]+'</span><small>⚙️ '+EPR[x].toLocaleString()+'</small></button>').join("")+'</div>'+
     '<div class="fg-msg">🏔️ '+fl+' 기준 능력치 · 옵션 '+OPN[g]+'개'+(g>=UQG?' + 고유 '+(g>=5?2:1)+'줄':'')+' · '+(gmOk()?'소켓·':'')+'옵션은 무작위 · 내 직업 장비</div>'+(h<c?'<div class="fg-msg bad">⚙️ 장비 파편이 '+(c-h).toLocaleString()+'개 모자라요 · 분해·압도 구간 드랍으로 모아요</div>':'')+'<div class="shp-eg fg-eg">'+ps+'</div>'}
 /* 💎 보석 탭 (2026-11-23 UI 묶음): 예전 가방 보석 탭의 [자동합성]·[분해] 창을 한 곳에 · 동작은 06 그대로 (fusePlan·fuseAll·fuseGem·gmShard·S.ad·S.gad·S.afu) · 끼우기·빼기·설명창 [합성] 한 번은 그대로 */
-function fgGm(){if(!gmOk())return '<div class="fg-lk"><b>🔒 '+GMLT+'</b><span>지금 최고 '+(S?abF():0)+'층 · '+PSFS*10+'층에서 열려요 (스킬 10칸과 같이)</span><small>여기에 생겨요: 💎 합성 · 💠 분해 · 자동 분해 · ⚙️ 자동 합성</small></div>';
+function fgGm(){if(!gmOk())return '<div class="fg-lk"><b>🔒 '+GMLT+'</b><span>지금 환생 '+((S&&S.rb)||0)+' · 스킬 10칸이 다 열리면 보석도 열려요</span><small>여기에 생겨요: 💎 합성 · 💠 분해 · 자동 분해 · ⚙️ 자동 합성</small></div>';
   const P=fusePlan(),ks=gemKeys(),sh=S.shard||0;FG.ds=new Set([...FG.ds].filter(k=>S.gems[k]>0));let cnt=0,tot=0;for(const k of FG.ds){cnt+=S.gems[k];tot+=S.gems[k]*gmShard(...gkSplit(k))}
   const row=k=>{const[gk,gg]=gkSplit(k),n=S.gems[k],N=fusN(gg),c=FUSC[gg],ok=gg<5&&n>=N&&sh>=c;return '<div class="fg-r fg-gr"><span class="fg-ic">'+GEM[gk].ic+'<sub>'+gg+'</sub></span><div class="fg-m"><div class="fg-a"><em class="fg-n">'+gemName(gk,gg)+' ×'+n+'</em></div><div class="fg-b"><span>'+(gg>=5?'최고 등급':n<N?N+'개가 있어야 해요 ('+(N-n)+'개 더)':sh<c?'💠 파편이 모자라요 (💠 '+c+')':N+'개 + 💠 '+c+' → 한 단계 위')+'</span></div></div>'+(gg<5?'<button type="button" class="btn fg-go" data-fgm="f1" data-k="'+k+'"'+(ok?'':' disabled')+'>합성<small>💠 '+c+'</small></button>':'')+'</div>'};
   return '<div class="fg-msg">💎 높은 층일수록 많이 · 다시 오른 층 '+gdqTx().slice(2)+' · 특수 = 보스·정예·문지기</div>'+'<div class="fg-top"><span class="fg-gd">💠 <b class="fg-shd">'+hudN(sh)+'</b> <small>보석 파편</small></span><button type="button" class="btn fg-all" data-fgm="fa"'+(P.n?'':' disabled')+'>💎 일괄 합성 · '+P.n+'번</button></div>'+(P.lack&&P.n?'<div class="fg-msg bad">💠 파편이 모자라 일부만 합성해요</div>':'')+
@@ -15247,7 +15247,7 @@ $("eqp").addEventListener("click",e=>{const b=e.target.closest&&e.target.closest
 /* ── 🛤️ 파밍 길 (팀장 결정 2026-11-12 = 1: 설정 한 줄) · 배수·계산은 8a 02 fpM(k)·FPU·FPD 한 곳 (S.fpw = "e" 장비·"g" 보석·"s" 파편, 없으면 균형) → 여기는 고르는 칸·글만 ── */
 const g8P=v=>Math.round(Math.abs(v-1)*100)+"%",FPW={"":["⚖️","균형","장비·보석·파편 그대로"],e:["🎲","장비","장비 +"+g8P(FPU)+" · 보석·파편 −"+g8P(FPD)],g:["💎","보석","보석 +"+g8P(FPU)+" · 장비·파편 −"+g8P(FPD)],s:["⚙️","파편","파편 +"+g8P(FPU)+" · 장비·보석 −"+g8P(FPD)]};
 function g8Fw(){const w=S&&S.fpw;return FPW[w]?w:""}
-function g8FpH(){const w=g8Fw();return '<div class="g8-fp"><div class="g8-fpt">🛤️ 파밍 길 <small class="g8-fpd">'+gmTx(FPW[w][2])+'</small></div><div class="g8-fps">'+Object.keys(FPW).map(k=>{const lk=k=="g"&&!gmOk();return '<button type="button" data-g8fp="'+k+'"'+(k==w?' class="on"':lk?' class="lk" disabled':'')+'><i>'+FPW[k][0]+'</i>'+FPW[k][1]+(lk?'<small>최고 '+PSFS*10+'층에 열려요</small>':'')+'</button>'}).join("")+'</div></div>'}
+function g8FpH(){const w=g8Fw();return '<div class="g8-fp"><div class="g8-fpt">🛤️ 파밍 길 <small class="g8-fpd">'+gmTx(FPW[w][2])+'</small></div><div class="g8-fps">'+Object.keys(FPW).map(k=>{const lk=k=="g"&&!gmOk();return '<button type="button" data-g8fp="'+k+'"'+(k==w?' class="on"':lk?' class="lk" disabled':'')+'><i>'+FPW[k][0]+'</i>'+FPW[k][1]+(lk?'<small>환생 10에 열려요</small>':'')+'</button>'}).join("")+'</div></div>'}
 function g8FpSet(k){if(!S||!FPW[k]||g8Fw()==k||(k=="g"&&!gmOk()))return;if(k)S.fpw=k;else delete S.fpw;save();document.querySelectorAll("[data-g8fp]").forEach(b=>b.classList.toggle("on",b.dataset.g8fp==k));document.querySelectorAll(".g8-fpd").forEach(e=>e.textContent=gmTx(FPW[k][2]));log("🛤️ 파밍 길: "+FPW[k][0]+" "+FPW[k][1]+" ("+FPW[k][2]+")","o")}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-g8fp]");if(b)g8FpSet(b.dataset.g8fp)});
 {const _sr=srow;srow=function(name){const r=_sr.apply(this,arguments);try{if(sheetName=="set"&&/^👥 캐릭터/.test(name)){const d=document.createElement("div");d.className="srow g8-fpr";d.innerHTML=g8FpH();$("sbody").append(d)}}catch(e){console.error(e)}return r}}
@@ -15411,7 +15411,7 @@ const TUT=[
  {id:"T13",g:2,n:"⚙️ 파편 제작",fgt:"cr",w:()=>(S.esh||0)>=EPR[3],base:()=>S.esh||0,dn:()=>(S.esh||0)<(TC.b.T13||0),tg:{p:tcMB("fg"),l:tcMB("fg")},
   t:()=>"⚙️ 장비 파편이 모였어요 ("+tcN(S.esh||0)+")",b:()=>"아래 🔨 <b>대장간</b> → <b>⚙️ 제작</b>에서 확실한 장비를 만들어요 <small>(최고 층 기준)</small>",rs:()=>["✔ 장비를 만들었어요","가방을 보세요"]},
  {id:"T14",g:2,n:"🌙 꺼도 싸워요",ro:1,t:()=>"🌙 앱을 꺼도 싸워요",b:()=>"다시 켜면 그동안 잡은 골드·경험치를 받아요 <small>(최대 "+(typeof OFFMAX!="undefined"&&isFinite(OFFMAX)?Math.round(OFFMAX/3600e3):12)+"시간)</small>"},
- {id:"GM",g:3,gf:1,ev:1,pri:-1,n:"💎 보석 끼우기 · 합성",ok:["ls6eq"],lk:()=>gmOk()?"🎁 선물 받은 캐릭터에서":"최고 "+PSFS*10+"층에 열려요",w:()=>gmOk()&&tcD().gmGf===1&&!!S.gmMe,dn:()=>gmTk()==15&&!(TC.force&&TC.cur=="GM"),ph:[gmPh(0),gmPh(1),gmPh(2),gmPh(3)],
+ {id:"GM",g:3,gf:1,ev:1,pri:-1,n:"💎 보석 끼우기 · 합성",ok:["ls6eq"],lk:()=>gmOk()?"🎁 선물 받은 캐릭터에서":"환생 10에 열려요",w:()=>gmOk()&&tcD().gmGf===1&&!!S.gmMe,dn:()=>gmTk()==15&&!(TC.force&&TC.cur=="GM"),ph:[gmPh(0),gmPh(1),gmPh(2),gmPh(3)],
   t:()=>"💎 보석이 열렸어요!",b:()=>{if(!gmOk())return gmLkL();const i=tcPI(TS.GM),E=gmGS();return ["🎁 <b>소켓 ◇ 1개</b> 영웅 장비를 받았어요 · 끼워 봐요","🎁 선물 장비의 빈 <b>◇</b>에 🔴 <b>루비</b>를 박아요 · 보석 = 장비에 효과","같은 보석 <b>4개 + 💠 2</b> → 한 단계 위 · 지금 🔴 "+((S.gems||{}).ruby_1||0)+"개 · 💠 "+(S.shard||0),"🎁 선물 장비의 보석을 <b>빼고</b> (무료) 새 <b>2등급</b> 🔴을 박아요"][i]+((i==1||i==3)&&!E?"<br><small>💎 소켓은 영웅 이상 장비에 있어요</small>":"")},
   rs:()=>{const I=TC.gmI;return [I&&GEM[I.gk]&&GEM[I.gk].k=="atk"&&I.d>0?"✔ 공격력 ▲"+tcN(Math.round(I.d)):"✔ 보석을 바꿔 박았어요","같은 보석이 모이면 합성 · ⚙️ 자동 합성도 있어요"]}},
  {id:"T16",g:2,n:"📋 상세 능력치 꾹",w:()=>{const D=tcD();if(D.T2===1&&!D.t2)D.t2=Date.now();return (D.T2===1||D.G4===1)&&Date.now()-(D.t2||0)>12e4},dn:()=>TC.sd,tg:{p:"#eqp .dst",l:'[data-l6="eq"]'},
@@ -15479,7 +15479,7 @@ function gmGift(){if(!S||!S.cls||!S.eq||!S.inv||!gmOk())return;const D=tcD();if(
   log("🎁 💎 보석 선물: "+iname(it)+" (소켓 ◇ 1) → 가방 맨 앞 · 🔴 "+gemName("ruby",1)+" ×5 · 💠 +4","g");try{addText(PX,PY-100,"💎 보석이 열렸어요!","#9fd0ff",400,1)}catch(e){}try{gToast("💎 보석이 열렸어요!","🎁 소켓 장비 + 🔴 루비 ×5 + 💠 4 → 가방")}catch(e){}
   try{save()}catch(e){}try{eqSig="";render()}catch(e){}}
 /* 다른 캐릭터 (사용자 2026-11-22 "서브 캐릭터는 튜토리얼 안 나오지? 간단한 안내만"): 선물·카드는 선물 받은 캐릭터만 → 보석이 열린 뒤 처음 켜는 다른 캐릭터마다 한 번 안내 한 줄 (캐릭터 키 S.gmSeen, 15p ACK 밖) */
-function gmAlt(now){if(!S||!S.cls||S.gmSeen||!gmOk()||tcD().gmGf!==1||now-TC.t0<3000||tcBusy(null))return;S.gmSeen=1;const a="💎 보석이 열렸어요 (최고 "+PSFS*10+"층 · 계정 공유)",b="같이 쓰는 것: 🌟 환생(횟수·포인트·특성·영혼 각성) · 💎 보석·💠 파편 · ⚙️ 장비 파편 · 📦 창고 · 루비(재화) · 칭호 · 재료 · 설정";/* = 15p ACK (rb·rp·tr·gems·shard·esh·sto·ruby·titles·etc·설정 키) · 가운데 글은 짧게(한 줄), 전체 목록은 로그 */try{gToast(a,"환생·보석·파편·창고 = 모든 캐릭터가 같이")}catch(e){}try{log(a+" · "+b,"o")}catch(e){}try{save()}catch(e){}}
+function gmAlt(now){if(!S||!S.cls||S.gmSeen||!gmOk()||tcD().gmGf!==1||now-TC.t0<3000||tcBusy(null))return;S.gmSeen=1;const a="💎 보석이 열렸어요 (환생 10 · 계정 공유)",b="같이 쓰는 것: 🌟 환생(횟수·포인트·특성·영혼 각성) · 💎 보석·💠 파편 · ⚙️ 장비 파편 · 📦 창고 · 루비(재화) · 칭호 · 재료 · 설정";/* = 15p ACK (rb·rp·tr·gems·shard·esh·sto·ruby·titles·etc·설정 키) · 가운데 글은 짧게(한 줄), 전체 목록은 로그 */try{gToast(a,"환생·보석·파편·창고 = 모든 캐릭터가 같이")}catch(e){}try{log(a+" · "+b,"o")}catch(e){}try{save()}catch(e){}}
 /* ③ = 🔴 루비 1등급이 합성된 순간 (손 합성·일괄·⚙️ 자동 합성 모두) */
 function gmFzW(f){return function(){const a=(S&&S.gems&&S.gems.ruby_1)||0,r=f.apply(this,arguments);try{if(S&&S.gmMe&&tcD().gmGf===1&&((S.gems&&S.gems.ruby_1)||0)<a){tcD().gmF=1;save()}}catch(e){}return r}}
 fuseGem=gmFzW(fuseGem);fuseAll=gmFzW(fuseAll);gmAutoFuse=gmFzW(gmAutoFuse);
