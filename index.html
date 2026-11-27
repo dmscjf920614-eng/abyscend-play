@@ -14565,7 +14565,7 @@ if(S.tr&&S.tr.move>0){const n=S.tr.move;S.rp=(S.rp||0)+n;S.tr.move=0;save();setT
 applyTiming();if(!S.cls)setTimeout(chooseClass,0);else setTimeout(offlineReward,900);applyFloor();spawn();render();clock();setInterval(clock,20000);log("아비센드: 천층의 탑에 오신 것을 환영합니다.","g");
 /* ⏱️ 플레이 시간 (2026-11-27): 화면이 보이고 게임 고리(rAF)가 도는 동안만 1초마다 더함 · 계정 S.ptA (15p ACK) · 이 캐릭터 S.ptC · 🌙 01 offlineReward S.offA · 저장 = 평소 save 주기 */
 const PTQ={lt:0,lf:0};(function ptF(){PTQ.lf=performance.now();requestAnimationFrame(ptF)})();document.addEventListener("visibilitychange",()=>{PTQ.lt=performance.now()});
-setInterval(()=>{const n=performance.now(),d=PTQ.lt?n-PTQ.lt:0;PTQ.lt=n;if(document.hidden||n-PTQ.lf>1500||!S||!S.cls||!(d>0))return;const a=Math.min(d,1500);S.ptA=(S.ptA||0)+a;S.ptC=(S.ptC||0)+a},1000);
+setInterval(()=>{const n=performance.now(),d=PTQ.lt?n-PTQ.lt:0;PTQ.lt=n;if(document.hidden||n-PTQ.lf>1500||!S||!S.cls||!(d>0))return;const a=Math.min(d,1500)*((typeof SPD=="number"&&SPD>0)?SPD:1)/* ⏱️ 게임 시간 = ×배속 (2026-11-27 사용자 "2번") */;S.ptA=(S.ptA||0)+a;S.ptC=(S.ptC||0)+a},1000);
 function ptFmt(ms){const m=Math.floor((ms||0)/60000),h=Math.floor(m/60);return m<60?m+"분":h>=100?h+"시간":h+"시간 "+m%60+"분"}
 function ptRow(){const d=document.createElement("div"),B=v=>"<b>"+ptFmt(v).replace(/ /g,"\u00a0")+"</b>";d.className="srow ptst";d.innerHTML="<span><span class='ptl'>⏱️ 플레이 시간 <small>· 계정 "+B(S.ptA)+" · 이\u00a0캐릭터 "+B(S.ptC)+"</small></span><span class='ptl'>🌙 꺼 둔 동안 <small>(방치 보상) · "+B(S.offA)+"</small></span></span>";$("sbody").append(d)}
 setInterval(()=>{if(!paused())save()},10000);addEventListener("pagehide",save);document.addEventListener("visibilitychange",()=>{if(document.hidden&&!paused())save()});
