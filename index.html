@@ -3377,7 +3377,7 @@ function smdHtml(){let w;try{if(!S||!smAny())return "";w=smWant()}catch(e){retur
   SDESC["소환수 유지비"]="나와 있는 소환수가 1초마다 쓰는 MP (MP 대비)"+". MP가 바닥나면 나중에 나온 소환수부터 💤 돌아가고, MP "+Math.round(SMRT*100)+"%면 다시 나와요.";
   let h='<div class="dst smd'+(dsMode?" "+dsMode:"")+'" data-k="'+Object.keys(w).join()+'"><div class="smh" data-sd="소환수">소환수</div>'+q("소환수 공격 속도","공속","as")+(Object.keys(w).some(k=>SMT[k]&&SMT[k].ty=="mel")?q("소환수 이동 속도","이속","mv"):"")+q("소환수 치명","치명","cr")+q("소환수 유지비","유지비","up");
   for(const k of ["wraith","golem","spirit","satellite"]){if(!w[k])continue;const D=SMT[k],N=D.ic+" "+D.n,g=D.pl&&w[k]>=GLMG?w[k]:1;
-    if(k=="spirit"){SDESC[N+" 버프"]="정령은 공격하지 않아요. 내 원소에 맞춰 마리 수만큼 버프: 🔥 내 원소 공격이 맞은 적 화상 (그 피해의 20% × 마리, 3초) · ⚡ 공격 속도·소환수 공격 속도 +20% × 마리 (공속 상한 +200% 안) · ❄️ 5초마다 서리 보호막 최대 HP 10% × 마리";h+=q(N+" 버프",cn(k)+" 버프",k+".bf","smf");continue}
+    if(k=="spirit"){SDESC[N+" 버프"]="정령은 공격하지 않아요. 내 원소에 맞춰 마리 수만큼 버프: 🔥 내 원소 공격이 맞은 적 화상 (그 피해의 20% × 마리, 3초) · ⚡ 공격 속도·소환수 공격 속도 +20% × 마리 (공속 상한 안) · ❄️ 5초마다 서리 보호막 최대 HP 10% × 마리";h+=q(N+" 버프",cn(k)+" 버프",k+".bf","smf");continue}
     SDESC[N+" 한 번 피해"]="보통 몬스터에게 한 번 주는 평균 피해 = 마력 × "+P(D.dm)+" × (1 + 소환수 피해)"+(k=="spirit"?(SPN>1?" · 한 번에 구슬 "+SPN+"발(발마다 이 피해)":"")+(hmM()<1?" · 투사체 유도 중 ×"+hmM():""):k=="golem"?" · 내려찍기 반경 안 모든 적"+(g>1?" · 합체 × "+g:""):k=="satellite"?" · 구슬이 닿을 때마다":"")+". 치명타·문지기·보스 피해는 빼고요.";
     SDESC[N+(D.ty=="orb"?" 한 바퀴":" 공격 간격")]=D.ty=="orb"?"구슬이 내 주위를 한 바퀴 도는 시간 (기본 "+SATP/1000+"초 ÷ (1 + 공속)). 묶음마다 구슬 "+SATN+"개, 한 구슬은 같은 적을 반 바퀴에 한 번 맞혀요.":"기본 "+D.iv/1000+"초 ÷ (1 + 위 공속).";
     SDESC[N+(k=="golem"?" 범위":k=="satellite"?" 반지름":" 사거리")]=k=="spirit"?"정령이 구슬을 쏘는 거리예요.":k=="wraith"?"망령이 베는 거리예요 (근접).":k=="golem"?"내려찍기 반경이에요. 합체하면 한 마리당 +"+Math.round(GLSZ*100)+"%.":"구슬이 내 주위를 도는 반지름이에요.";
@@ -4128,7 +4128,7 @@ const OPD={atkP:{n:"공격력",b:.04},defP:{n:"방어력",b:.05},hpP:{n:"최대 
 /* 🪤 덫(활 a, 2026-11-02): tpD 덫 피해 ×(1+v) · tpR 덫 반경 ×(1+v) · tpC 치명 아닌 화살도 v 확률로 덫 화살 · ntT 그물 +v초 · cxD 연쇄 한 단계 +15% ×(1+v). 활 a 칸의 투사체 속도·회피·회피 시 HP 회복 8줄 자리에 들어감 (옛 장비에 붙은 그 줄은 그대로 효과 있음, OPD에서 안 지움) */
 /* 장비 몫만 묶는 상한 (스킬·직업 값은 이 뒤에 더해짐) */
 const OGC={thorns:3,wallX:.3,auR:.5,oshC:.6,baD:.75,critD:2,chD:1,pjS:.5,smD:.9,smS:.5,smB:.9,mpP:.45,mgA:.9,bxP:.45,oshH:.6,swA:.3,swS:.4,frzH:1.5,sbP:.9,shbP:.45,gdX:.5,prD:.6,dgH:.03,mshE:.5,smX:.3,ovD:.6,ovT:1.5,anD:.6,anR:.3,tpD:.6,tpR:.3,tpC:.15,ntT:1,cxD:.6,smU:.3};
-const OCAP={proj:4,chain:3,tri:.6,dbl:1,thrC:.5,dodge:.45,dr:.6,ls:.2,multi:.5,hpReg:.03,aspd:2,burn:.4,mvP:1};/* mvP = 👟 신발 이동 속도 (일반 옵션 2026-11-15 + 고유옵션, 장비 몫만, 임시) */
+const OCAP={proj:4,chain:3,tri:.6,dbl:1,thrC:.5,dodge:.45,dr:.6,ls:.2,multi:.5,hpReg:.03,aspd:3,burn:.4,mvP:1};/* mvP = 👟 신발 이동 속도 (일반 옵션 2026-11-15 + 고유옵션, 장비 몫만, 임시) */
 const OPS={hat:["hpP","hpReg","dr","expF"],ear:["critR","critD","expF","dropF"],neck:["atkP","ls","bossD","goldF"],ring:["critR","critD","atkP","goldF"],cape:["dodge","hpReg","dr"],top:["hpP","defP","dr"],bottom:["hpP","defP","hpReg","potH"],glove:["aspd","critR","multi","atkP"],shoe:["dodge","aspd","dropF","potH","mvP"],
   weapon:{knight:["ls","atkP","bossD","multi"],archer:["critD","aspd","multi","critR"],mage:["atkP","burn","exe","bossD"]},shield:{knight:["dr","defP","hpP","thorns","thrC"],archer:["aspd","multi","critR","dodge"],mage:["burn","exe","ls","hpP"]}};
 const OPN=[0,1,2,2,3,4],OPM=[0,1,1.3,1.7,2.2,3];
