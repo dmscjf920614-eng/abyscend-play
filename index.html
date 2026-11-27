@@ -2007,6 +2007,10 @@ body.thpk #tuc{z-index:21}body.thpk #tucr,body.thpk .tuc-ar{z-index:22}
 .tuc-f .th-nx{order:2}
 /* ✋✋ TH 카드 가로: 태그 "📘 해 보기 n/4"가 260px 카드 제목 칸을 106px로 줄임 → 제목만 태그 아래 한 줄 (TH 카드만, 17i thCard가 .th-h) */
 body.ls6 #tuc .tuc-h.th-h{flex-wrap:wrap;row-gap:2px}body.ls6 #tuc .th-h>.tuc-x{margin-left:auto}body.ls6 #tuc .th-h>.tuc-t{order:3;flex:1 0 100%}
+/* 🌙 게임 끄기 (17l): 묻기 창 · 큰 숫자 3·2·1 */
+.xq b,.xq small{display:block}.xq small{color:var(--mut);font-size:max(11px,.85em);line-height:1.4;margin-top:4px}
+.xqc .xqn{font-size:64px;line-height:1.05;color:var(--gold);font-weight:800;text-shadow:0 2px 10px #000a;animation:xqp .9s ease-out both}.xqc .xqm{font-size:48px}
+@keyframes xqp{0%{transform:scale(1.6);opacity:0}25%{transform:scale(1);opacity:1}100%{transform:scale(.92);opacity:.85}}
 
 /* ===== 📱 가로 = 모든 창 넓게 + 왼쪽 아래 작은 전투 (2026-11-25 사용자 OK, 시안 docs/UI/2026-11-25_가로_넓은창_시안.html, js/17j_ls_wide.js) =====
    가로 폰에서 아래 메뉴 창 9개가 스킬 [넓게](#ls6fm)처럼 화면 가득 · 왼쪽 줄 아래 = 작은 전투 #l6wm (17j가 그 창 안에 붙이고 자리를 잼)
@@ -14479,7 +14483,7 @@ function renderSheet(){if(!sheetName)return;if(sheetName=="rb"&&(window._soDrag|
     Object.entries(TRS).forEach(([k,T])=>{if(T.hid)return;const l=tr(k),bs=/ \(기본 \d+\)/.exec(T.n);srow(T.n.replace(/ \(기본 \d+\)/,"")+" <b style='color:var(--gold)'>Lv."+l+"</b><small> / "+(T.max===Infinity?"∞":T.max)+"</small>","현재\u00a0+"+(Math.round(l*T.v*10)/10)+T.u+(bs?bs[0]:"")+" · 레벨당\u00a0+"+T.v+T.u,l>=T.max?"MAX":"+1",l>=T.max||(S.rp||0)<1,()=>buyTr(k),l>=T.max?null:["전부",()=>buyTrAll(k),(S.rp||0)<1])});trRstRow($("sbody"))}
   if(sheetName=="stat"){const d=document.createElement("div");d.className="srow";d.innerHTML="<span>남은 AP <b style='color:var(--gold)'>"+(S.ap||0)+"</b><br><small>레벨업할 때마다 AP 5 획득</small></span><span style='text-align:right;font-size:12px'>공격력 "+atk()+" · 방어력 "+def()+"<br>HP "+mhp()+" · 치명타 "+(crit()*100).toFixed(1)+"%</span>";$("sbody").append(d);
     [["str",CL().ms,"공격력 +1"],["dex","DEF","방어력 +1"],["luk","LUK","치명타 확률 +0.5% (피해 1.5배)"],["vit","HP","최대 HP +"+CL().hpp]].forEach(([k,n,e])=>srow(n+" <b style='color:var(--gold)'>"+S[k]+"</b>",e,"+1",!(S.ap>0),()=>addAp(k,1),["+5",()=>addAp(k,5)]));const sp=apSpent();srow("🔁 스탯 초기화","찍은 AP "+sp+" 전부 돌려받기 (무료)","초기화",sp<1,()=>popup("🔁 스탯 초기화","찍은 AP <b>"+sp+"</b>를 모두 돌려받고<br>"+CL().ms+"·DEF·LUK 4, HP 0으로 되돌릴까요?",[["취소",closePop],["초기화",()=>{resetAp();closePop()}]]))}
-  if(sheetName=="set")srow("👥 캐릭터","지금 "+CL().ic+" "+escH(S.cnm||CL().n)+" · 바꾸기·새로 만들기·지우기","보기",false,()=>{closeSheet();chList()});/* 맨 위 (1B) */if(sheetName=="set")ptRow();
+  if(sheetName=="set")srow("👥 캐릭터","지금 "+CL().ic+" "+escH(S.cnm||CL().n)+" · 바꾸기·새로 만들기·지우기","보기",false,()=>{closeSheet();chList()});/* 맨 위 (1B) */if(sheetName=="set")ptRow();if(sheetName=="set"&&typeof xqOk=="function"&&xqOk())srow("🌙 게임 끄기","끄고 오프라인 모드로 가요 · 꺼 둔 동안 방치 보상","끄기",false,xqAsk)/* 앱만 (17l) */;
   if(sheetName=="set"){const d=document.createElement("div");d.className="srow";d.innerHTML='<span>🧪 물약 자동 사용<br><small>HP가 이 값 미만이면 자동 사용 · 1개당 '+potHeal()+' 회복</small></span><span class="psl"><input type="range" id="potr" min="0" max="90" step="5" value="'+Math.round(potAt()*100)+'"><b id="potv">'+potAtL()+'</b></span>';$("sbody").append(d);
     const r=$("potr");r.oninput=()=>{S.potAt=+r.value/100;$("potv").textContent=potAtL()};r.onchange=()=>{save();log("🧪 물약 자동 사용: "+potAtL(),"o")}}
   if(sheetName=="set"&&gmOk())togRow("💎 보석 자동 합성","같은 보석이 모이면 얻는 즉시 합성해요 (합성마다 💠 파편이 들어요)",()=>!!S.afu,()=>{S.afu=!S.afu;save();if(S.afu)gmAutoAll()});
@@ -16214,6 +16218,27 @@ function famTail(s){try{const q=famSk(s);if(!q)return "";let t="";if(q.f=="n"||q
 function famNTx(f){const N=FAM.n;let A=0,M=0;try{A=atk();M=mmp()}catch(e){}const v=x=>x>=1e4?(Math.round(x/1e3)/10)+"만":Math.round(x).toLocaleString();
   return "⚗️ 중립 = 공격력 "+Math.round(N.a*100)+"% + 마력 "+Math.round(N.m*100)+"%</span><br><span class=\"famt\">(지금 "+v(N.a*A)+" + "+v(N.m*M)+")"+(f=="nh"?" · 맞힌 피해 기준":" · 글의 '공격력' = 이 합")}/* 360에서 한 줄씩 (famt = 줄바꿈 X) */
 {const _p=psDesc;psDesc=function(s){const h=_p.apply(this,arguments);return h+famTail(s)}}
+
+/* ===== 🌙 게임 끄기 = 오프라인 모드 (앱만, 사용자 2026-11-27 "아하 알겠어 부탁해") =====
+   폰 뒤로 단추(자바 MainActivity onBack → window.arcadiaBack()) · 설정 [🌙 게임 끄기] → 묻기 창 [아니요][예] (UI규칙 §7)
+   [예] = 큰 숫자 3·2·1 (1초씩, [취소]·뒤로 = 멈춤) → save() → ArcadiaApp.exitApp() (자바가 저장 한 번 더 + 앱을 완전히 닫음)
+   · 방치 보상 규칙은 그대로 (다시 켤 때 01 offlineReward, 최대 OFFMAX) · 창이 떠도 사냥은 계속 (01 paused 원래 그대로)
+   · 브라우저(앱 아님)는 설정 줄 숨김 + arcadiaBack = false (웹 페이지는 스스로 못 닫음) · 다른 창이 묻기 창을 덮으면 숫자 세기는 조용히 멈춤 */
+const XQ={st:0,n:0,tm:null};
+function xqOk(){return !!(window.ArcadiaApp&&ArcadiaApp.exitApp)}
+function xqOpen(){return !$("pop").hidden&&!!$("popb").querySelector(".xq")}
+function xqStop(){clearTimeout(XQ.tm);XQ.tm=null;XQ.st=0}
+function xqNo(){xqStop();if(xqOpen())closePop()}
+function xqH(){return Math.round((typeof OFFMAX!="undefined"&&isFinite(OFFMAX)?OFFMAX:12*3600e3)/3600e3)}
+function xqAsk(){xqStop();XQ.st=1;popup("🌙 게임 끄기","<div class='xq'><b>게임을 끄고 오프라인 모드로 갈까요?</b><small>꺼 둔 동안 방치 보상 (최대 "+xqH()+"시간)</small></div>",[["아니요",xqNo],["예",xqGo]])}
+function xqNum(){const e=$("popb").querySelector(".xqn");if(!e)return;const b=document.createElement("b");b.className="xqn";b.textContent=XQ.n;e.replaceWith(b)/* 새 칸 = 톡 움직임 다시 */}
+function xqGo(){xqStop();XQ.st=2;XQ.n=3;popup("🌙 게임 끄기","<div class='xq xqc'><b class='xqn'>3</b><small>곧 게임이 꺼져요 · 꺼 둔 동안 방치 보상</small></div>",[["취소",xqNo]]);XQ.tm=setTimeout(xqTk,1000)}
+function xqTk(){if(XQ.st!=2||!xqOpen()){xqStop();return}XQ.n--;if(XQ.n>0){xqNum();XQ.tm=setTimeout(xqTk,1000);return}
+  xqStop();$("popb").querySelector(".xq").innerHTML="<b class='xqn xqm'>🌙</b><small>오프라인 모드로 가요</small>";$("popf").innerHTML="";
+  try{save()}catch(e){console.error(e)}try{ArcadiaApp.exitApp()}catch(e){console.error(e)}setTimeout(()=>{if(xqOpen())closePop()},2500)/* 앱이 안 닫혔으면(시험 흉내 등) 창만 닫고 게임 계속 */}
+/* 뒤로 단추: true = 게임이 받음 (창 열기 / 열린 창 닫기) · false = 자바가 예전처럼 앱을 뒤로 보냄 (옛 웹판·앱 아님) */
+/* 열린 창이 있으면 뒤로 = 그 창 닫기 (위 #pop 먼저 → 아래 #sheet, ✕와 같음, 팀장 2026-11-27) · 아무 창도 없을 때만 묻기 창 */
+window.arcadiaBack=function(){if(!xqOk())return false;if(xqOpen()){xqNo();return true}if(!$("pop").hidden){closePop();return true}if(!$("sheet").hidden){closeSheet();return true}xqAsk();return true};
 
 </script>
 </body>
