@@ -1383,9 +1383,10 @@ body.lyP .skbr{--fs-name:11.5px;--fs-desc:10.5px;--fs-small:10px}
 .skb-mp{position:relative;flex:1 1 auto;min-height:0;overflow:hidden;margin-top:4px;border:1px solid #4a3820;border-radius:8px;background:radial-gradient(ellipse at 50% 40%,#2a1d10,#120c07 75%);touch-action:none;cursor:grab}
 .skb-mw{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
 .skb-zn{position:absolute;border-radius:18px;border:2px solid var(--zc);background:linear-gradient(color-mix(in srgb,var(--zc) 16%,transparent),color-mix(in srgb,var(--zc) 6%,transparent))}
-.skb-zn .zl{position:absolute;left:14px;top:8px;font-size:22px;font-weight:800;color:var(--zc);white-space:nowrap;transform-origin:0 0;text-shadow:0 2px 3px #000}
+.skb-zn .zl{position:absolute;left:14px;top:8px;font-size:22px;font-weight:800;color:var(--zc);white-space:nowrap;transform-origin:0 0;text-shadow:0 2px 3px #000;max-width:calc(var(--zw,472px) - 28px);overflow:hidden;text-overflow:ellipsis;box-sizing:border-box}
+.skb-zn .zl b{font-weight:inherit}.skb-zn .zl .zs{display:none}.skb-mp.far .zl .zf{display:none}.skb-mp.far .zl .zs{display:inline}/* 멀리 보기 = 이름이 커지니 짧은 이름 (구역 밖으로 안 넘게) */
 .skb-zn .zl small{font-size:15px;opacity:.75}
-.skb-mp.far .zl{transform:scale(var(--iv,1));background:#0b0806cc;border-radius:8px;padding:0 6px}.skb-mp.tiny .zl small{display:none}.skb-mp.tiny .zl{left:6px;top:4px}
+.skb-mp.far .zl{transform:scale(var(--zv,var(--iv,1)));background:#0b080699;border-radius:5px;padding:0 3px;font-weight:600;max-width:calc((var(--zw,472px) - 16px) / var(--zv,var(--iv,1)))}.skb-zn .zl .zs i{font-style:normal}.skb-zn .zl.ic .zs i{display:none}.skb-mp.far .skb-zn .zl{z-index:6;pointer-events:none}.skb-mp.tiny .zl small{display:none}.skb-mp.tiny .zl{left:6px;top:4px}
 .skb-ms{position:absolute;font-size:14px;color:#e5bf64;white-space:nowrap;display:flex;align-items:center;gap:6px}
 .skb-ms::after{content:"";width:var(--lw,200px);height:1px;background:linear-gradient(90deg,#6e5430,#0000)}
 .skb-mp.far .skb-ms{opacity:0}
@@ -4991,7 +4992,7 @@ function skMLay(){const B=skBT();if(_skML&&_skML.B===B)return _skML;const zs=[];
   zs.forEach((z,i)=>{const c=i%3,r=i/3|0;z.x=c*(SKMZ+G);z.y=ry[r];z.w=SKMZ;z.h=rh[r];z.secs.forEach(x=>x.ids.forEach((sid,j)=>{N[sid]={x:z.x+14+(j%SKMP)*SKMW+SKMW/2,y:z.y+x.y+24+Math.floor(j/SKMP)*SKMH,z:i}}))});
   return _skML={B,zs,N,W:3*SKMZ+2*G,H:yy-G}}
 function skBrMap(id,o,sel){const M=skMLay(),srt=skBO();let h='<div class="skb-mp"><div class="skb-mw" style="width:'+M.W+'px;height:'+M.H+'px">';
-  M.zs.forEach(z=>{h+='<div class="skb-zn" style="--zc:'+z.T.c+';left:'+z.x+'px;top:'+z.y+'px;width:'+z.w+'px;height:'+z.h+'px"><div class="zl">'+z.T.ic+" "+z.T.f+' <small>'+z.secs.reduce((a,x)=>a+x.ids.length,0)+'</small></div></div>';
+  M.zs.forEach(z=>{h+='<div class="skb-zn" style="--zc:'+z.T.c+';--zw:'+z.w+'px;left:'+z.x+'px;top:'+z.y+'px;width:'+z.w+'px;height:'+z.h+'px"><div class="zl"><b class="zf">'+z.T.ic+" "+z.T.f+'</b><b class="zs">'+z.T.ic+'<i> '+z.T.n+'</i></b> <small>'+z.secs.reduce((a,x)=>a+x.ids.length,0)+'</small></div></div>';
     z.secs.forEach(x=>{h+='<div class="skb-ms" style="left:'+(z.x+16)+'px;top:'+(z.y+x.y)+'px;--lw:'+Math.max(20,z.w-40-x.h.length*14)+'px">'+x.h+'</div>'})});
   if(sel&&M.N[sel.id]){const a=M.N[sel.id],q=skSq(sel.id),nd=(q.nd||[]).filter(x=>M.N[x]);let ln="";
     [...new Set(nd.concat(skPairs(sel.id)))].filter(x=>M.N[x]&&x!=sel.id).slice(0,5).forEach(x=>{const b=M.N[x],n=nd.includes(x);ln+='<line x1="'+a.x+'" y1="'+(a.y+24)+'" x2="'+b.x+'" y2="'+(b.y+24)+'" stroke="'+(n?"#ffb35a":"#e5bf64")+'" stroke-width="'+(n?3:2)+'" stroke-opacity="'+(n?.75:.45)+'"'+(n?"":' stroke-dasharray="8 7"')+'/>'});
@@ -4999,15 +5000,17 @@ function skBrMap(id,o,sel){const M=skMLay(),srt=skBO();let h='<div class="skb-mp
   for(const sid in M.N){const s=psGet(sid),p=M.N[sid],q=skSq(sid),e=skEqN(sid,o);
     h+='<button type="button" class="skb-nd'+(q.g&&srt?" g":"")+(e?" on":"")+(sel&&sel.id==sid?" sel":"")+(SKB.fl==sid?" fl":"")+'" data-id="'+sid+'" style="left:'+(p.x-33)+'px;top:'+p.y+'px"><span class="mi">'+skI(s)+(e?'<span class="skb-e">'+e+'</span>':'')+(q.n?'<span class="skb-q">!</span>':'')+(q.g?'<span class="no"></span>':'')+skXm(s)+'</span><span class="skb-n">'+skNm(s)+'</span></button>'}
   return h+'</div></div>'}
-function skBrMapEv(R,id,sel){const mp=R.querySelector(".skb-mp"),mw=mp.querySelector(".skb-mw"),M=skMLay(),MN=.12,MX=1.3,thr=()=>id=="l"||id=="f"?.8:.72;
+/* 멀리 보기 구역 이름 = 작게 9.5px 고정 (구역 폭이 모자라면 더 작게) (글자 9px 밑이면 그림만) · 재기는 처음 한 번 (tiny 따로) */
+function skZlFit(mp,s){if(!mp.classList.contains("far"))return;const iv=9.5/(22*s),ty=mp.classList.contains("tiny")?"t":"n",a=SKMZ-20;mp.querySelectorAll(".skb-zn .zl").forEach(e=>{let m=e["_zw"+ty];if(!m){e.classList.remove("ic");const w=e.scrollWidth;e.classList.add("ic");m=e["_zw"+ty]=[w,e.scrollWidth]}let k=Math.min(iv,a/m[0]);const ic=22*k*s<9;if(ic)k=Math.min(iv,a/m[1]);e.classList.toggle("ic",ic);e.style.setProperty("--zv",k.toFixed(3))})}
+function skBrMapEv(R,id,sel){let MN=.12;const mp=R.querySelector(".skb-mp"),mw=mp.querySelector(".skb-mw"),M=skMLay(),MX=1.3,thr=()=>id=="l"||id=="f"?.8:.72;
   {const d=R.querySelector(".skb-dt");if(d){skDtFit(d,Math.max(46,mp.clientHeight*.55));d.style.top=mp.offsetTop+"px"}}
   const vis=()=>{const d=R.querySelector(".skb-dt");let top=0;if(d)top=Math.max(0,d.getBoundingClientRect().bottom-mp.getBoundingClientRect().top);return {w:mp.clientWidth,h:mp.clientHeight,top:Math.min(top,mp.clientHeight*.6)}};
   const clamp=c=>{const v=vis(),m=36,ww=M.W*c.s,wh=M.H*c.s,vh=v.h-v.top;c.x=ww+2*m<v.w?(v.w-ww)/2:Math.min(m,Math.max(v.w-ww-m,c.x));c.y=wh+2*m<vh?v.top+(vh-wh)/2:Math.min(v.top+m,Math.max(v.h-wh-m,c.y));return c};
-  const fit=()=>{const v=vis(),s=Math.max(MN,Math.min(v.w/M.W,(v.h-v.top)/M.H)*.96);return {s,x:(v.w-M.W*s)/2,y:v.top+(v.h-v.top-M.H*s)/2}};
+  const fit=()=>{const v=vis(),f0=Math.min(v.w/M.W,(v.h-v.top)/M.H)*.96;MN=Math.min(.12,f0);const s=Math.max(MN,f0);/* 처음·전체 = 지도 전부가 칸 안 (작은 칸이면 가장 작은 배율도 그만큼 내려감) */return {s,x:(v.w-M.W*s)/2,y:v.top+(v.h-v.top-M.H*s)/2}};
   const zone=i=>{const z=M.zs[i],v=vis(),s=Math.max(thr()+.03,Math.min(1.1,(v.w-14)/z.w));return {s,x:7-z.x*s,y:v.top+6-z.y*s}};
   const node=sid=>{const n=M.N[sid],v=vis(),s=Math.max(C.s,thr()+.06);return {s,x:v.w/2-n.x*s,y:v.top+(v.h-v.top)/2-(n.y+39)*s}};
   const tab=()=>{const i=M.B.T.findIndex(t=>t.k==window._skTab);return i<0?fit():zone(i)};
-  const ap=()=>{mw.style.transform="translate("+C.x.toFixed(1)+"px,"+C.y.toFixed(1)+"px) scale("+C.s.toFixed(4)+")";mp.classList.toggle("far",C.s<thr());mp.style.setProperty("--iv",Math.max(1,12.5/(22*C.s)).toFixed(3));mp.classList.toggle("tiny",SKMZ*C.s<110)};
+  const ap=()=>{mw.style.transform="translate("+C.x.toFixed(1)+"px,"+C.y.toFixed(1)+"px) scale("+C.s.toFixed(4)+")";mp.classList.toggle("far",C.s<thr());mp.style.setProperty("--iv",Math.max(1,12.5/(22*C.s)).toFixed(3));mp.classList.toggle("tiny",SKMZ*C.s<110);skZlFit(mp,C.s)};
   const go=(t,ms)=>{t=clamp(Object.assign({},t));const f={s:C.s,x:C.x,y:C.y},t0=performance.now(),k=++SKB.an;ms=ms||300;const st=n=>{if(k!=SKB.an||!mw.isConnected)return;const p=Math.min(1,(n-t0)/ms),e=1-Math.pow(1-p,3);C.s=f.s+(t.s-f.s)*e;C.x=f.x+(t.x-f.x)*e;C.y=f.y+(t.y-f.y)*e;ap();if(p<1)requestAnimationFrame(st)};requestAnimationFrame(st)};
   const zoomAt=(f,px,py)=>{const ns=Math.max(MN,Math.min(MX,C.s*f)),wx=(px-C.x)/C.s,wy=(py-C.y)/C.s;C.s=ns;C.x=px-wx*ns;C.y=py-wy*ns;clamp(C);ap()};
   const zoomBy=f=>{const v=vis(),ns=Math.max(MN,Math.min(MX,C.s*f)),px=v.w/2,py=v.top+(v.h-v.top)/2,wx=(px-C.x)/C.s,wy=(py-C.y)/C.s;go({s:ns,x:px-wx*ns,y:py-wy*ns},220)};
